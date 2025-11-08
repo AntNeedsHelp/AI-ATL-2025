@@ -13,7 +13,6 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-from video_processor import VideoProcessor
 from ai_analyzer import AIAnalyzer
 
 app = FastAPI(title="PresentAI Backend")
@@ -117,30 +116,49 @@ async def get_result(job_id: str):
     return result
 
 async def process_video(job_id: str, video_path: str, supporting_path: Optional[str]):
-    """Background task to process video"""
+    """Background task to process video - passes video directly to Google Gemini"""
     try:
         jobs[job_id]["status"] = "processing"
         jobs[job_id]["progress"] = 10
-        jobs[job_id]["message"] = "Extracting audio and frames..."
+        jobs[job_id]["message"] = "Getting video metadata..."
         
-        # Step 1: Preprocess video
-        processor = VideoProcessor(video_path, Path(video_path).parent)
-        metadata = processor.preprocess()
+        # Get basic video metadata (just duration for validation)
+        # We'll use ffprobe just for duration check, not for processing
+        import subprocess
+        cmd = [
+            'ffprobe',
+            '-v', 'quiet',
+            '-print_format', 'json',
+            '-show_format',
+            str(video_path)
+        ]
+        
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        probe_data = json.loads(result.stdout)
+        duration = float(probe_data['format'].get('duration', 0))
         
         # Check duration (3 min = 180 seconds)
-        if metadata["duration"] > 180:
+        if duration > 180:
             jobs[job_id]["status"] = "failed"
             jobs[job_id]["message"] = "Video exceeds 3 minute duration limit"
             return
         
-        jobs[job_id]["progress"] = 30
-        jobs[job_id]["message"] = "Analyzing presentation with AI..."
+        # Basic metadata for results
+        metadata = {
+            "duration": duration,
+            "fps": 30,  # Default, not critical since Gemini handles video
+            "resolution": "unknown",
+            "width": 0,
+            "height": 0
+        }
         
-        # Step 2: AI Analysis
+        jobs[job_id]["progress"] = 20
+        jobs[job_id]["message"] = "Uploading video to AI..."
+        
+        # Pass video directly to Google Gemini for analysis
         analyzer = AIAnalyzer()
         result = await analyzer.analyze(
-            audio_path=str(Path(video_path).parent / "audio.wav"),
-            frames_dir=str(Path(video_path).parent / "frames"),
+            video_path=video_path,
             supporting_doc_path=supporting_path,
             metadata=metadata
         )
@@ -148,7 +166,7 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
         jobs[job_id]["progress"] = 90
         jobs[job_id]["message"] = "Finalizing results..."
         
-        # Step 3: Save results
+        # Save results
         # Update result to include video URL
         result["video_url"] = f"/api/video/{job_id}"
         
@@ -164,6 +182,8 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
         jobs[job_id]["status"] = "failed"
         jobs[job_id]["message"] = f"Error: {str(e)}"
         print(f"Error processing job {job_id}: {e}")
+        import traceback
+        traceback.print_exc()
 
 @app.get("/api/video/{job_id}")
 async def get_video(job_id: str):

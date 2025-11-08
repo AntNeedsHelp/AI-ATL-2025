@@ -1,7 +1,7 @@
 import os
 import base64
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 import json
 
 from google import genai
@@ -15,44 +15,70 @@ class AIAnalyzer:
             raise ValueError("GOOGLE_API_KEY environment variable not set")
         
         self.client = genai.Client(api_key=api_key)
-        self.model = "gemini-2.0-flash-exp"
+        self.model = "gemini-2.5-pro"
     
     async def analyze(
         self,
-        audio_path: str,
-        frames_dir: str,
+        video_path: str,
         supporting_doc_path: Optional[str],
         metadata: Dict
     ) -> Dict:
-        """Main analysis pipeline orchestrated by Manager Agent"""
+        """Main analysis pipeline orchestrated by Manager Agent - processes video directly"""
         
         # Load supporting document if provided
         supporting_text = None
         if supporting_doc_path:
             supporting_text = self._extract_document_text(supporting_doc_path)
         
-        # Upload audio file
-        audio_file = self.client.files.upload(path=audio_path)
+        # Upload video file directly to Google Gemini
+        try:
+            video_file = self.client.files.upload(path=video_path)
+        except Exception as e:
+            raise ValueError(f"Failed to upload video file: {str(e)}")
         
-        # Sample frames (max 60 frames for 3 min video at 15 fps = 2700 frames, sample every 45th)
-        frame_files = sorted(Path(frames_dir).glob("*.jpg"))
-        sampled_frames = frame_files[::45][:60]  # Max 60 frames
+        # Wait for file to be processed (required before using in API calls)
+        import time
+        max_wait = 300  # 5 minutes max wait
+        wait_time = 0
         
-        # Upload sampled frames
-        uploaded_frames = []
-        for frame_path in sampled_frames:
-            frame_file = self.client.files.upload(path=str(frame_path))
-            uploaded_frames.append({
-                "file": frame_file,
-                "timestamp": self._frame_to_timestamp(frame_path.name, metadata["fps"])
-            })
+        # Check file state - handle both string and enum types
+        def get_file_state(file_obj):
+            """Get file state as string"""
+            if hasattr(file_obj, 'state'):
+                state = file_obj.state
+                if hasattr(state, 'name'):
+                    return state.name
+                elif isinstance(state, str):
+                    return state
+            return "UNKNOWN"
         
-        # Run specialized agents in parallel
-        speech_analysis = await self._speech_agent(audio_file, metadata)
-        gesture_analysis = await self._gesture_agent(uploaded_frames, metadata)
-        inflection_analysis = await self._inflection_agent(audio_file, metadata)
+        file_state = get_file_state(video_file)
+        while file_state == "PROCESSING":
+            if wait_time >= max_wait:
+                raise ValueError("Video file processing timed out")
+            time.sleep(2)
+            wait_time += 2
+            try:
+                video_file = self.client.files.get(name=video_file.name)
+                file_state = get_file_state(video_file)
+                print(f"File processing... state: {file_state}, waited: {wait_time}s")
+            except Exception as e:
+                raise ValueError(f"Failed to check file status: {str(e)}")
+        
+        file_state = get_file_state(video_file)
+        if file_state == "FAILED":
+            raise ValueError(f"Video file upload failed: {file_state}")
+        
+        print(f"File ready! State: {file_state}, URI: {video_file.uri}")
+        
+        # Run specialized agents - all work with the video file
+        print("Starting speech analysis...")
+        speech_analysis = await self._speech_agent(video_file, metadata)
+        print("Speech analysis complete")
+        gesture_analysis = await self._gesture_agent(video_file, metadata)
+        inflection_analysis = await self._inflection_agent(video_file, metadata)
         content_analysis = await self._content_agent(
-            audio_file, 
+            video_file, 
             supporting_text, 
             metadata
         )
@@ -69,16 +95,16 @@ class AIAnalyzer:
         
         return result
     
-    async def _speech_agent(self, audio_file, metadata: Dict) -> Dict:
+    async def _speech_agent(self, video_file, metadata: Dict) -> Dict:
         """Analyze speech clarity: transcription, WPM, filler words, pauses"""
         
-        prompt = f"""You are a speech clarity coach analyzing a presentation recording.
+        prompt = f"""You are a speech clarity coach analyzing a presentation video.
 
-Audio duration: {metadata['duration']:.1f} seconds
+Video duration: {metadata['duration']:.1f} seconds
 
-Analyze the speech and provide:
-1. Full transcription
-2. Words per minute (WPM)
+Analyze the speech from the video and provide:
+1. Full transcription of all spoken words
+2. Words per minute (WPM) - calculate based on total words and duration
 3. Filler words ("um", "uh", "like", etc.) with timestamps
 4. Awkward pauses (>2 seconds) with timestamps
 5. Speaking pace issues (too fast: >180 WPM, too slow: <120 WPM)
@@ -105,32 +131,39 @@ Output as JSON:
 }}
 """
         
-        response = self.client.models.generate_content(
-            model=self.model,
-            contents=[
-                types.Content(
-                    role="user",
-                    parts=[
-                        types.Part.from_uri(file_uri=audio_file.uri, mime_type=audio_file.mime_type),
-                        types.Part.from_text(prompt)
-                    ]
-                )
-            ]
-        )
-        
-        # Parse JSON from response
-        return self._parse_json_response(response.text)
+        try:
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=[
+                    types.Content(
+                        role="user",
+                        parts=[
+                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
+                            types.Part.from_text(prompt)
+                        ]
+                    )
+                ]
+            )
+            
+            # Parse JSON from response
+            return self._parse_json_response(response.text)
+        except Exception as e:
+            print(f"Error in _speech_agent: {str(e)}")
+            raise ValueError(f"Speech analysis failed: {str(e)}")
     
-    async def _gesture_agent(self, uploaded_frames: List[Dict], metadata: Dict) -> Dict:
-        """Analyze body language and gestures from video frames"""
+    async def _gesture_agent(self, video_file, metadata: Dict) -> Dict:
+        """Analyze body language and gestures from video"""
         
-        prompt = """You are a body language coach analyzing presentation video frames.
+        prompt = f"""You are a body language coach analyzing a presentation video.
 
-Analyze the presenter's:
+Video duration: {metadata['duration']:.1f} seconds
+
+Watch the entire video and analyze the presenter's:
 1. Posture (slouching, fidgeting, standing straight)
 2. Hand gestures (natural, stiff, repetitive, appropriate emphasis)
 3. Eye contact and gaze direction
 4. Facial expressions (engaged, monotone, appropriate emotion)
+5. Movement and positioning
 
 For each issue found, provide:
 - Timestamp range (start and end in seconds)
@@ -139,51 +172,51 @@ For each issue found, provide:
 - Brief, encouraging coaching tip
 
 Output as JSON:
-{
+{{
   "markers": [
-    {
+    {{
       "start": 45.0,
       "end": 52.0,
       "label": "Crossed arms (closed posture)",
       "severity": 3,
       "feedback": "Keep arms relaxed at your sides or use open gestures to engage the audience."
-    }
+    }}
   ]
-}
+}}
 """
         
-        # Build content with frames
-        parts = []
-        for frame_data in uploaded_frames:
-            parts.append(
-                types.Part.from_uri(
-                    file_uri=frame_data["file"].uri,
-                    mime_type=frame_data["file"].mime_type
-                )
+        try:
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=[
+                    types.Content(
+                        role="user",
+                        parts=[
+                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
+                            types.Part.from_text(prompt)
+                        ]
+                    )
+                ]
             )
-            parts.append(types.Part.from_text(f"[Frame at {frame_data['timestamp']:.1f}s]"))
-        
-        parts.append(types.Part.from_text(prompt))
-        
-        response = self.client.models.generate_content(
-            model=self.model,
-            contents=[types.Content(role="user", parts=parts)]
-        )
-        
-        return self._parse_json_response(response.text)
+            
+            return self._parse_json_response(response.text)
+        except Exception as e:
+            print(f"Error in _gesture_agent: {str(e)}")
+            raise ValueError(f"Gesture analysis failed: {str(e)}")
     
-    async def _inflection_agent(self, audio_file, metadata: Dict) -> Dict:
+    async def _inflection_agent(self, video_file, metadata: Dict) -> Dict:
         """Analyze vocal inflection, pitch variation, and tone"""
         
-        prompt = f"""You are a vocal delivery coach analyzing a presentation recording.
+        prompt = f"""You are a vocal delivery coach analyzing a presentation video.
 
-Audio duration: {metadata['duration']:.1f} seconds
+Video duration: {metadata['duration']:.1f} seconds
 
-Analyze vocal delivery:
+Listen to the audio in the video and analyze vocal delivery:
 1. Pitch variation (monotone sections vs. dynamic delivery)
 2. Volume consistency (too quiet, too loud, inconsistent)
 3. Emphasis on key points
 4. Energy and enthusiasm in voice
+5. Tone and expression
 
 For each issue found, provide:
 - Timestamp range (start and end in seconds)
@@ -205,24 +238,28 @@ Output as JSON:
 }}
 """
         
-        response = self.client.models.generate_content(
-            model=self.model,
-            contents=[
-                types.Content(
-                    role="user",
-                    parts=[
-                        types.Part.from_uri(file_uri=audio_file.uri, mime_type=audio_file.mime_type),
-                        types.Part.from_text(prompt)
-                    ]
-                )
-            ]
-        )
-        
-        return self._parse_json_response(response.text)
+        try:
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=[
+                    types.Content(
+                        role="user",
+                        parts=[
+                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
+                            types.Part.from_text(prompt)
+                        ]
+                    )
+                ]
+            )
+            
+            return self._parse_json_response(response.text)
+        except Exception as e:
+            print(f"Error in _inflection_agent: {str(e)}")
+            raise ValueError(f"Inflection analysis failed: {str(e)}")
     
     async def _content_agent(
         self,
-        audio_file,
+        video_file,
         supporting_text: Optional[str],
         metadata: Dict
     ) -> Dict:
@@ -232,17 +269,18 @@ Output as JSON:
         if supporting_text:
             supporting_context = f"\n\nSupporting document provided:\n{supporting_text[:2000]}"
         
-        prompt = f"""You are a content structure coach analyzing a presentation.
+        prompt = f"""You are a content structure coach analyzing a presentation video.
 
-Audio duration: {metadata['duration']:.1f} seconds
+Video duration: {metadata['duration']:.1f} seconds
 {supporting_context}
 
-Analyze content quality:
+Watch and listen to the entire video to analyze content quality:
 1. Clear introduction and conclusion
 2. Logical flow and structure
 3. Topic alignment (if supporting document provided)
 4. Key points are well explained
 5. Transitions between topics
+6. Visual aids usage (if any)
 
 For each issue found, provide:
 - Timestamp range (start and end in seconds)
@@ -264,20 +302,24 @@ Output as JSON:
 }}
 """
         
-        response = self.client.models.generate_content(
-            model=self.model,
-            contents=[
-                types.Content(
-                    role="user",
-                    parts=[
-                        types.Part.from_uri(file_uri=audio_file.uri, mime_type=audio_file.mime_type),
-                        types.Part.from_text(prompt)
-                    ]
-                )
-            ]
-        )
-        
-        return self._parse_json_response(response.text)
+        try:
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=[
+                    types.Content(
+                        role="user",
+                        parts=[
+                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
+                            types.Part.from_text(prompt)
+                        ]
+                    )
+                ]
+            )
+            
+            return self._parse_json_response(response.text)
+        except Exception as e:
+            print(f"Error in _content_agent: {str(e)}")
+            raise ValueError(f"Content analysis failed: {str(e)}")
     
     def _aggregate_results(
         self,
@@ -331,6 +373,8 @@ Output as JSON:
         
         return {
             "scores": {
+
+                
                 "gestures": scores["gestures"],
                 "inflection": scores["inflection"],
                 "clarity": scores["clarity"],
@@ -365,11 +409,6 @@ Output as JSON:
             # Fallback: return empty markers
             return {"markers": []}
     
-    def _frame_to_timestamp(self, frame_name: str, fps: float) -> float:
-        """Convert frame filename to timestamp"""
-        # frame_000001.jpg -> frame number 1
-        frame_num = int(frame_name.split('_')[1].split('.')[0])
-        return (frame_num - 1) / fps
     
     def _extract_document_text(self, file_path: str) -> str:
         """Extract text from PDF, DOCX, or TXT"""
