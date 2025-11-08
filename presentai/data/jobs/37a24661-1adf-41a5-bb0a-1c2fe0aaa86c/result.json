@@ -1,0 +1,116 @@
+{
+  "scores": {
+    "gestures": 18,
+    "inflection": 17,
+    "clarity": 15,
+    "content": 19,
+    "total": 69
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 18.4,
+      "label": "Clenched fists",
+      "severity": 4,
+      "feedback": "Holding your hands in tight fists at your sides can signal tension or aggression. Try to consciously relax your hands, letting them hang naturally or bringing them together in a neutral position to appear more open and at ease.",
+      "category": "gestures"
+    },
+    {
+      "start": 1.0,
+      "end": 24.5,
+      "label": "Monotone Delivery",
+      "severity": 4,
+      "feedback": "For the first part of your presentation, your pitch remains very flat. Try varying your vocal tone to convey the disappointment you're expressing. Emphasizing key phrases like 'did not make it to worlds' will make your story more impactful.",
+      "category": "inflection"
+    },
+    {
+      "start": 1.5,
+      "end": 20.5,
+      "label": "Speaking pace too slow",
+      "severity": 4,
+      "feedback": "The start of your speech is very deliberate and slow. While this can add weight, a slightly more natural pace would help maintain audience engagement from the beginning.",
+      "category": "clarity"
+    },
+    {
+      "start": 8.5,
+      "end": 10.9,
+      "label": "Awkward pause",
+      "severity": 3,
+      "feedback": "This pause is a bit long and breaks the flow. Try taking a shorter, more natural breath between sentences to transition smoothly.",
+      "category": "clarity"
+    },
+    {
+      "start": 10.5,
+      "end": 21.0,
+      "label": "Low Energy",
+      "severity": 4,
+      "feedback": "Your energy level feels very low here, which can make it hard for the audience to connect with your message. Let your genuine feelings about the situation come through by injecting more energy and expression into your voice.",
+      "category": "inflection"
+    },
+    {
+      "start": 10.9,
+      "end": 24.8,
+      "label": "Unclear structure",
+      "severity": 5,
+      "feedback": "You've established the central point of your presentation. To build on this, try creating a simple outline, such as discussing the challenge, the actions taken, and the result. This will help guide your audience through the story.",
+      "category": "content"
+    },
+    {
+      "start": 14.1,
+      "end": 15.8,
+      "label": "Repetitive phrasing",
+      "severity": 3,
+      "feedback": "Repeating 'that' multiple times can be distracting. Taking a moment to gather your thoughts can help you deliver a more concise and impactful sentence.",
+      "category": "clarity"
+    },
+    {
+      "start": 18.5,
+      "end": 20.2,
+      "label": "Fidgeting with hair",
+      "severity": 2,
+      "feedback": "Touching your hair can be a self-soothing gesture that indicates nervousness and can distract the audience. Try to keep your hands relaxed at your sides or use them for intentional gestures to maintain focus.",
+      "category": "gestures"
+    },
+    {
+      "start": 20.3,
+      "end": 32.6,
+      "label": "Clenched fists",
+      "severity": 4,
+      "feedback": "You've returned to the clenched-fist posture. Make a conscious effort to keep your hands open and relaxed. This small adjustment significantly improves how confident and approachable you appear.",
+      "category": "gestures"
+    },
+    {
+      "start": 24.6,
+      "end": 32.6,
+      "label": "Speaking pace too fast",
+      "severity": 5,
+      "feedback": "Your pace accelerates very quickly here, making it difficult to understand the words. Remember to breathe and focus on clear enunciation, especially when you feel rushed.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.8,
+      "end": 32.6,
+      "label": "Abrupt ending",
+      "severity": 5,
+      "feedback": "The presentation ends without a clear conclusion. Try to wrap up by summarizing your main point or sharing a key lesson learned from the experience to give your audience a sense of closure.",
+      "category": "content"
+    },
+    {
+      "start": 25.0,
+      "end": 31.5,
+      "label": "Rushed Pace",
+      "severity": 3,
+      "feedback": "Your speaking pace accelerates very quickly in this section. While the energy increases, the speed can cause you to lose clarity. Remember to take breaths and use pauses to allow your audience to process your words.",
+      "category": "inflection"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That that that that that is really unfortunate. And at the end of the day, we didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it was horrible. And then then then then then then then then then then then then then then.",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/37a24661-1adf-41a5-bb0a-1c2fe0aaa86c"
+}

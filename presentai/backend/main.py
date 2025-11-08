@@ -187,7 +187,7 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
 
 @app.get("/api/video/{job_id}")
 async def get_video(job_id: str):
-    """Stream video file for playback"""
+    """Stream video file for playback with range request support"""
     if job_id not in jobs:
         raise HTTPException(status_code=404, detail="Job not found")
     
@@ -195,7 +195,14 @@ async def get_video(job_id: str):
     if not video_path.exists():
         raise HTTPException(status_code=404, detail="Video not found")
     
-    return FileResponse(video_path, media_type="video/mp4")
+    return FileResponse(
+        video_path, 
+        media_type="video/mp4",
+        headers={
+            "Accept-Ranges": "bytes",
+            "Content-Disposition": f'inline; filename="video.mp4"'
+        }
+    )
 
 @app.delete("/api/jobs/{job_id}")
 async def delete_job(job_id: str):

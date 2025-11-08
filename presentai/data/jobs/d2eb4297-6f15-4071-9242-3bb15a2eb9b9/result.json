@@ -1,0 +1,124 @@
+{
+  "scores": {
+    "gestures": 19,
+    "inflection": 16,
+    "clarity": 12,
+    "content": 21,
+    "total": 68
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 32.6,
+      "label": "Tense Posture / Clenched Fists",
+      "severity": 4,
+      "feedback": "You hold a very strong, stable stance, but keeping your fists clenched can signal tension or aggression. Try relaxing your hands and letting your arms rest naturally at your sides to project a more open and confident demeanor.",
+      "category": "gestures"
+    },
+    {
+      "start": 0.0,
+      "end": 25.43,
+      "label": "Limited Facial Expression",
+      "severity": 3,
+      "feedback": "You maintain excellent eye contact with the camera. To enhance your connection with the audience, try allowing your facial expressions to reflect the emotions in your story. This will make your delivery even more engaging and impactful.",
+      "category": "gestures"
+    },
+    {
+      "start": 0.0,
+      "end": 4.1,
+      "label": "Weak introduction",
+      "severity": 2,
+      "feedback": "While your topic is stated, try starting with a more engaging hook\u2014like a question or a surprising fact\u2014to capture your audience's interest right away.",
+      "category": "content"
+    },
+    {
+      "start": 1.0,
+      "end": 24.0,
+      "label": "Speaking pace: Too slow",
+      "severity": 4,
+      "feedback": "Your initial pace is very deliberate, around 86 WPM. While this can be good for emphasis, try to inject a bit more energy and speed to keep your listeners fully engaged from the start.",
+      "category": "clarity"
+    },
+    {
+      "start": 1.5,
+      "end": 25.0,
+      "label": "Monotone delivery",
+      "severity": 4,
+      "feedback": "Your voice stays at a very consistent low pitch, which can come across as disengaged. To better convey the disappointment in your story, try raising your pitch on key words like 'unfortunate' and adding pauses for dramatic effect.",
+      "category": "inflection"
+    },
+    {
+      "start": 1.5,
+      "end": 25.0,
+      "label": "Lack of Vocal Energy",
+      "severity": 4,
+      "feedback": "The energy in your voice is very low, which doesn't match the gravity of the topic. Infusing more energy will help capture and hold your audience's attention and make your story more compelling.",
+      "category": "inflection"
+    },
+    {
+      "start": 8.0,
+      "end": 11.0,
+      "label": "Awkward pause",
+      "severity": 4,
+      "feedback": "Pauses are great for dramatic effect, but this 3-second pause is long enough to break the flow. Aim for pauses of 1-2 seconds to keep the momentum going.",
+      "category": "clarity"
+    },
+    {
+      "start": 14.0,
+      "end": 16.0,
+      "label": "Repetition / Stutter",
+      "severity": 3,
+      "feedback": "When you feel a hesitation coming, it's better to take a silent breath than to repeat a word. This pause will feel natural to the audience and give you a moment to collect your thoughts.",
+      "category": "clarity"
+    },
+    {
+      "start": 18.73,
+      "end": 20.23,
+      "label": "Distracting Grooming Gesture",
+      "severity": 2,
+      "feedback": "It's natural to want to fix your hair, but doing so mid-presentation can be a brief distraction. A quick check before you begin recording can help you feel secure and keep the audience's focus entirely on your message.",
+      "category": "gestures"
+    },
+    {
+      "start": 20.2,
+      "end": 32.6,
+      "label": "Lack of Coherent Conclusion",
+      "severity": 5,
+      "feedback": "The presentation loses structure and ends abruptly. Planning a concise summary or a final concluding thought helps to end your message on a strong and clear note.",
+      "category": "content"
+    },
+    {
+      "start": 24.5,
+      "end": 32.0,
+      "label": "Speaking pace: Too fast",
+      "severity": 5,
+      "feedback": "Your pace accelerated dramatically to over 240 WPM here, which can make your message hard to understand. Take a breath before switching thoughts to reset your pace and ensure every word lands clearly.",
+      "category": "clarity"
+    },
+    {
+      "start": 25.0,
+      "end": 31.0,
+      "label": "Rushed Pacing",
+      "severity": 4,
+      "feedback": "Your speaking pace becomes very fast here, causing the words to blend together and become difficult to understand. Try taking a deliberate breath before this section and enunciating each word to ensure your audience can keep up.",
+      "category": "inflection"
+    },
+    {
+      "start": 29.5,
+      "end": 32.0,
+      "label": "Rapid repetition / Stutter",
+      "severity": 3,
+      "feedback": "The repetition at the end seems connected to the fast pace. Focus on completing your sentences with a clear, deliberate final word to avoid trailing off.",
+      "category": "clarity"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That... that... that... that is really unfortunate. And at the end of the day, we didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it was horrible. And then-n-n-n-n-n...",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/d2eb4297-6f15-4071-9242-3bb15a2eb9b9"
+}

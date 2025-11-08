@@ -9,6 +9,8 @@ import { VideoPlayer } from '../components/VideoPlayer';
 import { CategoryFilters } from '../components/CategoryFilters';
 import { FeedbackPanel } from '../components/FeedbackPanel';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export const Results = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
@@ -131,7 +133,11 @@ export const Results = () => {
           className="mb-6"
         >
           <VideoPlayer
-            videoUrl={data.video_url || '/placeholder-video.mp4'}
+            videoUrl={data.video_url 
+              ? (data.video_url.startsWith('http') 
+                  ? data.video_url 
+                  : `${API_BASE_URL}${data.video_url}`)
+              : `${API_BASE_URL}/api/video/${jobId}`}
             markers={data.markers}
             activeFilter={activeFilter}
             onTimeUpdate={handleTimeUpdate}
