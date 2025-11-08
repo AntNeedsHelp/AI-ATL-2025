@@ -1,106 +1,46 @@
 import os
-import base64
+import asyncio
+import logging
 from pathlib import Path
 from typing import Dict, Optional
 import json
+import time
 
-from google import genai
+from google import adk, genai
 from google.genai import types
+from google.adk.agents.llm_agent import LlmAgent
+from google.adk import Runner
+from google.adk.sessions import InMemorySessionService
+
+# Setup logger
+logger = logging.getLogger(__name__)
 
 class AIAnalyzer:
     def __init__(self):
-        # Initialize Gemini client
+        # Initialize Gemini client for file uploads
         api_key = os.getenv("GOOGLE_API_KEY")
         if not api_key:
             raise ValueError("GOOGLE_API_KEY environment variable not set")
         
         self.client = genai.Client(api_key=api_key)
-        self.model = "gemini-2.5-pro"
+        self.model_name = "gemini-2.5-pro"
+        
+        # Create ADK model (uses GOOGLE_API_KEY from environment)
+        self.model = adk.models.Gemini(model=self.model_name)
+        
+        # Session service will be created per analysis to avoid conflicts
+        # Initialize specialized agents
+        self._initialize_agents()
     
-    async def analyze(
-        self,
-        video_path: str,
-        supporting_doc_path: Optional[str],
-        metadata: Dict
-    ) -> Dict:
-        """Main analysis pipeline orchestrated by Manager Agent - processes video directly"""
+    def _initialize_agents(self):
+        """Initialize ADK agents for different analysis types"""
         
-        # Load supporting document if provided
-        supporting_text = None
-        if supporting_doc_path:
-            supporting_text = self._extract_document_text(supporting_doc_path)
-        
-        # Upload video file directly to Google Gemini
-        try:
-            video_file = self.client.files.upload(path=video_path)
-        except Exception as e:
-            raise ValueError(f"Failed to upload video file: {str(e)}")
-        
-        # Wait for file to be processed (required before using in API calls)
-        import time
-        max_wait = 300  # 5 minutes max wait
-        wait_time = 0
-        
-        # Check file state - handle both string and enum types
-        def get_file_state(file_obj):
-            """Get file state as string"""
-            if hasattr(file_obj, 'state'):
-                state = file_obj.state
-                if hasattr(state, 'name'):
-                    return state.name
-                elif isinstance(state, str):
-                    return state
-            return "UNKNOWN"
-        
-        file_state = get_file_state(video_file)
-        while file_state == "PROCESSING":
-            if wait_time >= max_wait:
-                raise ValueError("Video file processing timed out")
-            time.sleep(2)
-            wait_time += 2
-            try:
-                video_file = self.client.files.get(name=video_file.name)
-                file_state = get_file_state(video_file)
-                print(f"File processing... state: {file_state}, waited: {wait_time}s")
-            except Exception as e:
-                raise ValueError(f"Failed to check file status: {str(e)}")
-        
-        file_state = get_file_state(video_file)
-        if file_state == "FAILED":
-            raise ValueError(f"Video file upload failed: {file_state}")
-        
-        print(f"File ready! State: {file_state}, URI: {video_file.uri}")
-        
-        # Run specialized agents - all work with the video file
-        print("Starting speech analysis...")
-        speech_analysis = await self._speech_agent(video_file, metadata)
-        print("Speech analysis complete")
-        gesture_analysis = await self._gesture_agent(video_file, metadata)
-        inflection_analysis = await self._inflection_agent(video_file, metadata)
-        content_analysis = await self._content_agent(
-            video_file, 
-            supporting_text, 
-            metadata
-        )
-        
-        # Aggregate results
-        result = self._aggregate_results(
-            speech_analysis,
-            gesture_analysis,
-            inflection_analysis,
-            content_analysis,
-            metadata,
-            supporting_doc_path
-        )
-        
-        return result
-    
-    async def _speech_agent(self, video_file, metadata: Dict) -> Dict:
-        """Analyze speech clarity: transcription, WPM, filler words, pauses"""
-        
-        prompt = f"""You are a speech clarity coach analyzing a presentation video.
-
-Video duration: {metadata['duration']:.1f} seconds
+        # Speech Analysis Agent
+        self.speech_agent = LlmAgent(
+            name="speech_analyst",
+            description="Analyzes speech clarity, transcription, WPM, filler words, and pauses",
+            model=self.model,
+            instruction="""You are a speech clarity coach analyzing a presentation video.
 
 Analyze the speech from the video and provide:
 1. Full transcription of all spoken words
@@ -115,48 +55,28 @@ For each issue found, provide:
 - Severity (1-5, where 5 is most severe)
 - Brief, encouraging coaching tip
 
-Output as JSON:
-{{
+Output as JSON with this structure:
+{
   "transcript": "full text...",
   "wpm": 150,
   "markers": [
-    {{
+    {
       "start": 12.5,
       "end": 13.0,
       "label": "Filler word: 'um'",
       "severity": 2,
       "feedback": "Take a breath instead of using filler words."
-    }}
+    }
   ]
-}}
-"""
+}"""
+        )
         
-        try:
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents=[
-                    types.Content(
-                        role="user",
-                        parts=[
-                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
-                            types.Part.from_text(prompt)
-                        ]
-                    )
-                ]
-            )
-            
-            # Parse JSON from response
-            return self._parse_json_response(response.text)
-        except Exception as e:
-            print(f"Error in _speech_agent: {str(e)}")
-            raise ValueError(f"Speech analysis failed: {str(e)}")
-    
-    async def _gesture_agent(self, video_file, metadata: Dict) -> Dict:
-        """Analyze body language and gestures from video"""
-        
-        prompt = f"""You are a body language coach analyzing a presentation video.
-
-Video duration: {metadata['duration']:.1f} seconds
+        # Gesture Analysis Agent
+        self.gesture_agent = LlmAgent(
+            name="gesture_analyst",
+            description="Analyzes body language, gestures, posture, and eye contact",
+            model=self.model,
+            instruction="""You are a body language coach analyzing a presentation video.
 
 Watch the entire video and analyze the presenter's:
 1. Posture (slouching, fidgeting, standing straight)
@@ -172,44 +92,25 @@ For each issue found, provide:
 - Brief, encouraging coaching tip
 
 Output as JSON:
-{{
+{
   "markers": [
-    {{
+    {
       "start": 45.0,
       "end": 52.0,
       "label": "Crossed arms (closed posture)",
       "severity": 3,
       "feedback": "Keep arms relaxed at your sides or use open gestures to engage the audience."
-    }}
+    }
   ]
-}}
-"""
+}"""
+        )
         
-        try:
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents=[
-                    types.Content(
-                        role="user",
-                        parts=[
-                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
-                            types.Part.from_text(prompt)
-                        ]
-                    )
-                ]
-            )
-            
-            return self._parse_json_response(response.text)
-        except Exception as e:
-            print(f"Error in _gesture_agent: {str(e)}")
-            raise ValueError(f"Gesture analysis failed: {str(e)}")
-    
-    async def _inflection_agent(self, video_file, metadata: Dict) -> Dict:
-        """Analyze vocal inflection, pitch variation, and tone"""
-        
-        prompt = f"""You are a vocal delivery coach analyzing a presentation video.
-
-Video duration: {metadata['duration']:.1f} seconds
+        # Inflection Analysis Agent
+        self.inflection_agent = LlmAgent(
+            name="inflection_analyst",
+            description="Analyzes vocal inflection, pitch variation, tone, and energy",
+            model=self.model,
+            instruction="""You are a vocal delivery coach analyzing a presentation video.
 
 Listen to the audio in the video and analyze vocal delivery:
 1. Pitch variation (monotone sections vs. dynamic delivery)
@@ -225,54 +126,25 @@ For each issue found, provide:
 - Brief, encouraging coaching tip
 
 Output as JSON:
-{{
+{
   "markers": [
-    {{
+    {
       "start": 28.0,
       "end": 35.0,
       "label": "Monotone delivery",
       "severity": 3,
       "feedback": "Vary your pitch to emphasize key ideas and maintain audience interest."
-    }}
+    }
   ]
-}}
-"""
+}"""
+        )
         
-        try:
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents=[
-                    types.Content(
-                        role="user",
-                        parts=[
-                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
-                            types.Part.from_text(prompt)
-                        ]
-                    )
-                ]
-            )
-            
-            return self._parse_json_response(response.text)
-        except Exception as e:
-            print(f"Error in _inflection_agent: {str(e)}")
-            raise ValueError(f"Inflection analysis failed: {str(e)}")
-    
-    async def _content_agent(
-        self,
-        video_file,
-        supporting_text: Optional[str],
-        metadata: Dict
-    ) -> Dict:
-        """Analyze content structure, topic alignment, and clarity"""
-        
-        supporting_context = ""
-        if supporting_text:
-            supporting_context = f"\n\nSupporting document provided:\n{supporting_text[:2000]}"
-        
-        prompt = f"""You are a content structure coach analyzing a presentation video.
-
-Video duration: {metadata['duration']:.1f} seconds
-{supporting_context}
+        # Content Analysis Agent
+        self.content_agent = LlmAgent(
+            name="content_analyst",
+            description="Analyzes content structure, topic alignment, and clarity",
+            model=self.model,
+            instruction="""You are a content structure coach analyzing a presentation video.
 
 Watch and listen to the entire video to analyze content quality:
 1. Clear introduction and conclusion
@@ -289,37 +161,219 @@ For each issue found, provide:
 - Brief, encouraging coaching tip
 
 Output as JSON:
-{{
+{
   "markers": [
-    {{
+    {
       "start": 0.0,
       "end": 15.0,
       "label": "Weak introduction",
       "severity": 2,
       "feedback": "Start with a clear hook or thesis statement to engage your audience."
-    }}
+    }
   ]
-}}
-"""
+}"""
+        )
         
+        # Runners will be created per-analysis with specific agents
+    
+    async def analyze(
+        self,
+        video_path: str,
+        supporting_doc_path: Optional[str],
+        metadata: Dict
+    ) -> Dict:
+        """Main analysis pipeline using ADK agents"""
+        
+        # Load supporting document if provided
+        supporting_text = None
+        if supporting_doc_path:
+            supporting_text = self._extract_document_text(supporting_doc_path)
+        
+        # Upload video file directly to Google Gemini
         try:
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents=[
-                    types.Content(
-                        role="user",
-                        parts=[
-                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
-                            types.Part.from_text(prompt)
-                        ]
-                    )
-                ]
-            )
-            
-            return self._parse_json_response(response.text)
+            video_file = self.client.files.upload(file=video_path)
         except Exception as e:
-            print(f"Error in _content_agent: {str(e)}")
+            raise ValueError(f"Failed to upload video file: {str(e)}")
+        
+        # Wait for file to be processed
+        video_file = await self._wait_for_file_processing(video_file)
+        print(f"File ready! URI: {video_file.uri}")
+        
+        # Prepare video content for agents
+        video_content = types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type)
+        
+        # Build context with metadata
+        context_parts = [
+            video_content,
+            types.Part(text=f"Video duration: {metadata['duration']:.1f} seconds")
+        ]
+        
+        if supporting_text:
+            context_parts.append(types.Part(text=f"\nSupporting document:\n{supporting_text[:2000]}"))
+        
+        # Create a new session service for this analysis to avoid conflicts
+        session_service = InMemorySessionService()
+        user_id = "presentai_user"
+        
+        # Create message content from parts
+        message_content = types.Content(role="user", parts=context_parts)
+        
+        # Run specialized agents using ADK Runner
+        # Note: Not specifying session_id - Runner will auto-create sessions
+        print("Starting speech analysis with ADK agent...")
+        try:
+            speech_runner = Runner(app_name="presentai_speech", agent=self.speech_agent, session_service=session_service)
+            speech_events = []
+            async for event in speech_runner.run_async(
+                user_id=user_id,
+                new_message=message_content
+            ):
+                speech_events.append(event)
+                print(f"Speech event received: {type(event).__name__}, final: {getattr(event, 'is_final_response', lambda: False)()}")
+            speech_analysis = self._parse_agent_response_from_events(speech_events)
+            print(f"Speech analysis complete: {len(speech_events)} events, text length: {len(str(speech_analysis))}")
+        except Exception as e:
+            error_msg = f"Error in speech analysis: {str(e)}"
+            logger.error(error_msg, exc_info=True)
+            raise ValueError(f"Speech analysis failed: {str(e)}")
+        
+        print("Starting gesture analysis with ADK agent...")
+        try:
+            gesture_runner = Runner(app_name="presentai_gesture", agent=self.gesture_agent, session_service=session_service)
+            gesture_events = []
+            async for event in gesture_runner.run_async(
+                user_id=user_id,
+                new_message=message_content
+            ):
+                gesture_events.append(event)
+            gesture_analysis = self._parse_agent_response_from_events(gesture_events)
+        except Exception as e:
+            error_msg = f"Error in gesture analysis: {str(e)}"
+            logger.error(error_msg, exc_info=True)
+            raise ValueError(f"Gesture analysis failed: {str(e)}")
+        
+        print("Starting inflection analysis with ADK agent...")
+        try:
+            inflection_runner = Runner(app_name="presentai_inflection", agent=self.inflection_agent, session_service=session_service)
+            inflection_events = []
+            async for event in inflection_runner.run_async(
+                user_id=user_id,
+                new_message=message_content
+            ):
+                inflection_events.append(event)
+            inflection_analysis = self._parse_agent_response_from_events(inflection_events)
+        except Exception as e:
+            error_msg = f"Error in inflection analysis: {str(e)}"
+            logger.error(error_msg, exc_info=True)
+            raise ValueError(f"Inflection analysis failed: {str(e)}")
+        
+        print("Starting content analysis with ADK agent...")
+        try:
+            content_context = context_parts.copy()
+            if supporting_text:
+                content_context.append(types.Part(text=f"\nSupporting document context:\n{supporting_text[:2000]}"))
+            content_message = types.Content(role="user", parts=content_context)
+            
+            content_runner = Runner(app_name="presentai_content", agent=self.content_agent, session_service=session_service)
+            content_events = []
+            async for event in content_runner.run_async(
+                user_id=user_id,
+                new_message=content_message
+            ):
+                content_events.append(event)
+            content_analysis = self._parse_agent_response_from_events(content_events)
+        except Exception as e:
+            error_msg = f"Error in content analysis: {str(e)}"
+            logger.error(error_msg, exc_info=True)
             raise ValueError(f"Content analysis failed: {str(e)}")
+        
+        # Aggregate results
+        result = self._aggregate_results(
+            speech_analysis,
+            gesture_analysis,
+            inflection_analysis,
+            content_analysis,
+            metadata,
+            supporting_doc_path
+        )
+        
+        return result
+    
+    async def _wait_for_file_processing(self, video_file, max_wait: int = 300) -> types.File:
+        """Wait for video file to be processed by Google Gemini"""
+        wait_time = 0
+        
+        def get_file_state(file_obj):
+            """Get file state as string"""
+            if hasattr(file_obj, 'state'):
+                state = file_obj.state
+                if hasattr(state, 'name'):
+                    return state.name
+                elif isinstance(state, str):
+                    return state
+            return "UNKNOWN"
+        
+        file_state = get_file_state(video_file)
+        while file_state == "PROCESSING":
+            if wait_time >= max_wait:
+                raise ValueError("Video file processing timed out")
+            await asyncio.sleep(2)
+            wait_time += 2
+            try:
+                video_file = self.client.files.get(name=video_file.name)
+                file_state = get_file_state(video_file)
+                print(f"File processing... state: {file_state}, waited: {wait_time}s")
+            except Exception as e:
+                raise ValueError(f"Failed to check file status: {str(e)}")
+        
+        file_state = get_file_state(video_file)
+        if file_state == "FAILED":
+            raise ValueError(f"Video file upload failed: {file_state}")
+        
+        return video_file
+    
+    def _parse_agent_response_from_events(self, events) -> Dict:
+        """Parse response from ADK agent events"""
+        # Extract text from events - ADK events have content attribute
+        text = ""
+        
+        # Look for final response events first
+        for event in events:
+            if hasattr(event, 'is_final_response') and event.is_final_response():
+                if hasattr(event, 'content') and event.content:
+                    # Extract text from Content object
+                    if hasattr(event.content, 'parts'):
+                        for part in event.content.parts:
+                            if hasattr(part, 'text'):
+                                text += part.text
+        
+        # If no final response, get text from all events
+        if not text:
+            for event in events:
+                if hasattr(event, 'content') and event.content:
+                    if hasattr(event.content, 'parts'):
+                        for part in event.content.parts:
+                            if hasattr(part, 'text'):
+                                text += part.text
+                    elif hasattr(event.content, 'text'):
+                        text += event.content.text
+        
+        # Fallback: try direct text attribute
+        if not text:
+            for event in events:
+                if hasattr(event, 'text') and event.text:
+                    text += event.text
+        
+        # Last resort: convert event to string
+        if not text and events:
+            text = str(events[-1])
+            print(f"Warning: Using fallback text extraction: {text[:200]}")
+        
+        if not text:
+            print("Error: No text found in events")
+            return {"markers": []}
+        
+        return self._parse_json_response(text)
     
     def _aggregate_results(
         self,
@@ -369,12 +423,10 @@ Output as JSON:
         total_score = sum(scores.values())
         
         # Sort markers by timestamp
-        all_markers.sort(key=lambda x: x["start"])
+        all_markers.sort(key=lambda x: x.get("start", 0))
         
         return {
             "scores": {
-
-                
                 "gestures": scores["gestures"],
                 "inflection": scores["inflection"],
                 "clarity": scores["clarity"],
@@ -388,7 +440,7 @@ Output as JSON:
                 "video_file": "input.mp4",
                 "supporting_file": Path(supporting_file).name if supporting_file else None,
                 "language": "English",
-                "analyzed_by": "Google Gemini 2.5 Pro"
+                "analyzed_by": "Google ADK with Gemini 2.5 Pro"
             }
         }
     
@@ -407,8 +459,8 @@ Output as JSON:
             return json.loads(text.strip())
         except json.JSONDecodeError:
             # Fallback: return empty markers
+            print(f"Failed to parse JSON from response: {text[:200]}")
             return {"markers": []}
-    
     
     def _extract_document_text(self, file_path: str) -> str:
         """Extract text from PDF, DOCX, or TXT"""

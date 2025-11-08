@@ -2,6 +2,7 @@ import os
 import uuid
 import json
 import shutil
+import logging
 from typing import Optional
 from pathlib import Path
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
@@ -12,6 +13,18 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
+
+# Setup logging to file
+log_file = Path(__file__).parent / "error.log"
+logging.basicConfig(
+    level=logging.ERROR,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()  # Also print to console
+    ]
+)
+logger = logging.getLogger(__name__)
 
 from ai_analyzer import AIAnalyzer
 
@@ -181,9 +194,8 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
     except Exception as e:
         jobs[job_id]["status"] = "failed"
         jobs[job_id]["message"] = f"Error: {str(e)}"
-        print(f"Error processing job {job_id}: {e}")
-        import traceback
-        traceback.print_exc()
+        error_msg = f"Error processing job {job_id}: {e}"
+        logger.error(error_msg, exc_info=True)
 
 @app.get("/api/video/{job_id}")
 async def get_video(job_id: str):

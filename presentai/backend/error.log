@@ -1,0 +1,212 @@
+2025-11-08 15:41:46,317 - __main__ - ERROR - Error processing job 51b489a5-acab-4ec1-870a-cb6dfb281ef2: Failed to upload video file: Files.upload() got an unexpected keyword argument 'path'
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 197, in analyze
+    video_file = self.client.files.upload(path=video_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Files.upload() got an unexpected keyword argument 'path'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 173, in process_video
+    result = await analyzer.analyze(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 199, in analyze
+    raise ValueError(f"Failed to upload video file: {str(e)}")
+ValueError: Failed to upload video file: Files.upload() got an unexpected keyword argument 'path'
+2025-11-08 15:41:57,068 - __main__ - ERROR - Error processing job de0e9bf8-758a-4eeb-b362-b96e577d8b0c: Failed to upload video file: Files.upload() got an unexpected keyword argument 'path'
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 197, in analyze
+    video_file = self.client.files.upload(path=video_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: Files.upload() got an unexpected keyword argument 'path'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 173, in process_video
+    result = await analyzer.analyze(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 199, in analyze
+    raise ValueError(f"Failed to upload video file: {str(e)}")
+ValueError: Failed to upload video file: Files.upload() got an unexpected keyword argument 'path'
+2025-11-08 15:43:47,165 - ai_analyzer - ERROR - Error in speech analysis: Session not found: 4054b575-ed0e-4246-869e-2638214d1a68_speech
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 229, in analyze
+    async for event in speech_runner.run_async(
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 443, in run_async
+    async for event in agen:
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 380, in _run_with_trace
+    raise ValueError(message)
+ValueError: Session not found: 4054b575-ed0e-4246-869e-2638214d1a68_speech
+2025-11-08 15:43:47,170 - __main__ - ERROR - Error processing job ef04fbda-e4bb-4ab4-8831-6368a47d015f: Speech analysis failed: Session not found: 4054b575-ed0e-4246-869e-2638214d1a68_speech
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 229, in analyze
+    async for event in speech_runner.run_async(
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 443, in run_async
+    async for event in agen:
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 380, in _run_with_trace
+    raise ValueError(message)
+ValueError: Session not found: 4054b575-ed0e-4246-869e-2638214d1a68_speech
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 173, in process_video
+    result = await analyzer.analyze(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 244, in analyze
+    raise ValueError(f"Speech analysis failed: {str(e)}")
+ValueError: Speech analysis failed: Session not found: 4054b575-ed0e-4246-869e-2638214d1a68_speech
+2025-11-08 16:02:21,378 - ai_analyzer - ERROR - Error in speech analysis: Session not found: d9aaaa2f-000c-48d9-a320-06e132e73d8b_speech
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 229, in analyze
+    print("Starting speech analysis with ADK agent...")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 443, in run_async
+    async for event in agen:
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 380, in _run_with_trace
+    raise ValueError(message)
+ValueError: Session not found: d9aaaa2f-000c-48d9-a320-06e132e73d8b_speech
+2025-11-08 16:02:21,381 - __main__ - ERROR - Error processing job 5610b594-569c-4c0c-b01d-1d984e2f22b0: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 229, in analyze
+    print("Starting speech analysis with ADK agent...")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 443, in run_async
+    async for event in agen:
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 380, in _run_with_trace
+    raise ValueError(message)
+ValueError: Session not found: d9aaaa2f-000c-48d9-a320-06e132e73d8b_speech
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 173, in process_video
+    result = await analyzer.analyze(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 243, in analyze
+    error_msg = f"Error in speech analysis: {str(e)}"
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 180, in print_exc
+    print_exception(sys.exception(), limit=limit, file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 125, in print_exception
+    te.print(file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 1050, in print
+    print(line, file=file, end="")
+BrokenPipeError: [Errno 32] Broken pipe
+2025-11-08 16:02:21,385 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-13' coro=<process_video() done, defined at /Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py:131> exception=BrokenPipeError(32, 'Broken pipe')>
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 229, in analyze
+    print("Starting speech analysis with ADK agent...")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 443, in run_async
+    async for event in agen:
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 380, in _run_with_trace
+    raise ValueError(message)
+ValueError: Session not found: d9aaaa2f-000c-48d9-a320-06e132e73d8b_speech
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 173, in process_video
+    result = await analyzer.analyze(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 243, in analyze
+    error_msg = f"Error in speech analysis: {str(e)}"
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 180, in print_exc
+    print_exception(sys.exception(), limit=limit, file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 125, in print_exception
+    te.print(file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 1050, in print
+    print(line, file=file, end="")
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 201, in process_video
+    traceback.print_exc()
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 180, in print_exc
+    print_exception(sys.exception(), limit=limit, file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 125, in print_exception
+    te.print(file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 1050, in print
+    print(line, file=file, end="")
+BrokenPipeError: [Errno 32] Broken pipe
+2025-11-08 16:04:16,342 - ai_analyzer - ERROR - Error in speech analysis: Session not found: 265d2928-05f1-46e2-8015-494455424e6c_speech
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 229, in analyze
+    new_message=message_content
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 443, in run_async
+    async for event in agen:
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 380, in _run_with_trace
+    raise ValueError(message)
+ValueError: Session not found: 265d2928-05f1-46e2-8015-494455424e6c_speech
+2025-11-08 16:04:16,347 - __main__ - ERROR - Error processing job 6a4f8e19-efd0-4347-a39d-2401f0941cd5: [Errno 32] Broken pipe
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 229, in analyze
+    new_message=message_content
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 443, in run_async
+    async for event in agen:
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 380, in _run_with_trace
+    raise ValueError(message)
+ValueError: Session not found: 265d2928-05f1-46e2-8015-494455424e6c_speech
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 173, in process_video
+    result = await analyzer.analyze(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 243, in analyze
+    gesture_events = []
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 180, in print_exc
+    print_exception(sys.exception(), limit=limit, file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 125, in print_exception
+    te.print(file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 1050, in print
+    print(line, file=file, end="")
+BrokenPipeError: [Errno 32] Broken pipe
+2025-11-08 16:04:16,348 - asyncio - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-21' coro=<process_video() done, defined at /Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py:131> exception=BrokenPipeError(32, 'Broken pipe')>
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 229, in analyze
+    new_message=message_content
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 443, in run_async
+    async for event in agen:
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/google/adk/runners.py", line 380, in _run_with_trace
+    raise ValueError(message)
+ValueError: Session not found: 265d2928-05f1-46e2-8015-494455424e6c_speech
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 173, in process_video
+    result = await analyzer.analyze(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/ai_analyzer.py", line 243, in analyze
+    gesture_events = []
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 180, in print_exc
+    print_exception(sys.exception(), limit=limit, file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 125, in print_exception
+    te.print(file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 1050, in print
+    print(line, file=file, end="")
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/rishidesai/Documents/AI-ATL-2025/presentai/backend/main.py", line 201, in process_video
+    async def get_video(job_id: str):
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 180, in print_exc
+    print_exception(sys.exception(), limit=limit, file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 125, in print_exception
+    te.print(file=file, chain=chain)
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/traceback.py", line 1050, in print
+    print(line, file=file, end="")
+BrokenPipeError: [Errno 32] Broken pipe

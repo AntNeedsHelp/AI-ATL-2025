@@ -1,0 +1,124 @@
+{
+  "scores": {
+    "gestures": 16,
+    "inflection": 20,
+    "clarity": 15,
+    "content": 19,
+    "total": 70
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 18.2,
+      "label": "Clenched fists and rigid posture",
+      "severity": 4,
+      "feedback": "Holding your hands in fists at your sides can make you appear tense, nervous, or even angry. Try to relax your hands and let your arms hang naturally to project a more calm and open demeanor.",
+      "category": "gestures"
+    },
+    {
+      "start": 1.5,
+      "end": 24.0,
+      "label": "Speaking pace too slow",
+      "severity": 4,
+      "feedback": "Your initial pace is quite slow, which can make it hard for listeners to stay engaged. Try injecting a bit more energy and speaking at a more conversational speed from the start.",
+      "category": "clarity"
+    },
+    {
+      "start": 1.5,
+      "end": 24.5,
+      "label": "Monotone delivery",
+      "severity": 4,
+      "feedback": "Your speaking is very flat in this section, which can make it hard for the audience to stay engaged. To better convey the disappointment in your message, try varying your pitch. Let your voice rise and fall to add emotional color to your words.",
+      "category": "inflection"
+    },
+    {
+      "start": 7.5,
+      "end": 10.5,
+      "label": "Awkward pause",
+      "severity": 3,
+      "feedback": "This 3-second pause slightly disrupts the flow. Strategic pauses are effective, but try to keep them a little shorter to maintain momentum between your sentences.",
+      "category": "clarity"
+    },
+    {
+      "start": 11.05,
+      "end": 32.6,
+      "label": "Inconsistent Pacing",
+      "severity": 5,
+      "feedback": "The presentation's pacing shifts dramatically from very slow to extremely fast. Try to maintain a more consistent, conversational speed to ensure your audience can follow your message clearly from start to finish.",
+      "category": "content"
+    },
+    {
+      "start": 14.0,
+      "end": 15.5,
+      "label": "Word repetition",
+      "severity": 2,
+      "feedback": "You repeated the word 'that' several times. When this happens, it's okay to pause, take a quick breath, and restart the phrase clearly.",
+      "category": "clarity"
+    },
+    {
+      "start": 18.5,
+      "end": 20.3,
+      "label": "Distracting hand-to-head gesture",
+      "severity": 2,
+      "feedback": "Bringing your hands to your head can be a self-soothing gesture that signals frustration or nervousness. While it matches your message here, try to keep gestures intentional and away from your face for a more composed look.",
+      "category": "gestures"
+    },
+    {
+      "start": 20.4,
+      "end": 32.6,
+      "label": "Clenched fists and rigid posture",
+      "severity": 4,
+      "feedback": "You returned to the clenched-fist posture. Remember to keep your hands relaxed and open. This not only helps the audience feel more at ease but can also help you feel more relaxed as you speak.",
+      "category": "gestures"
+    },
+    {
+      "start": 22.5,
+      "end": 24.5,
+      "label": "Awkward pause",
+      "severity": 2,
+      "feedback": "Another pause that breaks the rhythm. Aim for smooth transitions between your thoughts to create a more connected narrative for your audience.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.3,
+      "end": 32.6,
+      "label": "Lack of Supporting Detail and Conclusion",
+      "severity": 4,
+      "feedback": "You make several strong statements about the experience, but they would be more impactful with specific examples. Also, try to end with a clear concluding sentence to summarize your thoughts and give the presentation a sense of closure.",
+      "category": "content"
+    },
+    {
+      "start": 24.5,
+      "end": 30.0,
+      "label": "Speaking pace too fast",
+      "severity": 5,
+      "feedback": "Your pace increased dramatically here, making the words blend together and hard to understand. Focus on maintaining a consistent speed, even when conveying frustration or excitement.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.8,
+      "end": 31.4,
+      "label": "Abrupt change in vocal pace",
+      "severity": 3,
+      "feedback": "The sudden shift from a slow, deliberate pace to a very rapid one can be jarring for the listener. If this was for dramatic effect, it works! If not, try to maintain a more consistent and natural speaking rhythm.",
+      "category": "gestures"
+    },
+    {
+      "start": 24.8,
+      "end": 31.5,
+      "label": "Rushed speech",
+      "severity": 3,
+      "feedback": "You're speaking very quickly here, which causes some words to blend together. Take a breath and slow down just a bit to ensure your audience can clearly understand every point you're making.",
+      "category": "inflection"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That that that that that is really unfortunate. And at the end of the day... We didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it was horrible. And then...",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/24ebd940-4661-42c2-9a73-66d1f14db36f"
+}
