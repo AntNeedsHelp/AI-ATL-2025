@@ -37,7 +37,7 @@ async def root():
 @app.post("/api/upload")
 async def upload_video(
     video: UploadFile = File(...),
-    title: str = Form(...),
+    title: Optional[str] = Form(None),
     supporting_file: Optional[UploadFile] = File(None)
 ):
     """Upload video and optional supporting document, start analysis"""
@@ -76,7 +76,7 @@ async def upload_video(
     # Initialize job status
     jobs[job_id] = {
         "status": "queued",
-        "title": title,
+        "title": title or "Untitled Presentation",
         "progress": 0,
         "message": "Queued for processing"
     }
