@@ -1,0 +1,140 @@
+{
+  "scores": {
+    "gestures": 14,
+    "inflection": 16,
+    "clarity": 15,
+    "content": 16,
+    "total": 61
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 18.4,
+      "label": "Tense Posture (Clenched Fists)",
+      "severity": 4,
+      "feedback": "You're holding your fists tightly clenched at your sides, which can signal tension or aggression. Try to relax your hands and let them hang naturally. This will help you appear more open and at ease with your audience.",
+      "category": "gestures"
+    },
+    {
+      "start": 0.0,
+      "end": 24.5,
+      "label": "Monotone delivery",
+      "severity": 5,
+      "feedback": "Your delivery in this section is very flat and robotic. Try varying your pitch to add interest and convey emotion. Going up in pitch can show excitement, while going down can express seriousness or sadness.",
+      "category": "inflection"
+    },
+    {
+      "start": 0.0,
+      "end": 15.0,
+      "label": "Weak introduction",
+      "severity": 4,
+      "feedback": "A great way to start is with a compelling hook. Instead of stating your topic, try asking a question or sharing a surprising fact about the robotics competition to immediately grab your audience's attention.",
+      "category": "content"
+    },
+    {
+      "start": 1.5,
+      "end": 24.5,
+      "label": "Static Posture and Limited Facial Expression",
+      "severity": 5,
+      "feedback": "Your body is very still and your facial expression remains neutral, which can make the delivery feel disconnected. Don't be afraid to let your expressions match your words and use subtle, natural movements to add energy to your presence.",
+      "category": "gestures"
+    },
+    {
+      "start": 7.5,
+      "end": 11.0,
+      "label": "Awkward pause",
+      "severity": 4,
+      "feedback": "This is a long pause. While pauses can be effective for dramatic effect, this one is long enough to risk losing the audience's attention. Try to keep intentional pauses under 3 seconds.",
+      "category": "clarity"
+    },
+    {
+      "start": 11.5,
+      "end": 20.0,
+      "label": "Speaking pace: too slow",
+      "severity": 3,
+      "feedback": "Your pace is very slow and drawn out here. While this adds a dramatic tone, be mindful of maintaining energy to keep your listeners engaged.",
+      "category": "clarity"
+    },
+    {
+      "start": 14.5,
+      "end": 15.5,
+      "label": "Repetitive words",
+      "severity": 2,
+      "feedback": "The repetition of 'that' acts as a filler. Taking a moment to gather your thoughts and saying the word once with conviction can make your statement more powerful.",
+      "category": "clarity"
+    },
+    {
+      "start": 15.0,
+      "end": 29.0,
+      "label": "Lack of supporting details",
+      "severity": 5,
+      "feedback": "You state that the experience was unfortunate and bad, but you don't explain why. To make your story more impactful, try adding specific examples or anecdotes that illustrate the challenges your team faced.",
+      "category": "content"
+    },
+    {
+      "start": 16.0,
+      "end": 20.0,
+      "label": "Lack of emphasis",
+      "severity": 4,
+      "feedback": "You state that the situation is 'really unfortunate,' but your vocal tone doesn't match the weight of the words. Emphasize key emotional words by saying them a bit louder or slower to help the audience feel the impact of your message.",
+      "category": "inflection"
+    },
+    {
+      "start": 18.5,
+      "end": 20.5,
+      "label": "Distracting Self-Grooming Gesture",
+      "severity": 3,
+      "feedback": "The sudden gesture to fix your hair breaks the flow and can be a sign of nervousness. Try to channel that energy into purposeful hand gestures that emphasize your points instead.",
+      "category": "gestures"
+    },
+    {
+      "start": 23.5,
+      "end": 25.0,
+      "label": "Awkward pause",
+      "severity": 2,
+      "feedback": "Another pause that's slightly too long. A quick, silent breath is a great way to reset before transitioning to a new thought without creating a gap in your speech.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.5,
+      "end": 32.6,
+      "label": "Rushed delivery",
+      "severity": 4,
+      "feedback": "Your pace increases dramatically here, causing the words to blend together and lose their clarity. Remember to pause for breath and speak at a deliberate pace so that your audience can easily follow along.",
+      "category": "inflection"
+    },
+    {
+      "start": 24.6,
+      "end": 31.5,
+      "label": "Mismatch Between Vocal Pace and Body Language",
+      "severity": 4,
+      "feedback": "As your speech accelerates dramatically, your body remains tense and static. This creates a disconnect. Try to let your physical energy match your vocal energy by incorporating gestures to make your delivery more cohesive and impactful.",
+      "category": "gestures"
+    },
+    {
+      "start": 25.0,
+      "end": 32.0,
+      "label": "Speaking pace: too fast",
+      "severity": 5,
+      "feedback": "Your pace accelerates very quickly here, making the words blend together and hard to understand. Take a deep breath before this section and focus on enunciating each word to ensure your message lands clearly.",
+      "category": "clarity"
+    },
+    {
+      "start": 29.0,
+      "end": 32.6,
+      "label": "Abrupt conclusion",
+      "severity": 5,
+      "feedback": "The presentation ends suddenly without a clear conclusion. Try to wrap up by summarizing your main point or sharing a key lesson learned. This provides a sense of closure for the audience.",
+      "category": "content"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That that that that is really unfortunate. And at the end of the day, we didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it's horrible. And then...",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/39fda4ad-4298-4228-a751-235a204c72cb"
+}

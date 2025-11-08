@@ -61,9 +61,13 @@ export const Results = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-xy flex items-center justify-center">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center animate-spin">
-          <div className="w-16 h-16 rounded-full bg-white"></div>
+      <div className="min-h-screen bg-brand-background flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-64 h-64 bg-brand-accent/25 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-brand-accent-soft/25 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+        <div className="w-20 h-20 rounded-full bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong flex items-center justify-center animate-spin shadow-xl shadow-brand-accent/30 relative z-10">
+          <div className="w-16 h-16 rounded-full bg-brand-background"></div>
         </div>
       </div>
     );
@@ -71,14 +75,17 @@ export const Results = () => {
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-xy flex items-center justify-center p-6">
-        <div className="glass rounded-3xl p-8 shadow-2xl max-w-md text-center border-2 border-white/50">
+      <div className="min-h-screen bg-brand-background flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-14 left-8 w-80 h-80 bg-brand-accent-soft/25 rounded-full blur-3xl" />
+        </div>
+        <div className="glass rounded-3xl p-8 shadow-2xl max-w-md text-center border border-brand-accent/30 relative z-10">
           <div className="text-5xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent mb-2">Error</h2>
-          <p className="text-gray-700 mb-6">{error || 'Failed to load results'}</p>
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent mb-2">Error</h2>
+          <p className="text-brand-muted mb-6">{error || 'Failed to load results'}</p>
           <button
             onClick={() => navigate('/')}
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong text-brand-text shadow-lg shadow-brand-accent/20 hover:scale-105 transition-all duration-300"
           >
             Back to Upload
           </button>
@@ -88,12 +95,12 @@ export const Results = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-xy relative overflow-hidden">
+    <div className="min-h-screen bg-brand-background relative overflow-hidden">
       {/* Animated background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 -left-20 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
-        <div className="absolute top-1/3 right-0 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-20 left-1/3 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-20 -left-24 w-96 h-96 bg-brand-accent/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-1/3 right-0 w-96 h-96 bg-brand-accent-strong/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-20 left-1/3 w-96 h-96 bg-brand-accent-soft/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
       <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
         {/* Header */}
@@ -104,12 +111,12 @@ export const Results = () => {
         >
           <button
             onClick={() => navigate('/')}
-            className="flex items-center px-4 py-2 rounded-xl bg-white/60 backdrop-blur-sm text-gray-700 hover:text-gray-900 hover:bg-white/80 mb-4 transition-all duration-300 shadow-sm hover:shadow-md"
+            className="flex items-center px-4 py-2 rounded-xl bg-brand-surface-alt/70 backdrop-blur-sm text-brand-text/90 hover:text-brand-text hover:bg-brand-surface-glow/80 mb-4 transition-all duration-300 shadow-md shadow-black/40"
           >
-            <ArrowLeft className="w-5 h-5 mr-2" />
+            <ArrowLeft className="w-5 h-5 mr-2 text-brand-accent-soft" />
             New Analysis
           </button>
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-x">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent animate-gradient-x">
             Presentation Analysis
           </h1>
         </motion.div>

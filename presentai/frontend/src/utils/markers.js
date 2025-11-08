@@ -1,25 +1,25 @@
 export const CATEGORIES = {
   gestures: {
     name: 'Gestures',
-    color: '#2BB39A',
+    color: '#FF9A5A',
     bgColor: 'bg-gestures',
     textColor: 'text-gestures',
   },
   inflection: {
     name: 'Speech/Inflection',
-    color: '#FF8A33',
+    color: '#FF8AD6',
     bgColor: 'bg-inflection',
     textColor: 'text-inflection',
   },
   clarity: {
     name: 'Clarity',
-    color: '#7C5CFF',
+    color: '#74D7FF',
     bgColor: 'bg-clarity',
     textColor: 'text-clarity',
   },
   content: {
     name: 'Content',
-    color: '#3388FF',
+    color: '#56C979',
     bgColor: 'bg-content',
     textColor: 'text-content',
   },

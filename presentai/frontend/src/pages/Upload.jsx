@@ -51,12 +51,12 @@ export const Upload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-xy flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-brand-background flex items-center justify-center p-6 relative overflow-hidden">
       {/* Animated background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-16 -left-10 w-80 h-80 rounded-full bg-brand-accent/35 mix-blend-screen filter blur-3xl opacity-30 animate-pulse"></div>
+        <div className="absolute top-40 right-0 w-96 h-96 rounded-full bg-brand-accent-strong/35 mix-blend-screen filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-16 left-1/3 w-80 h-80 rounded-full bg-brand-accent-soft/40 mix-blend-screen filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
 
       <motion.div
@@ -67,14 +67,14 @@ export const Upload = () => {
       >
         <div className="text-center mb-8">
           <motion.h1 
-            className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3 animate-gradient-x"
+            className="text-6xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent mb-3 animate-gradient-x"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5, type: "spring" }}
           >
             PresentAI
           </motion.h1>
-          <p className="text-gray-700 text-lg font-medium">
+          <p className="text-brand-muted text-lg font-medium">
             Upload your presentation for AI-powered feedback
           </p>
         </div>
@@ -83,8 +83,8 @@ export const Upload = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Video Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Presentation Video <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-brand-muted mb-2">
+                Presentation Video <span className="text-brand-accent-soft">*</span>
               </label>
               <div className="relative">
                 <input
@@ -97,11 +97,11 @@ export const Upload = () => {
                 />
                 <label
                   htmlFor="video-upload"
-                  className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-blue-500 transition-all duration-300 bg-gradient-to-br from-gray-50 to-blue-50 hover:from-blue-50 hover:to-purple-50 hover:shadow-lg"
+                  className="flex items-center justify-center w-full h-32 border-2 border-dashed border-brand-border/60 rounded-2xl cursor-pointer transition-all duration-300 bg-brand-surface/70 hover:border-brand-accent hover:bg-brand-surface-alt/80 hover:shadow-lg"
                 >
                   <div className="text-center">
-                    <Video className="mx-auto h-10 w-10 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600">
+                    <Video className="mx-auto h-10 w-10 text-brand-muted mb-2" />
+                    <p className="text-sm text-brand-muted">
                       {video ? video.name : 'Click to upload video (.mp4)'}
                     </p>
                   </div>
@@ -111,7 +111,7 @@ export const Upload = () => {
 
             {/* Optional Document Upload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-brand-muted mb-2">
                 Supporting Document (Optional)
               </label>
               <div className="relative">
@@ -125,11 +125,11 @@ export const Upload = () => {
                 />
                 <label
                   htmlFor="doc-upload"
-                  className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-purple-500 transition-all duration-300 bg-gradient-to-br from-gray-50 to-purple-50 hover:from-purple-50 hover:to-pink-50 hover:shadow-lg"
+                  className="flex items-center justify-center w-full h-24 border-2 border-dashed border-brand-border/60 rounded-2xl cursor-pointer transition-all duration-300 bg-brand-surface/70 hover:border-brand-accent-mid hover:bg-brand-surface-alt/80 hover:shadow-lg"
                 >
                   <div className="text-center">
-                    <FileText className="mx-auto h-8 w-8 text-gray-400 mb-1" />
-                    <p className="text-sm text-gray-600">
+                    <FileText className="mx-auto h-8 w-8 text-brand-muted mb-1" />
+                    <p className="text-sm text-brand-muted">
                       {document ? document.name : 'Upload slides or script (.pdf, .docx, .txt)'}
                     </p>
                   </div>
@@ -139,7 +139,7 @@ export const Upload = () => {
 
             {/* Title Input */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-brand-muted mb-2">
                 Presentation Title (Optional)
               </label>
               <input
@@ -147,7 +147,7 @@ export const Upload = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g., Q4 Sales Report"
-                className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-brand-border/60 rounded-2xl bg-brand-surface-alt/60 text-brand-text placeholder:text-brand-muted focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
                 disabled={uploading}
               />
             </div>
@@ -156,7 +156,7 @@ export const Upload = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-4 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm"
+                className="p-4 bg-brand-surface-alt/70 border border-brand-accent/40 rounded-2xl text-brand-accent-soft text-sm"
               >
                 {error}
               </motion.div>
@@ -171,7 +171,7 @@ export const Upload = () => {
             >
               {uploading ? (
                 <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-brand-text mr-2" />
                   Uploading...
                 </div>
               ) : (

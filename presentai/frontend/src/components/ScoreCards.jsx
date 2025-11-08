@@ -16,13 +16,13 @@ export const ScoreCards = ({ scores }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="lg:col-span-1 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-2xl border-2 border-white/20 relative overflow-hidden"
+        className="lg:col-span-1 bg-gradient-to-br from-brand-accent-soft via-brand-accent to-brand-accent-strong rounded-3xl p-6 text-brand-text shadow-2xl shadow-brand-accent/30 border border-brand-accent/40 relative overflow-hidden"
       >
         {/* Animated gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent animate-gradient-xy opacity-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-brand-text/15 to-transparent animate-gradient-xy opacity-50"></div>
         
         <div className="text-center relative z-10">
-          <p className="text-sm font-medium opacity-90 mb-2">Overall Score</p>
+          <p className="text-sm font-medium opacity-90 mb-2 text-brand-text/80">Overall Score</p>
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -31,7 +31,7 @@ export const ScoreCards = ({ scores }) => {
           >
             {scores.total}
           </motion.div>
-          <p className="text-sm opacity-75">out of 100</p>
+          <p className="text-sm opacity-75 text-brand-text/75">out of 100</p>
         </div>
       </motion.div>
 
@@ -46,22 +46,22 @@ export const ScoreCards = ({ scores }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: idx * 0.1 }}
-            className="glass rounded-3xl p-6 shadow-lg border-2 border-white/50 hover:shadow-xl transition-shadow duration-300"
+            className="glass rounded-3xl p-6 shadow-lg shadow-black/40 border border-brand-border/40 hover:shadow-xl transition-shadow duration-300"
           >
             <div className="flex items-start justify-between mb-3">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">
+                <h3 className="font-semibold text-brand-text mb-1">
                   {category.name}
                 </h3>
                 <p className="text-2xl font-bold" style={{ color: category.color }}>
                   {cat.score}
-                  <span className="text-sm text-gray-500 font-normal ml-1">/ {cat.max}</span>
+                  <span className="text-sm text-brand-muted-dark font-normal ml-1">/ {cat.max}</span>
                 </p>
               </div>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-brand-surface-alt/70 rounded-full overflow-hidden">
               <motion.div
                 className="h-full rounded-full"
                 style={{ backgroundColor: category.color }}

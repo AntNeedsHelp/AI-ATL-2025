@@ -5,8 +5,8 @@ import { CATEGORIES } from '../utils/markers';
 export const FeedbackPanel = ({ currentMarker }) => {
   if (!currentMarker) {
     return (
-      <div className="glass rounded-3xl p-8 min-h-[200px] flex items-center justify-center border-2 border-white/50 shadow-lg">
-        <p className="text-gray-600 text-center font-medium text-lg">
+      <div className="glass rounded-3xl p-8 min-h-[200px] flex items-center justify-center border border-brand-border/50 shadow-lg shadow-black/40">
+        <p className="text-brand-muted text-center font-medium text-lg">
           Click on a marker or play the video to see feedback
         </p>
       </div>
@@ -29,13 +29,13 @@ export const FeedbackPanel = ({ currentMarker }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.3 }}
-        className="glass rounded-3xl p-8 min-h-[200px] shadow-xl border-2 hover:shadow-2xl transition-shadow duration-300"
-        style={{ borderColor: category.color }}
+        className="glass rounded-3xl p-8 min-h-[200px] shadow-xl border hover:shadow-2xl transition-shadow duration-300"
+        style={{ borderColor: `${category.color}66` }}
       >
         <div className="flex items-start space-x-5">
           <div
             className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: `${category.color}20` }}
+            style={{ backgroundColor: `${category.color}22` }}
           >
             <Lightbulb
               className="w-7 h-7"
@@ -52,7 +52,7 @@ export const FeedbackPanel = ({ currentMarker }) => {
               >
                 {category.name}
               </h4>
-              <span className="text-sm text-gray-500 font-medium">
+              <span className="text-sm text-brand-muted-dark font-medium">
                 {formatTime(currentMarker.start)}
                 {currentMarker.end && ` - ${formatTime(currentMarker.end)}`}
               </span>
@@ -60,20 +60,20 @@ export const FeedbackPanel = ({ currentMarker }) => {
 
             {/* Issue Label */}
             <div>
-              <p className="text-gray-700 font-semibold text-lg mb-1">
+              <p className="text-brand-muted font-semibold text-lg mb-1">
                 Issue:
               </p>
-              <p className="text-gray-900 font-medium text-base">
+              <p className="text-brand-text font-medium text-base">
                 {currentMarker.label}
               </p>
             </div>
 
             {/* Feedback */}
             <div>
-              <p className="text-gray-700 font-semibold text-lg mb-2">
+              <p className="text-brand-muted font-semibold text-lg mb-2">
                 Feedback:
               </p>
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-brand-muted leading-relaxed">
                 {currentMarker.feedback || 'No specific feedback available for this issue.'}
               </p>
             </div>
@@ -81,7 +81,7 @@ export const FeedbackPanel = ({ currentMarker }) => {
             {/* Severity Indicator */}
             {currentMarker.severity && (
               <div className="flex items-center pt-2">
-                <span className="text-sm text-gray-600 font-medium mr-3">Severity:</span>
+                <span className="text-sm text-brand-muted-dark font-medium mr-3">Severity:</span>
                 <div className="flex space-x-1.5">
                   {[1, 2, 3, 4, 5].map((level) => (
                     <div
@@ -97,7 +97,7 @@ export const FeedbackPanel = ({ currentMarker }) => {
                     />
                   ))}
                 </div>
-                <span className="ml-3 text-sm text-gray-600">
+                <span className="ml-3 text-sm text-brand-muted-dark">
                   {currentMarker.severity}/5
                 </span>
               </div>

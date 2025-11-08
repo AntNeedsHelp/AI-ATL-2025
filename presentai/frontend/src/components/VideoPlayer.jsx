@@ -1,9 +1,10 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, Maximize, Minimize } from 'lucide-react';
 import { CATEGORIES, calculateMarkerPosition, calculateMarkerWidth } from '../utils/markers';
 
 export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onMarkerClick }) => {
+  const containerRef = useRef(null);
   const videoRef = useRef(null);
   const sliderRef = useRef(null);
   const animationFrameRef = useRef(null);
@@ -14,10 +15,34 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const filteredMarkers = activeFilter === 'all' 
     ? markers 
     : markers.filter(m => m.category === activeFilter);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const fullscreenElement =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement;
+      setIsFullscreen(fullscreenElement === containerRef.current);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, []);
 
   // Reset state when video URL changes
   useEffect(() => {
@@ -105,6 +130,39 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
       }
     };
   }, [onTimeUpdate, isDragging]);
+
+  const toggleFullscreen = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const fullscreenElement =
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement;
+
+    if (fullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    } else {
+      if (container.requestFullscreen) {
+        container.requestFullscreen().catch(() => {});
+      } else if (container.webkitRequestFullscreen) {
+        container.webkitRequestFullscreen();
+      } else if (container.mozRequestFullScreen) {
+        container.mozRequestFullScreen();
+      } else if (container.msRequestFullscreen) {
+        container.msRequestFullscreen();
+      }
+    }
+  }, []);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -245,9 +303,12 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
   const markerTracks = assignMarkersToTracks(filteredMarkers, duration);
 
   return (
-    <div className="space-y-4">
+    <div
+      ref={containerRef}
+      className={`space-y-4 transition-colors duration-300 ${isFullscreen ? 'bg-brand-background/95 w-full h-full flex flex-col justify-center p-4 sm:p-6 md:p-10 overflow-hidden' : ''}`}
+    >
       {/* Video */}
-      <div className="relative bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-white/30">
+      <div className="relative bg-brand-surface-alt rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-brand-border/60">
         <video
           ref={videoRef}
           src={videoUrl}
@@ -257,20 +318,29 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
           playsInline
           style={{ display: 'block' }}
         />
+        <button
+          type="button"
+          onClick={toggleFullscreen}
+          className="absolute top-4 right-4 z-20 flex items-center justify-center w-10 h-10 rounded-full bg-brand-surface-alt/90 text-brand-text shadow-lg shadow-black/40 border border-brand-border/60 hover:bg-brand-surface-glow/80 transition-all duration-200"
+          aria-label={isFullscreen ? 'Exit full screen' : 'Enter full screen'}
+          title={isFullscreen ? 'Exit full screen' : 'Full screen'}
+        >
+          {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+        </button>
         
         {/* Loading Indicator */}
         {isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <div className="w-16 h-16 rounded-full border-4 border-white/30 border-t-white animate-spin"></div>
+          <div className="absolute inset-0 flex items-center justify-center bg-brand-background/70">
+            <div className="w-16 h-16 rounded-full border-4 border-brand-accent/30 border-t-brand-accent animate-spin"></div>
           </div>
         )}
 
         {/* Error Message */}
         {error && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/80">
+          <div className="absolute inset-0 flex items-center justify-center bg-brand-background/90">
             <div className="text-center p-6">
-              <p className="text-white text-lg mb-2">⚠️ Video Error</p>
-              <p className="text-gray-300 text-sm">{error}</p>
+              <p className="text-brand-text text-lg mb-2">⚠️ Video Error</p>
+              <p className="text-brand-muted text-sm">{error}</p>
             </div>
           </div>
         )}
@@ -279,13 +349,13 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
         {!error && (
           <button
             onClick={togglePlay}
-            className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-black/30 via-purple-900/20 to-blue-900/30 opacity-0 hover:opacity-100 transition-all duration-300 z-10"
+            className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-background/40 via-brand-surface-alt/40 to-brand-surface/40 opacity-0 hover:opacity-100 transition-all duration-300 z-10"
           >
-            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong flex items-center justify-center shadow-2xl shadow-brand-accent/40 hover:scale-110 transition-transform duration-300">
               {isPlaying ? (
-                <Pause className="w-10 h-10 text-white" />
+                <Pause className="w-10 h-10 text-brand-text" />
               ) : (
-                <Play className="w-10 h-10 text-white ml-1" />
+                <Play className="w-10 h-10 text-brand-text ml-1" />
               )}
             </div>
           </button>
@@ -293,10 +363,10 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
       </div>
 
       {/* Timeline */}
-      <div className="glass rounded-2xl p-4 space-y-3 border-2 border-white/50 shadow-lg">
-        <div className="flex justify-between text-xs font-medium text-gray-600 px-1">
-          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{formatTime(currentTime)}</span>
-          <span className="text-gray-500">{formatTime(duration)}</span>
+      <div className="glass rounded-2xl p-4 space-y-3 border border-brand-border/60 shadow-lg">
+        <div className="flex justify-between text-xs font-medium text-brand-muted px-1">
+          <span className="bg-gradient-to-r from-brand-accent-soft to-brand-accent bg-clip-text text-transparent">{formatTime(currentTime)}</span>
+          <span className="text-brand-muted-dark">{formatTime(duration)}</span>
         </div>
 
         {/* Playback Bar - Theme-matched, distinct from issues */}
@@ -304,7 +374,7 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
           {/* Play/Pause Button */}
           <button
             onClick={togglePlay}
-            className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform duration-200"
+            className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong flex items-center justify-center text-brand-text shadow-lg shadow-brand-accent/30 hover:scale-110 transition-transform duration-200"
             aria-label={isPlaying ? 'Pause' : 'Play'}
           >
             {isPlaying ? (
@@ -317,14 +387,14 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
           {/* Slider Container */}
           <div 
             ref={sliderRef}
-            className="flex-1 relative h-2 bg-gray-200/60 rounded-full cursor-pointer group hover:h-2.5 transition-all shadow-inner border border-gray-300/50"
+            className="flex-1 relative h-2 bg-brand-surface-alt/70 rounded-full cursor-pointer group hover:h-2.5 transition-all shadow-inner border border-brand-border/60"
             onClick={handleSeek}
             onMouseDown={handleMouseDown}
             title="Click or drag to seek"
           >
             {/* Progress Bar - Theme gradient */}
             <div
-              className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-sm"
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong rounded-full shadow-sm"
               style={{ 
                 width: duration > 0 ? `${Math.max(0, Math.min((currentTime / duration) * 100, 100))}%` : '0%',
                 transition: isDragging ? 'none' : 'width 0.05s linear'
@@ -333,7 +403,7 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
 
             {/* Draggable Playhead/Slider Handle */}
             <div
-              className={`absolute top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 shadow-lg border-2 border-white ${
+              className={`absolute top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-br from-brand-accent-soft to-brand-accent-strong shadow-lg border-2 border-brand-background ${
                 isDragging || isPlaying
                   ? 'w-4 h-4 opacity-100'
                   : 'w-0 h-0 opacity-0 group-hover:w-4 group-hover:h-4 group-hover:opacity-100'
@@ -354,14 +424,14 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
 
         {/* Marker Tracks - Issues/Feedback */}
         {markerTracks.length > 0 && (
-          <div className="space-y-1.5 pt-3 border-t border-gray-300/40">
-            <div className="text-[10px] font-medium text-gray-500 uppercase tracking-wide px-1 mb-1.5">
-              Feedback Issues
+          <div className="space-y-1.5 pt-3 border-t border-brand-border/50">
+            <div className="text-[10px] font-medium text-brand-muted-dark uppercase tracking-wide px-1 mb-1.5">
+              Feedback
             </div>
             {markerTracks.map((track, trackIdx) => (
               <div
                 key={trackIdx}
-                className="relative h-3 bg-gray-100/40 rounded overflow-visible border border-gray-200/40 group/track"
+                className="relative h-3 bg-brand-surface-alt/60 rounded overflow-visible border border-brand-border/50 group/track"
               >
                 {track.map((marker, markerIdx) => {
                   const category = CATEGORIES[marker.category];
@@ -393,13 +463,13 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
                       }}
                     >
                       {/* Subtle hover glow - intuitive but not obvious */}
-                      <div className="absolute inset-0 rounded opacity-0 group-hover/marker:opacity-30 bg-white/30 transition-opacity" />
+                      <div className="absolute inset-0 rounded opacity-0 group-hover/marker:opacity-30 bg-brand-text/20 transition-opacity" />
                       
                       {/* Tooltip */}
-                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2.5 py-1.5 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover/marker:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20 shadow-xl">
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2.5 py-1.5 bg-brand-background text-brand-text text-xs rounded-lg opacity-0 group-hover/marker:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20 shadow-xl shadow-brand-accent/30">
                         <div className="font-medium">{marker.label}</div>
-                        <div className="text-gray-300 text-[10px] mt-0.5">{formatTime(marker.start)} - {formatTime(marker.end)}</div>
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+                        <div className="text-brand-muted text-[10px] mt-0.5">{formatTime(marker.start)} - {formatTime(marker.end)}</div>
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-brand-background" />
                       </div>
                     </motion.div>
                   );

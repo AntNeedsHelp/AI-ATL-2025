@@ -47,21 +47,25 @@ export const Loading = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-xy flex items-center justify-center p-6">
+      <div className="min-h-screen bg-brand-background flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-10 left-0 w-80 h-80 rounded-full bg-brand-accent-strong/25 blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 right-0 w-96 h-96 rounded-full bg-brand-accent-soft/20 blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-center"
+          className="text-center relative z-10"
         >
-          <div className="glass rounded-3xl p-8 shadow-2xl max-w-md border-2 border-white/50">
+          <div className="glass rounded-3xl p-8 shadow-2xl max-w-md border border-brand-accent/30">
             <div className="text-5xl mb-4">⚠️</div>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent mb-2">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent mb-2">
               Something went wrong
             </h2>
-            <p className="text-gray-700 mb-6">{error}</p>
+            <p className="text-brand-muted mb-6">{error}</p>
             <button
               onClick={() => navigate('/')}
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+              className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong text-brand-text shadow-lg shadow-brand-accent/20 hover:scale-105 transition-all duration-300"
             >
               Back to Upload
             </button>
@@ -72,12 +76,12 @@ export const Loading = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-xy flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-brand-background flex items-center justify-center p-6 relative overflow-hidden">
       {/* Animated background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-20 left-1/2 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-16 left-0 w-96 h-96 bg-brand-accent/25 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-32 right-4 w-96 h-96 bg-brand-accent-strong/25 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-16 left-1/2 w-96 h-96 bg-brand-accent-soft/25 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
       </div>
 
       <motion.div
@@ -85,7 +89,7 @@ export const Loading = () => {
         animate={{ opacity: 1, y: 0 }}
         className="text-center relative z-10"
       >
-        <div className="glass rounded-3xl p-12 shadow-2xl max-w-md border-2 border-white/50">
+        <div className="glass rounded-3xl p-12 shadow-2xl max-w-md border border-brand-accent/30">
           <motion.div
             animate={{
               rotate: 360,
@@ -97,16 +101,16 @@ export const Loading = () => {
             }}
             className="inline-block mb-6"
           >
-            <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center">
-              <Loader2 className="w-12 h-12 text-white" />
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong flex items-center justify-center shadow-inner shadow-brand-accent/30">
+            <Loader2 className="w-12 h-12 text-brand-text" />
             </div>
           </motion.div>
 
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent mb-3">
             Analyzing your presentation...
           </h2>
 
-          <p className="text-gray-600 mb-6">
+          <p className="text-brand-muted mb-6">
             This may take a minute. Our AI agents are reviewing your gestures, speech, clarity, and content.
           </p>
 
@@ -114,7 +118,7 @@ export const Loading = () => {
             {[0, 1, 2].map((i) => (
               <motion.div
                 key={i}
-                className="w-3 h-3 bg-blue-500 rounded-full"
+                className="w-3 h-3 bg-brand-accent rounded-full"
                 animate={{
                   y: [0, -10, 0],
                   opacity: [0.5, 1, 0.5],
@@ -128,7 +132,7 @@ export const Loading = () => {
             ))}
           </div>
 
-          <p className="text-sm text-gray-500 capitalize">
+          <p className="text-sm text-brand-muted-dark capitalize">
             Status: {status}
           </p>
         </div>

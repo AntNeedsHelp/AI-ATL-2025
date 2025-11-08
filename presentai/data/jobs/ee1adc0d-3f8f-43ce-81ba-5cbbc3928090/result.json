@@ -1,0 +1,140 @@
+{
+  "scores": {
+    "gestures": 15,
+    "inflection": 19,
+    "clarity": 11,
+    "content": 14,
+    "total": 59
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 25.0,
+      "label": "Tense/Clenched Fists",
+      "severity": 4,
+      "feedback": "You're holding tension in your hands by keeping them in fists. Try relaxing them at your sides or using open-palm gestures. This will help you appear more confident and approachable to your audience.",
+      "category": "gestures"
+    },
+    {
+      "start": 0.0,
+      "end": 24.5,
+      "label": "Monotone delivery",
+      "severity": 4,
+      "feedback": "Your voice remains at a consistent low pitch for this entire section. Try varying your tone to highlight key words like 'worlds' and 'unfortunate' to add emotional weight and keep your listeners engaged.",
+      "category": "inflection"
+    },
+    {
+      "start": 0.0,
+      "end": 3.4,
+      "label": "Weak introduction",
+      "severity": 3,
+      "feedback": "Your introduction is direct, which is good, but you can make it more engaging. Try starting with a compelling question or a short, interesting fact about your experience to immediately capture the audience's attention.",
+      "category": "content"
+    },
+    {
+      "start": 1.0,
+      "end": 19.5,
+      "label": "Speaking pace issue: too slow",
+      "severity": 4,
+      "feedback": "Your initial delivery is very slow and drawn out. While deliberate pacing can be effective, this feels hesitant. Try to find a more natural, conversational rhythm to engage your audience from the start.",
+      "category": "clarity"
+    },
+    {
+      "start": 1.0,
+      "end": 18.0,
+      "label": "Limited Facial Expression",
+      "severity": 4,
+      "feedback": "Your expression is very neutral while telling a story with emotional weight. Let your audience connect with your message by allowing your facial expressions to match your words. It will make your delivery much more impactful.",
+      "category": "gestures"
+    },
+    {
+      "start": 1.0,
+      "end": 25.0,
+      "label": "Stiff Posture and Lack of Movement",
+      "severity": 3,
+      "feedback": "Your body is very static, which can feel a bit rigid. Don't be afraid to incorporate some natural, subtle movement, like shifting your weight or taking a small step, to add energy to your presentation.",
+      "category": "gestures"
+    },
+    {
+      "start": 3.4,
+      "end": 24.5,
+      "label": "Pacing",
+      "severity": 4,
+      "feedback": "You're using pauses effectively to create suspense. However, the pacing is very slow in this section, which might cause the audience to lose focus. Try to find a balance between deliberate pauses and maintaining a steady, engaging flow.",
+      "category": "content"
+    },
+    {
+      "start": 7.0,
+      "end": 11.0,
+      "label": "Awkward Pause",
+      "severity": 5,
+      "feedback": "This is a very long pause that breaks the flow of your speech. It's okay to take a moment to think, but try to keep pauses under two seconds to maintain momentum and keep your listeners engaged.",
+      "category": "clarity"
+    },
+    {
+      "start": 14.0,
+      "end": 16.0,
+      "label": "Repetitive Filler: 'that'",
+      "severity": 3,
+      "feedback": "Repeating a word multiple times can sound like you're stalling for your next thought. Instead of repeating words, try a brief, silent pause. It will sound more confident and intentional.",
+      "category": "clarity"
+    },
+    {
+      "start": 18.5,
+      "end": 20.5,
+      "label": "Fidgeting / Self-Soothing Gesture",
+      "severity": 3,
+      "feedback": "Adjusting your hair mid-sentence can be a bit distracting and may signal nervousness. Try to channel that energy into purposeful gestures that emphasize your key points instead.",
+      "category": "gestures"
+    },
+    {
+      "start": 24.5,
+      "end": 32.6,
+      "label": "Speaking pace issue: too fast",
+      "severity": 5,
+      "feedback": "Your pace accelerates dramatically here, causing the words to blend together and lose their impact. Take a deep breath before this section and focus on enunciating each word clearly.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.5,
+      "end": 32.6,
+      "label": "Rushed content",
+      "severity": 5,
+      "feedback": "The pace accelerates very quickly here, making it difficult to understand the important points you're trying to make. Take a breath and slow down to ensure your audience can process your message clearly.",
+      "category": "content"
+    },
+    {
+      "start": 25.1,
+      "end": 31.2,
+      "label": "Rushed Pacing",
+      "severity": 4,
+      "feedback": "The energy here is high, which is great! However, the speaking pace becomes very fast, making it difficult to understand. Try incorporating strategic pauses to let your points land and ensure clarity.",
+      "category": "inflection"
+    },
+    {
+      "start": 29.5,
+      "end": 32.6,
+      "label": "Repetitive Filler: 'and then'",
+      "severity": 4,
+      "feedback": "Using 'and then' repeatedly can make your point feel weaker and unfocused. Try to structure your sentences to build on each other without relying on this connecting phrase, and aim for a stronger concluding thought.",
+      "category": "clarity"
+    },
+    {
+      "start": 29.5,
+      "end": 32.6,
+      "label": "Abrupt ending",
+      "severity": 5,
+      "feedback": "The video ends without a clear conclusion. A strong ending is crucial. Try to summarize your main points or leave the audience with a final thought to provide a sense of closure.",
+      "category": "content"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That that that that that that is really unfortunate. And at the end of the day, we didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it was horrible. And then and then and then and then and then and then and then and then.",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/ee1adc0d-3f8f-43ce-81ba-5cbbc3928090"
+}
