@@ -22,13 +22,16 @@ export const CategoryFilters = ({ activeFilter, onFilterChange }) => {
             onClick={() => onFilterChange(filter.id)}
             className={`
               relative px-6 py-3 rounded-2xl font-medium text-sm
-              transition-all duration-200
+              transition-all duration-300
               ${isActive 
-                ? 'text-white shadow-lg scale-105' 
-                : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-gray-300'
+                ? 'text-white shadow-xl scale-105' 
+                : 'glass text-gray-700 border-2 border-white/50 hover:border-white/80 hover:shadow-md'
               }
             `}
-            style={isActive ? { backgroundColor: filter.color } : {}}
+            style={isActive ? { 
+              background: `linear-gradient(135deg, ${filter.color}ee, ${filter.color})`,
+              boxShadow: `0 10px 30px ${filter.color}40`
+            } : {}}
             whileHover={{ scale: isActive ? 1.05 : 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -39,8 +42,8 @@ export const CategoryFilters = ({ activeFilter, onFilterChange }) => {
                 layoutId="activeFilter"
                 className="absolute inset-0 rounded-2xl"
                 style={{
-                  backgroundColor: filter.color,
-                  boxShadow: `0 0 0 2px ${filter.color}40`,
+                  background: `linear-gradient(135deg, ${filter.color}ee, ${filter.color})`,
+                  boxShadow: `0 0 0 3px ${filter.color}40`,
                 }}
                 initial={false}
                 transition={{
@@ -51,7 +54,7 @@ export const CategoryFilters = ({ activeFilter, onFilterChange }) => {
               />
             )}
             
-            <span className="relative z-10">{filter.name}</span>
+            <span className="relative z-10 drop-shadow-sm">{filter.name}</span>
           </motion.button>
         );
       })}

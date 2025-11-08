@@ -80,7 +80,7 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
   return (
     <div className="space-y-4">
       {/* Video */}
-      <div className="relative bg-black rounded-2xl overflow-hidden shadow-lg">
+      <div className="relative bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-white/30">
         <video
           ref={videoRef}
           src={videoUrl}
@@ -91,30 +91,32 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
         {/* Play/Pause Overlay */}
         <button
           onClick={togglePlay}
-          className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity"
+          className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-black/30 via-purple-900/20 to-blue-900/30 opacity-0 hover:opacity-100 transition-all duration-300"
         >
-          {isPlaying ? (
-            <Pause className="w-16 h-16 text-white" />
-          ) : (
-            <Play className="w-16 h-16 text-white" />
-          )}
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300">
+            {isPlaying ? (
+              <Pause className="w-10 h-10 text-white" />
+            ) : (
+              <Play className="w-10 h-10 text-white ml-1" />
+            )}
+          </div>
         </button>
       </div>
 
       {/* Custom Timeline with Markers */}
-      <div className="space-y-2">
-        <div className="flex justify-between text-sm text-gray-600 px-1">
-          <span>{formatTime(currentTime)}</span>
-          <span>{formatTime(duration)}</span>
+      <div className="glass rounded-3xl p-4 space-y-3 border-2 border-white/50 shadow-lg">
+        <div className="flex justify-between text-sm font-medium text-gray-700 px-1">
+          <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{formatTime(currentTime)}</span>
+          <span className="text-gray-600">{formatTime(duration)}</span>
         </div>
 
         <div 
-          className="relative h-12 bg-gray-200 rounded-full cursor-pointer overflow-visible"
+          className="relative h-12 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 rounded-full cursor-pointer overflow-visible shadow-inner"
           onClick={handleSeek}
         >
           {/* Progress Bar */}
           <motion.div
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
+            className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-lg"
             style={{ width: `${(currentTime / duration) * 100}%` }}
             initial={false}
           />
@@ -154,10 +156,14 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
 
           {/* Playhead */}
           <motion.div
-            className="absolute top-1/2 transform -translate-y-1/2 w-4 h-4 bg-white border-2 border-blue-600 rounded-full shadow-lg"
-            style={{ left: `${(currentTime / duration) * 100}%`, marginLeft: '-8px' }}
+            className="absolute top-1/2 transform -translate-y-1/2 w-5 h-5 rounded-full shadow-2xl bg-gradient-to-br from-blue-400 to-purple-600"
+            style={{ left: `${(currentTime / duration) * 100}%`, marginLeft: '-10px' }}
             initial={false}
-          />
+            whileHover={{ scale: 1.3 }}
+          >
+            <div className="absolute inset-0.5 bg-white rounded-full"></div>
+            <div className="absolute inset-1 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full"></div>
+          </motion.div>
         </div>
       </div>
     </div>

@@ -5,8 +5,8 @@ import { CATEGORIES } from '../utils/markers';
 export const FeedbackPanel = ({ currentMarker }) => {
   if (!currentMarker) {
     return (
-      <div className="bg-gray-50 rounded-2xl p-6 min-h-[120px] flex items-center justify-center">
-        <p className="text-gray-500 text-center">
+      <div className="glass rounded-3xl p-6 min-h-[120px] flex items-center justify-center border-2 border-white/50 shadow-lg">
+        <p className="text-gray-600 text-center font-medium">
           Click on a marker or play the video to see feedback
         </p>
       </div>
@@ -23,7 +23,7 @@ export const FeedbackPanel = ({ currentMarker }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.3 }}
-        className="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-sm border-2"
+        className="glass rounded-3xl p-6 shadow-xl border-2 hover:shadow-2xl transition-shadow duration-300"
         style={{ borderColor: category.color }}
       >
         <div className="flex items-start space-x-4">

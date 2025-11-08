@@ -51,23 +51,35 @@ export const Upload = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 animate-gradient-xy flex items-center justify-center p-6 relative overflow-hidden">
+      {/* Animated background orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '4s' }}></div>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-2xl"
+        className="w-full max-w-2xl relative z-10"
       >
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+          <motion.h1 
+            className="text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-3 animate-gradient-x"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, type: "spring" }}
+          >
             PresentAI
-          </h1>
-          <p className="text-gray-600 text-lg">
+          </motion.h1>
+          <p className="text-gray-700 text-lg font-medium">
             Upload your presentation for AI-powered feedback
           </p>
         </div>
 
-        <Card>
+        <Card className="glass shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Video Upload */}
             <div>
@@ -85,7 +97,7 @@ export const Upload = () => {
                 />
                 <label
                   htmlFor="video-upload"
-                  className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-blue-500 transition-colors bg-gray-50 hover:bg-blue-50"
+                  className="flex items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-blue-500 transition-all duration-300 bg-gradient-to-br from-gray-50 to-blue-50 hover:from-blue-50 hover:to-purple-50 hover:shadow-lg"
                 >
                   <div className="text-center">
                     <Video className="mx-auto h-10 w-10 text-gray-400 mb-2" />
@@ -113,7 +125,7 @@ export const Upload = () => {
                 />
                 <label
                   htmlFor="doc-upload"
-                  className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-purple-500 transition-colors bg-gray-50 hover:bg-purple-50"
+                  className="flex items-center justify-center w-full h-24 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-purple-500 transition-all duration-300 bg-gradient-to-br from-gray-50 to-purple-50 hover:from-purple-50 hover:to-pink-50 hover:shadow-lg"
                 >
                   <div className="text-center">
                     <FileText className="mx-auto h-8 w-8 text-gray-400 mb-1" />

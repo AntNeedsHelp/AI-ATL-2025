@@ -1,12 +1,15 @@
 import { cn } from '../lib/utils';
 
-export const Card = ({ children, className, ...props }) => {
+export const Card = ({ children, className, variant = 'default', ...props }) => {
+  const variants = {
+    default: 'rounded-2xl border border-gray-200 bg-white p-6 shadow-sm',
+    gradient: 'rounded-2xl bg-gradient-to-br from-white via-purple-50/30 to-blue-50/30 p-6 shadow-lg border border-white/50',
+    glass: 'rounded-2xl glass p-6 shadow-xl border-2 border-white/50',
+  };
+
   return (
     <div
-      className={cn(
-        'rounded-2xl border border-gray-200 bg-white p-6 shadow-sm',
-        className
-      )}
+      className={cn(variants[variant], className)}
       {...props}
     >
       {children}

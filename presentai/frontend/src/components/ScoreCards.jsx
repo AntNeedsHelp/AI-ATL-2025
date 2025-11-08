@@ -16,15 +16,18 @@ export const ScoreCards = ({ scores }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="lg:col-span-1 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg"
+        className="lg:col-span-1 bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 rounded-3xl p-6 text-white shadow-2xl border-2 border-white/20 relative overflow-hidden"
       >
-        <div className="text-center">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent animate-gradient-xy opacity-50"></div>
+        
+        <div className="text-center relative z-10">
           <p className="text-sm font-medium opacity-90 mb-2">Overall Score</p>
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="text-6xl font-bold mb-1"
+            className="text-7xl font-bold mb-1 drop-shadow-lg"
           >
             {scores.total}
           </motion.div>
@@ -43,7 +46,7 @@ export const ScoreCards = ({ scores }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: idx * 0.1 }}
-            className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200"
+            className="glass rounded-3xl p-6 shadow-lg border-2 border-white/50 hover:shadow-xl transition-shadow duration-300"
           >
             <div className="flex items-start justify-between mb-3">
               <div>
