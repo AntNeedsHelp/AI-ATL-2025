@@ -5,8 +5,8 @@ import { CATEGORIES } from '../utils/markers';
 export const FeedbackPanel = ({ currentMarker }) => {
   if (!currentMarker) {
     return (
-      <div className="glass rounded-3xl p-6 min-h-[120px] flex items-center justify-center border-2 border-white/50 shadow-lg">
-        <p className="text-gray-600 text-center font-medium">
+      <div className="glass rounded-3xl p-8 min-h-[200px] flex items-center justify-center border-2 border-white/50 shadow-lg">
+        <p className="text-gray-600 text-center font-medium text-lg">
           Click on a marker or play the video to see feedback
         </p>
       </div>
@@ -14,6 +14,12 @@ export const FeedbackPanel = ({ currentMarker }) => {
   }
 
   const category = CATEGORIES[currentMarker.category];
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -23,49 +29,64 @@ export const FeedbackPanel = ({ currentMarker }) => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.3 }}
-        className="glass rounded-3xl p-6 shadow-xl border-2 hover:shadow-2xl transition-shadow duration-300"
+        className="glass rounded-3xl p-8 min-h-[200px] shadow-xl border-2 hover:shadow-2xl transition-shadow duration-300"
         style={{ borderColor: category.color }}
       >
-        <div className="flex items-start space-x-4">
+        <div className="flex items-start space-x-5">
           <div
-            className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
+            className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center"
             style={{ backgroundColor: `${category.color}20` }}
           >
             <Lightbulb
-              className="w-6 h-6"
+              className="w-7 h-7"
               style={{ color: category.color }}
             />
           </div>
 
-          <div className="flex-1">
-            <div className="flex items-center justify-between mb-2">
+          <div className="flex-1 space-y-4">
+            {/* Category and Time */}
+            <div className="flex items-center justify-between">
               <h4
-                className="font-semibold text-lg"
+                className="font-bold text-xl"
                 style={{ color: category.color }}
               >
                 {category.name}
               </h4>
-              <span className="text-sm text-gray-500">
-                {Math.floor(currentMarker.start / 60)}:{String(Math.floor(currentMarker.start % 60)).padStart(2, '0')}
+              <span className="text-sm text-gray-500 font-medium">
+                {formatTime(currentMarker.start)}
+                {currentMarker.end && ` - ${formatTime(currentMarker.end)}`}
               </span>
             </div>
 
-            <p className="text-gray-800 font-medium mb-2">
-              {currentMarker.label}
-            </p>
+            {/* Issue Label */}
+            <div>
+              <p className="text-gray-700 font-semibold text-lg mb-1">
+                Issue:
+              </p>
+              <p className="text-gray-900 font-medium text-base">
+                {currentMarker.label}
+              </p>
+            </div>
 
-            <p className="text-gray-600">
-              💡 {currentMarker.feedback}
-            </p>
+            {/* Feedback */}
+            <div>
+              <p className="text-gray-700 font-semibold text-lg mb-2">
+                Feedback:
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                {currentMarker.feedback || 'No specific feedback available for this issue.'}
+              </p>
+            </div>
 
+            {/* Severity Indicator */}
             {currentMarker.severity && (
-              <div className="mt-3 flex items-center">
-                <span className="text-xs text-gray-500 mr-2">Priority:</span>
-                <div className="flex space-x-1">
-                  {[1, 2, 3].map((level) => (
+              <div className="flex items-center pt-2">
+                <span className="text-sm text-gray-600 font-medium mr-3">Severity:</span>
+                <div className="flex space-x-1.5">
+                  {[1, 2, 3, 4, 5].map((level) => (
                     <div
                       key={level}
-                      className={`w-2 h-4 rounded-full ${
+                      className={`w-3 h-5 rounded-full transition-all ${
                         level <= currentMarker.severity
                           ? 'opacity-100'
                           : 'opacity-20'
@@ -76,6 +97,9 @@ export const FeedbackPanel = ({ currentMarker }) => {
                     />
                   ))}
                 </div>
+                <span className="ml-3 text-sm text-gray-600">
+                  {currentMarker.severity}/5
+                </span>
               </div>
             )}
           </div>

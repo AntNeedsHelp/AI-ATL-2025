@@ -20,6 +20,7 @@ export const Results = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentTime, setCurrentTime] = useState(0);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [manuallySelectedMarker, setManuallySelectedMarker] = useState(null);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -39,16 +40,22 @@ export const Results = () => {
   const handleTimeUpdate = (time) => {
     setCurrentTime(time);
     
-    // Auto-update feedback based on current time
-    if (data?.markers) {
+    // Auto-update feedback based on current time (only if no marker was manually selected)
+    if (data?.markers && !manuallySelectedMarker) {
       const marker = getCurrentMarker(data.markers, time);
       if (marker && marker !== selectedMarker) {
         setSelectedMarker(marker);
       }
     }
+    
+    // Clear manual selection if we've moved past the selected marker
+    if (manuallySelectedMarker && (time < manuallySelectedMarker.start || time > manuallySelectedMarker.end)) {
+      setManuallySelectedMarker(null);
+    }
   };
 
   const handleMarkerClick = (marker) => {
+    setManuallySelectedMarker(marker);
     setSelectedMarker(marker);
   };
 
@@ -153,23 +160,6 @@ export const Results = () => {
         >
           <FeedbackPanel currentMarker={selectedMarker} />
         </motion.div>
-
-        {/* Transcript Section (Optional) */}
-        {data.transcript && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="mt-8 glass rounded-3xl p-6 shadow-lg border-2 border-white/50"
-          >
-            <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-              Transcript
-            </h3>
-            <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
-              {data.transcript}
-            </p>
-          </motion.div>
-        )}
       </div>
     </div>
   );

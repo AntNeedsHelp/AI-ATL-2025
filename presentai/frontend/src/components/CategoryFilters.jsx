@@ -12,7 +12,7 @@ export const CategoryFilters = ({ activeFilter, onFilterChange }) => {
   ];
 
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap gap-3 justify-center">
       {filters.map((filter) => {
         const isActive = activeFilter === filter.id;
 
@@ -35,8 +35,6 @@ export const CategoryFilters = ({ activeFilter, onFilterChange }) => {
             whileHover={{ scale: isActive ? 1.05 : 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            {filter.name}
-            
             {isActive && (
               <motion.div
                 layoutId="activeFilter"

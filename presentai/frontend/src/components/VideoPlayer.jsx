@@ -6,6 +6,8 @@ import { CATEGORIES, calculateMarkerPosition, calculateMarkerWidth } from '../ut
 export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onMarkerClick }) => {
   const videoRef = useRef(null);
   const sliderRef = useRef(null);
+  const animationFrameRef = useRef(null);
+  const isRunningRef = useRef(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -36,11 +38,6 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
     const video = videoRef.current;
     if (!video) return;
 
-    const handleTimeUpdate = () => {
-      setCurrentTime(video.currentTime);
-      onTimeUpdate(video.currentTime);
-    };
-
     const handleLoadedMetadata = () => {
       setDuration(video.duration);
       setIsLoading(false);
@@ -61,22 +58,53 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
 
-    video.addEventListener('timeupdate', handleTimeUpdate);
     video.addEventListener('loadedmetadata', handleLoadedMetadata);
     video.addEventListener('canplay', handleCanPlay);
     video.addEventListener('error', handleError);
     video.addEventListener('play', handlePlay);
     video.addEventListener('pause', handlePause);
 
+    // Use requestAnimationFrame for smooth, synchronized updates
+    let lastTime = -1;
+    isRunningRef.current = true;
+    
+    const updatePosition = () => {
+      if (!isRunningRef.current) return;
+      
+      const currentVideo = videoRef.current;
+      if (!currentVideo) {
+        animationFrameRef.current = requestAnimationFrame(updatePosition);
+        return;
+      }
+      
+      const currentVideoTime = currentVideo.currentTime;
+      
+      // Always update - no threshold to ensure smooth, real-time sync
+      if (Math.abs(currentVideoTime - lastTime) > 0.001 || isDragging) {
+        lastTime = currentVideoTime;
+        setCurrentTime(currentVideoTime);
+        onTimeUpdate(currentVideoTime);
+      }
+      
+      // Continue animation frame loop
+      animationFrameRef.current = requestAnimationFrame(updatePosition);
+    };
+
+    // Start the animation loop
+    animationFrameRef.current = requestAnimationFrame(updatePosition);
+
     return () => {
-      video.removeEventListener('timeupdate', handleTimeUpdate);
+      isRunningRef.current = false;
       video.removeEventListener('loadedmetadata', handleLoadedMetadata);
       video.removeEventListener('canplay', handleCanPlay);
       video.removeEventListener('error', handleError);
       video.removeEventListener('play', handlePlay);
       video.removeEventListener('pause', handlePause);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
-  }, [onTimeUpdate]);
+  }, [onTimeUpdate, isDragging]);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -93,16 +121,20 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
   const updateTimeFromPosition = useCallback((clientX) => {
     const video = videoRef.current;
     const slider = sliderRef.current;
-    if (!video || !slider || !duration) return;
+    if (!video || !slider || !duration || duration === 0) return;
 
     const rect = slider.getBoundingClientRect();
     const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percentage = x / rect.width;
+    const percentage = Math.max(0, Math.min(x / rect.width, 1));
     const newTime = percentage * duration;
     
+    // Update video time immediately
     video.currentTime = newTime;
+    // Update state immediately for instant visual feedback
     setCurrentTime(newTime);
-  }, [duration]);
+    // Also notify parent component
+    onTimeUpdate(newTime);
+  }, [duration, onTimeUpdate]);
 
   const handleSeek = (e) => {
     if (isDragging) return;
@@ -268,38 +300,56 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
         </div>
 
         {/* Playback Bar - Theme-matched, distinct from issues */}
-        <div 
-          ref={sliderRef}
-          className="relative h-2 bg-gray-200/60 rounded-full cursor-pointer group hover:h-2.5 transition-all shadow-inner border border-gray-300/50"
-          onClick={handleSeek}
-          onMouseDown={handleMouseDown}
-          title="Click or drag to seek"
-        >
-          {/* Progress Bar - Theme gradient */}
-          <motion.div
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-sm"
-            style={{ width: `${(currentTime / duration) * 100}%` }}
-            initial={false}
-          />
+        <div className="flex items-center gap-3">
+          {/* Play/Pause Button */}
+          <button
+            onClick={togglePlay}
+            className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform duration-200"
+            aria-label={isPlaying ? 'Pause' : 'Play'}
+          >
+            {isPlaying ? (
+              <Pause className="w-5 h-5" />
+            ) : (
+              <Play className="w-5 h-5 ml-0.5" />
+            )}
+          </button>
 
-          {/* Draggable Playhead/Slider Handle */}
-          <motion.div
-            className={`absolute top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 shadow-lg border-2 border-white transition-all ${
-              isDragging || isPlaying
-                ? 'w-4 h-4 opacity-100'
-                : 'w-0 h-0 opacity-0 group-hover:w-4 group-hover:h-4 group-hover:opacity-100'
-            }`}
-            style={{ 
-              left: `${(currentTime / duration) * 100}%`, 
-              marginLeft: '-8px',
-              cursor: isDragging ? 'grabbing' : 'grab'
-            }}
-            initial={false}
-            onMouseDown={(e) => {
-              e.stopPropagation();
-              handleMouseDown(e);
-            }}
-          />
+          {/* Slider Container */}
+          <div 
+            ref={sliderRef}
+            className="flex-1 relative h-2 bg-gray-200/60 rounded-full cursor-pointer group hover:h-2.5 transition-all shadow-inner border border-gray-300/50"
+            onClick={handleSeek}
+            onMouseDown={handleMouseDown}
+            title="Click or drag to seek"
+          >
+            {/* Progress Bar - Theme gradient */}
+            <div
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full shadow-sm"
+              style={{ 
+                width: duration > 0 ? `${Math.max(0, Math.min((currentTime / duration) * 100, 100))}%` : '0%',
+                transition: isDragging ? 'none' : 'width 0.05s linear'
+              }}
+            />
+
+            {/* Draggable Playhead/Slider Handle */}
+            <div
+              className={`absolute top-1/2 transform -translate-y-1/2 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 shadow-lg border-2 border-white ${
+                isDragging || isPlaying
+                  ? 'w-4 h-4 opacity-100'
+                  : 'w-0 h-0 opacity-0 group-hover:w-4 group-hover:h-4 group-hover:opacity-100'
+              }`}
+              style={{ 
+                left: duration > 0 ? `${Math.max(0, Math.min((currentTime / duration) * 100, 100))}%` : '0%', 
+                marginLeft: '-8px',
+                cursor: isDragging ? 'grabbing' : 'grab',
+                transition: isDragging ? 'none' : 'left 0.05s linear, width 0.2s, opacity 0.2s'
+              }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                handleMouseDown(e);
+              }}
+            />
+          </div>
         </div>
 
         {/* Marker Tracks - Issues/Feedback */}
