@@ -136,30 +136,30 @@ class AIAnalyzer:
     async def _speech_agent(self, video_file, metadata: Dict) -> Dict:
         """Analyze speech clarity: transcription, WPM, filler words, pauses"""
         
-        prompt = f"""You are a STRICT speech clarity coach analyzing a presentation video. Be critical and thorough in your evaluation.
+        prompt = f"""You are a MODERATELY STRICT speech clarity coach analyzing a presentation video. Be balanced in your evaluation - critical but fair.
 
 Video duration: {metadata['duration']:.1f} seconds
 
 Analyze the speech from the video with MODERATELY STRICT standards and provide:
 1. Full transcription of all spoken words
 2. Words per minute (WPM) - calculate based on total words and duration
-3. Filler words ("um", "uh", "like", "you know", "so", etc.) - flag EVERY instance with timestamps, even single occurrences
-4. Awkward pauses (>1.5 seconds) with timestamps - be strict about what constitutes awkward silence
-5. Speaking pace issues (too fast: >170 WPM, too slow: <130 WPM) - use tighter thresholds
-6. Repetitive phrases or words - flag any repetition
-7. Mumbled or unclear speech - flag any unclear words or phrases
+3. Filler words ("um", "uh", "like", "you know", "so", etc.) - flag frequent or noticeable instances with timestamps
+4. Awkward pauses (>2 seconds) with timestamps - flag pauses that disrupt flow
+5. Speaking pace issues (too fast: >175 WPM, too slow: <125 WPM) - flag significant pace problems
+6. Repetitive phrases or words - flag noticeable repetition that detracts from clarity
+7. Mumbled or unclear speech - flag unclear words or phrases that impact understanding
 
-GRADING GUIDELINES (BE STRICT):
-- Mark issues with HIGHER severity (3-5) more liberally than lenient grading
-- Use severity 3-4 for moderate issues that would reduce clarity
-- Use severity 5 for issues that significantly impact understanding
-- Don't be overly forgiving - professional presentations should be near-perfect
-- Flag minor issues that, while small, detract from overall quality
+GRADING GUIDELINES (MODERATELY STRICT):
+- Use severity appropriately: severity 1-2 for minor issues, severity 3-4 for moderate issues, severity 5 for major issues
+- Be fair but thorough - flag issues that genuinely impact clarity or professionalism
+- Don't be overly harsh on minor, occasional issues
+- Focus on patterns and significant problems rather than every single small issue
+- Balance being critical with being constructive
 
 For each issue found, provide:
 - Timestamp (start and end in seconds)
 - Specific issue label (be specific and detailed)
-- Severity (1-5, where 5 is most severe) - USE HIGHER SEVERITIES MORE FREQUENTLY
+- Severity (1-5, where 5 is most severe) - USE APPROPRIATE SEVERITY BASED ON IMPACT
 - Brief, constructive coaching tip
 
 Output as JSON:
@@ -210,29 +210,29 @@ Output as JSON:
     async def _gesture_agent(self, video_file, metadata: Dict) -> Dict:
         """Analyze body language and gestures from video"""
         
-        prompt = f"""You are a MODERATELY STRICT body language coach analyzing a presentation video. Be critical and hold the presenter to high professional standards.
+        prompt = f"""You are a MODERATELY STRICT body language coach analyzing a presentation video. Be critical and hold the presenter to high professional standards, but be fair.
 
 Video duration: {metadata['duration']:.1f} seconds
 
-Watch the entire video with STRICT evaluation standards and analyze the presenter's:
-1. Posture (slouching, leaning, fidgeting, lack of confidence, any deviation from ideal upright stance)
+Watch the entire video with MODERATELY STRICT evaluation standards and analyze the presenter's:
+1. Posture (slouching, leaning, fidgeting, lack of confidence, significant deviations from good posture)
 2. Hand gestures (stiff, repetitive, distracting, too few gestures, inappropriate gestures, closed gestures)
-3. Eye contact and gaze direction (looking away, lack of eye contact, staring at notes/screen, unfocused gaze)
+3. Eye contact and gaze direction (looking away frequently, lack of eye contact, staring at notes/screen, unfocused gaze)
 4. Facial expressions (monotone, lack of emotion, inappropriate expressions, disengaged appearance)
 5. Movement and positioning (excessive pacing, staying in one spot too long, awkward positioning)
 6. Nervous habits (touching face, playing with objects, shifting weight excessively, closed body language)
 
-GRADING GUIDELINES (BE STRICT):
-- Mark issues with HIGHER severity (3-5) more liberally - professional presenters should excel
-- Use severity 3-4 for issues that detract from professional appearance
-- Use severity 5 for issues that significantly undermine credibility or engagement
-- Flag subtle issues that indicate lack of confidence or preparation
-- Don't overlook minor problems - they add up to reduce overall impact
+GRADING GUIDELINES (MODERATELY STRICT):
+- Use severity appropriately based on impact: severity 1-2 for minor issues, severity 3-4 for moderate issues, severity 5 for major issues
+- Flag issues that genuinely detract from professional appearance or engagement
+- Be fair - occasional minor issues are normal; focus on patterns and significant problems
+- Balance being critical with being constructive and realistic
+- Don't be overly harsh on brief or minor deviations
 
 For each issue found, provide:
 - Timestamp range (start and end in seconds)
 - Specific issue label (be detailed and specific about what's wrong)
-- Severity (1-5) - USE HIGHER SEVERITIES MORE FREQUENTLY, be less forgiving
+- Severity (1-5) - USE APPROPRIATE SEVERITY BASED ON IMPACT AND FREQUENCY
 - Brief, constructive coaching tip
 
 Output as JSON:
@@ -271,11 +271,11 @@ Output as JSON:
     async def _inflection_agent(self, video_file, metadata: Dict) -> Dict:
         """Analyze vocal inflection, pitch variation, and tone"""
         
-        prompt = f"""You are a MODERATELY STRICT vocal delivery coach analyzing a presentation video. Be critical and hold the presenter to professional vocal standards.
+        prompt = f"""You are a MODERATELY STRICT vocal delivery coach analyzing a presentation video. Be critical and hold the presenter to professional vocal standards, but be balanced.
 
 Video duration: {metadata['duration']:.1f} seconds
 
-Listen to the audio in the video with STRICT evaluation and analyze vocal delivery:
+Listen to the audio in the video with MODERATELY STRICT evaluation and analyze vocal delivery:
 1. Pitch variation (monotone sections, lack of variation, insufficient emphasis through pitch changes)
 2. Volume consistency (too quiet, too loud, inconsistent volume, sudden volume changes, trailing off)
 3. Emphasis on key points (lack of emphasis, missed opportunities to emphasize, weak emphasis)
@@ -284,17 +284,17 @@ Listen to the audio in the video with STRICT evaluation and analyze vocal delive
 6. Vocal clarity (mumbling, unclear articulation, rushed speech, swallowed words)
 7. Pace variation (too consistent pace, lack of strategic pauses, rushed sections, dragging sections)
 
-GRADING GUIDELINES (BE STRICT):
-- Mark issues with HIGHER severity (3-5) more liberally - vocal delivery should be engaging
-- Use severity 3-4 for issues that reduce engagement or professionalism
-- Use severity 5 for issues that significantly impact audience attention or comprehension
-- Flag sections where vocal delivery fails to maintain interest
-- Don't be lenient - professional presentations require strong vocal presence
+GRADING GUIDELINES (MODERATELY STRICT):
+- Use severity appropriately: severity 1-2 for minor issues, severity 3-4 for moderate issues, severity 5 for major issues
+- Flag issues that genuinely reduce engagement or professionalism
+- Be fair - some variation in delivery is normal; focus on significant problems
+- Balance being critical with being constructive and realistic
+- Don't be overly harsh on brief or occasional vocal issues
 
 For each issue found, provide:
 - Timestamp range (start and end in seconds)
 - Specific issue label (be detailed about the vocal problem)
-- Severity (1-5) - USE HIGHER SEVERITIES MORE FREQUENTLY, be critical
+- Severity (1-5) - USE APPROPRIATE SEVERITY BASED ON IMPACT AND DURATION
 - Brief, constructive coaching tip
 
 Output as JSON:
@@ -347,63 +347,64 @@ VERIFICATION DOCUMENT (Use this to verify the video content):
 
 Your task is to VERIFY that the video presentation accurately reflects the content in the document above. Compare what is said/shown in the video against the document content."""
             
-            verification_instructions = """3. CONTENT VERIFICATION AGAINST DOCUMENT (CRITICAL - BE STRICT):
-   - Verify that ALL key points from the document are covered in the video - flag ANY missing points
-   - Check if facts, statistics, or data mentioned in the document match what's presented EXACTLY
-   - Identify ANY missing important information from the document that should be in the video
-   - Flag ANY contradictions, inconsistencies, or even loose mismatches between the document and what's presented
-   - Verify that the video structure aligns with the document's structure - flag deviations
-   - Check if ALL main topics from the document are addressed - flag omissions
+            verification_instructions = """3. CONTENT VERIFICATION AGAINST DOCUMENT (IMPORTANT - BE THOROUGH BUT FAIR):
+   - Verify that key points from the document are covered in the video - flag significant missing points
+   - Check if facts, statistics, or data mentioned in the document match what's presented - flag significant discrepancies
+   - Identify missing important information from the document that should be in the video
+   - Flag contradictions, inconsistencies, or notable mismatches between the document and what's presented
+   - Verify that the video structure aligns with the document's structure - flag significant deviations
+   - Check if main topics from the document are addressed - flag notable omissions
    
-   FACT ACCURACY VERIFICATION (REQUIRED - BE STRICT):
-   - If the user says something that does NOT EXACTLY match the facts in the document, you MUST create a marker for it
-   - Be strict: even minor inaccuracies or loose interpretations should be flagged
+   FACT ACCURACY VERIFICATION (REQUIRED - BE THOROUGH BUT FAIR):
+   - If the user says something that does NOT match the facts in the document, create a marker for it
+   - Be thorough: flag significant inaccuracies or notable discrepancies
    - Fact mismatches will result in points being deducted from the content score
-   - Use severity 4-5 for ANY fact errors or contradictions (be strict)
-   - Use severity 3 for minor inaccuracies or loose mismatches (don't be lenient)
-   - Examples of fact mismatches: incorrect numbers/statistics, wrong dates, misstated names or concepts, contradictory statements, approximate values when exact values are in document, paraphrasing that changes meaning
-   - Be THOROUGH: compare EVERY factual claim in the video against the document
-   - When in doubt, flag it - accuracy is critical
+   - Use severity 4-5 for significant fact errors or contradictions
+   - Use severity 3 for moderate inaccuracies or notable mismatches
+   - Use severity 2 for minor inaccuracies that don't significantly change meaning
+   - Examples of fact mismatches: incorrect numbers/statistics, wrong dates, misstated names or concepts, contradictory statements, significant approximate values when exact values are in document
+   - Be THOROUGH but FAIR: compare factual claims in the video against the document, but allow for reasonable paraphrasing
+   - Focus on accuracy issues that matter - minor wording differences are acceptable
    
 4. Key points are well explained (flag weak explanations, unclear points, insufficient detail)
 5. Transitions between topics (flag abrupt transitions, poor flow, lack of connections)
 6. Visual aids usage (if any) (flag poor usage, missed opportunities, unclear visuals)
 
-CRITICAL: Since a verification document was provided, be STRICT about content accuracy and completeness. Flag ALL discrepancies, missing information, and inaccuracies. FACT MISMATCHES WITH THE DOCUMENT MUST BE FLAGGED WITH MARKERS USING SEVERITY 3-5 - accuracy is non-negotiable and these will significantly reduce the content score."""
+IMPORTANT: Since a verification document was provided, be THOROUGH about content accuracy and completeness, but be FAIR. Flag significant discrepancies, missing information, and inaccuracies. FACT MISMATCHES WITH THE DOCUMENT SHOULD BE FLAGGED WITH MARKERS USING APPROPRIATE SEVERITY (2-5) based on the significance of the error - accuracy matters but use reasonable judgment."""
         else:
             supporting_context = ""
             verification_instructions = """3. Key points are well explained (flag weak explanations, unclear points, insufficient detail, lack of depth)
 4. Transitions between topics (flag abrupt transitions, poor flow, lack of connections, confusing organization)
 5. Visual aids usage (if any) (flag poor usage, missed opportunities, unclear visuals, lack of visual support where needed)"""
         
-        prompt = f"""You are a STRICT content structure coach analyzing a presentation video. Be critical and hold the presenter to high standards for content quality and structure.
+        prompt = f"""You are a MODERATELY STRICT content structure coach analyzing a presentation video. Be critical and hold the presenter to high standards for content quality and structure, but be fair.
 
 Video duration: {metadata['duration']:.1f} seconds
 {supporting_context}
 
-Watch and listen to the entire video with STRICT evaluation standards to analyze content quality:
+Watch and listen to the entire video with MODERATELY STRICT evaluation standards to analyze content quality:
 1. Clear introduction and conclusion (weak hooks, unclear thesis, abrupt endings, missing conclusions)
 2. Logical flow and structure (poor transitions, confusing organization, lack of clear structure, jumping between topics)
 {verification_instructions}
 
-GRADING GUIDELINES (BE STRICT):
-- Mark issues with HIGHER severity (3-5) more liberally - content quality is critical
-- Use severity 3-4 for issues that reduce clarity, engagement, or effectiveness
-- Use severity 5 for issues that significantly undermine the presentation's purpose
-- Flag missing elements, weak explanations, poor organization, and unclear messaging
-- Don't overlook structural problems or content gaps - they significantly impact effectiveness
-- Be thorough: professional presentations must have excellent content structure
+GRADING GUIDELINES (MODERATELY STRICT):
+- Use severity appropriately based on impact: severity 1-2 for minor issues, severity 3-4 for moderate issues, severity 5 for major issues
+- Flag issues that genuinely reduce clarity, engagement, or effectiveness
+- Be fair - not every presentation needs to be perfect; focus on significant problems
+- Balance being critical with being constructive and realistic
+- Don't be overly harsh on minor structural issues or imperfections
+- Be thorough but reasonable: professional presentations should have good content structure
 
 For each issue found, provide:
 - Timestamp range (start and end in seconds)
 - Specific issue label (be detailed and specific, especially about verification issues if document was provided)
-- Severity (1-5, where higher severity = more points deducted) - USE HIGHER SEVERITIES MORE FREQUENTLY:
-  * Severity 1-2: Minor issues (rare - only for very minor problems)
-  * Severity 3-4: Moderate to significant issues (use frequently for problems that detract from quality)
-  * Severity 5: Major issues (use for critical problems that significantly impact effectiveness)
+- Severity (1-5, where higher severity = more points deducted) - USE APPROPRIATE SEVERITY:
+  * Severity 1-2: Minor issues (small problems that have minimal impact)
+  * Severity 3-4: Moderate to significant issues (problems that noticeably detract from quality)
+  * Severity 5: Major issues (critical problems that significantly impact effectiveness)
 - Brief, constructive coaching tip
 
-{"CRITICAL: For fact mismatches with the document, ALWAYS use severity 3-5. Every fact mismatch MUST be flagged with a marker. Be strict - accuracy is non-negotiable. Each fact mismatch marker will deduct points from the content score." if supporting_text else ""}
+{"IMPORTANT: For fact mismatches with the document, use severity 3-5 based on the significance of the error. Fact mismatches should be flagged, but use appropriate severity based on the impact. Each fact mismatch marker will deduct points from the content score." if supporting_text else ""}
 
 Output as JSON:
 {{
@@ -498,7 +499,7 @@ Output as JSON:
             marker["category"] = "content"
             all_markers.append(marker)
         
-        # Calculate scores (start at 25, deduct based on severity) - STRICT GRADING
+        # Calculate scores (start at 25, deduct based on severity) - MODERATELY STRICT GRADING
         scores = {
             "clarity": 25,
             "gestures": 25,
@@ -509,9 +510,18 @@ Output as JSON:
         for marker in all_markers:
             category = marker["category"]
             severity = marker.get("severity", 1)
-            # STRICT DEDUCTION: severity 1: -1pt, severity 2: -2pts, severity 3: -3pts, severity 4: -4pts, severity 5: -5pts
-            # This makes grading more strict - each issue has more impact
-            deduction = severity
+            # MODERATELY STRICT DEDUCTION: severity 1: -1pt, severity 2: -1.5pts (rounded to -2), severity 3: -2pts, severity 4: -3pts, severity 5: -4pts
+            # This is stricter than the original (-1/-1/-2/-3/-3) but less strict than full severity-based (-1/-2/-3/-4/-5)
+            if severity == 1:
+                deduction = 1
+            elif severity == 2:
+                deduction = 2  # -1.5 rounded to -2
+            elif severity == 3:
+                deduction = 2
+            elif severity == 4:
+                deduction = 3
+            else:  # severity == 5
+                deduction = 4
             scores[category] = max(0, scores[category] - deduction)
         
         total_score = sum(scores.values())

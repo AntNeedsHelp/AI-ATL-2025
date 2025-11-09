@@ -72,10 +72,10 @@ export const Upload = () => {
             animate={{ scale: 1 }}
             transition={{ duration: 0.5, type: "spring" }}
           >
-            PresentAI
+            Plum
           </motion.h1>
           <p className="text-brand-muted text-lg font-medium">
-            Upload your presentation for AI-powered feedback
+            Upload your video for AI-powered feedback
           </p>
         </div>
 
@@ -84,7 +84,7 @@ export const Upload = () => {
             {/* Video Upload */}
             <div>
               <label className="block text-sm font-medium text-brand-muted mb-2">
-                Presentation Video <span className="text-brand-accent-soft">*</span>
+                Video <span className="text-brand-accent-soft">*</span>
               </label>
               <div className="relative">
                 <input
@@ -137,10 +137,10 @@ export const Upload = () => {
               </div>
             </div>
 
-            {/* Title Input */}
+            {/* Additional Context Input */}
             <div>
               <label className="block text-sm font-medium text-brand-muted mb-2">
-                Presentation Title (Optional)
+                Additional Context (Optional)
               </label>
               <input
                 type="text"

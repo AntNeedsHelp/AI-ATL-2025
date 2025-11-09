@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
     # Shutdown (if needed)
     pass
 
-app = FastAPI(title="PresentAI Backend", lifespan=lifespan)
+app = FastAPI(title="Plum Backend", lifespan=lifespan)
 
 # CORS for local development
 app.add_middleware(

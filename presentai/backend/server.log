@@ -2214,3 +2214,100 @@ INFO:     127.0.0.1:50797 - "GET /api/gesture-video/6987b7fd-c03b-48b8-b094-6966
 [API] Serving video: /Users/rishidesai/Documents/AI-ATL-2025/presentai/data/jobs/6987b7fd-c03b-48b8-b094-69669050a46c/gesture_videos/gesture_2.mp4
 [API] Video file size: 1662949 bytes
 INFO:     127.0.0.1:50800 - "GET /api/gesture-video/6987b7fd-c03b-48b8-b094-69669050a46c/2 HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'ai_analyzer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [77398]
+INFO:     Started server process [84711]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'ai_analyzer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [84711]
+INFO:     Started server process [84810]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'ai_analyzer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [84810]
+INFO:     Started server process [84916]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'ai_analyzer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [84916]
+INFO:     Started server process [85092]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'ai_analyzer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85092]
+INFO:     Started server process [85184]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'ai_analyzer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85184]
+INFO:     Started server process [85627]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'ai_analyzer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [85627]
+INFO:     Started server process [86060]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86060]
+INFO:     Started server process [86611]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:50924 - "GET /api/result/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50925 - "GET /api/result/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50924 - "GET /api/video/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86611]
+INFO:     Started server process [86853]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:50944 - "GET /api/result/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50945 - "GET /api/result/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50944 - "GET /api/video/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'ai_analyzer.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86853]
+INFO:     Started server process [86965]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86965]
+INFO:     Started server process [87004]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:50978 - "GET /api/result/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50979 - "GET /api/result/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50978 - "GET /api/video/6987b7fd-c03b-48b8-b094-69669050a46c HTTP/1.1" 200 OK

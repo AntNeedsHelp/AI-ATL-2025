@@ -1,6 +1,6 @@
-# PresentAI Frontend
+# Plum Frontend
 
-Modern React frontend for PresentAI - an AI-powered presentation coach that provides real-time feedback on gestures, speech, clarity, and content.
+Modern React frontend for Plum - an AI-powered presentation coach that provides real-time feedback on gestures, speech, clarity, and content.
 
 ## Features
 
