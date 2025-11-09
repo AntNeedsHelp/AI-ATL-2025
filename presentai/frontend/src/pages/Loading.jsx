@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
@@ -9,42 +9,81 @@ export const Loading = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState('processing');
   const [error, setError] = useState('');
+  const intervalRef = useRef(null);
+  const isNavigatingRef = useRef(false);
 
   useEffect(() => {
-    let interval;
-
     const pollStatus = async () => {
+      // Prevent multiple navigation attempts
+      if (isNavigatingRef.current) {
+        console.log('[Loading] Already navigating, skipping poll');
+        return;
+      }
+
       try {
+        console.log(`[Loading] Polling status for job: ${jobId}`);
         const result = await checkStatus(jobId);
+        console.log(`[Loading] Status response:`, result);
         
         if (result.status === 'completed') {
-          clearInterval(interval);
-          navigate(`/results/${jobId}`);
+          console.log(`[Loading] Job completed! Navigating to results...`);
+          isNavigatingRef.current = true;
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
+          // Use setTimeout to ensure state updates are processed
+          setTimeout(() => {
+            navigate(`/results/${jobId}`);
+          }, 100);
         } else if (result.status === 'failed') {
+          console.log(`[Loading] Status is 'failed', checking if results exist...`);
           // Even if status is "failed", check if results actually exist
           // This handles cases where job failed but partial results were saved
           try {
             const results = await getResult(jobId);
+            console.log(`[Loading] Results exist despite 'failed' status! Navigating to results...`);
             // If we can load results, navigate to results page
-            clearInterval(interval);
-            navigate(`/results/${jobId}`);
+            isNavigatingRef.current = true;
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
+            setTimeout(() => {
+              navigate(`/results/${jobId}`);
+            }, 100);
           } catch (resultsErr) {
+            console.error(`[Loading] Results don't exist:`, resultsErr);
             // Results don't exist, show error
-            clearInterval(interval);
+            isNavigatingRef.current = true;
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
             setError('Analysis failed. Please try again.');
           }
         } else {
+          console.log(`[Loading] Status: ${result.status || 'processing'}`);
           setStatus(result.status || 'processing');
         }
       } catch (err) {
-        console.error('Error polling status:', err);
+        console.error('[Loading] Error polling status:', err);
         // Try to check if results exist even if status check fails
         try {
+          console.log(`[Loading] Status check failed, trying to load results directly...`);
           const results = await getResult(jobId);
+          console.log(`[Loading] Results loaded successfully! Navigating to results...`);
           // If we can load results, navigate to results page
-          clearInterval(interval);
-          navigate(`/results/${jobId}`);
+          isNavigatingRef.current = true;
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
+          setTimeout(() => {
+            navigate(`/results/${jobId}`);
+          }, 100);
         } catch (resultsErr) {
+          console.error(`[Loading] Could not load results:`, resultsErr);
           setError('Failed to check status. Please refresh the page.');
         }
       }
@@ -53,12 +92,13 @@ export const Loading = () => {
     // Poll immediately
     pollStatus();
 
-    // Then poll every 5 seconds
-    interval = setInterval(pollStatus, 5000);
+    // Then poll every 3 seconds (reduced from 5 for faster response)
+    intervalRef.current = setInterval(pollStatus, 3000);
 
     return () => {
-      if (interval) {
-        clearInterval(interval);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
   }, [jobId, navigate]);

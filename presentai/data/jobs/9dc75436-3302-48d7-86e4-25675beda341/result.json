@@ -1,0 +1,86 @@
+{
+  "scores": {
+    "gestures": 18,
+    "inflection": 20,
+    "clarity": 21,
+    "content": 23,
+    "total": 82
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Abrupt opening and lacks conclusion",
+      "severity": 3,
+      "feedback": "The video starts directly with a statement and ends mid-sentence. Consider adding a brief introduction to set the context and ensuring your key message has a clear beginning and end.",
+      "category": "content"
+    },
+    {
+      "start": 0.5,
+      "end": 8.4,
+      "label": "Tense Hand Gestures (Clenched Fists)",
+      "severity": 3,
+      "feedback": "Your fists remain clenched at your sides, which can signal tension or aggression. Try relaxing your hands and letting them hang naturally to project a more calm and confident demeanor.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/9dc75436-3302-48d7-86e4-25675beda341/0"
+    },
+    {
+      "start": 3.2,
+      "end": 8.5,
+      "label": "Monotone delivery",
+      "severity": 4,
+      "feedback": "Your voice stays in a very narrow pitch range here, which can make the delivery sound flat. While the slow pace conveys disappointment, try adding some pitch variation on key words like 'really' to make the message more dynamic and engaging for the listener.",
+      "category": "inflection"
+    },
+    {
+      "start": 3.2,
+      "end": 11.5,
+      "label": "Low vocal energy",
+      "severity": 3,
+      "feedback": "The energy in your voice drops significantly after the first sentence. Projecting your voice with a bit more energy, even when delivering somber news, will help you maintain your audience's focus throughout your message.",
+      "category": "inflection"
+    },
+    {
+      "start": 4.14,
+      "end": 6.11,
+      "label": "Repetition: 'that'",
+      "severity": 3,
+      "feedback": "Repeating words can sometimes happen when we're searching for our next thought. Try taking a brief, silent pause to gather your thoughts. It can feel more powerful and deliberate than repeating a word.",
+      "category": "clarity"
+    },
+    {
+      "start": 6.54,
+      "end": 8.87,
+      "label": "Speaking pace issue (too slow)",
+      "severity": 3,
+      "feedback": "You're using word elongation for emphasis, which is a great technique! In this case, the word 'really' is very drawn out, which significantly slows your momentum. Try to make the elongation a bit shorter to keep the energy up while still making your point.",
+      "category": "clarity"
+    },
+    {
+      "start": 8.5,
+      "end": 10.0,
+      "label": "Distracting Self-Grooming Gesture",
+      "severity": 4,
+      "feedback": "Bringing your hands up to fix your hair is a common nervous habit that can be distracting for the viewer. To appear more composed, practice keeping your hands relaxed at your sides or using them for purposeful gestures.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/9dc75436-3302-48d7-86e4-25675beda341/1"
+    },
+    {
+      "start": 10.1,
+      "end": 12.3,
+      "label": "Tense Hand Gestures (Clenched Fists)",
+      "severity": 3,
+      "feedback": "You returned to the clenched-fist stance after the hair adjustment. Remember to consciously relax your hands throughout your presentation to maintain an open and approachable posture.",
+      "category": "gestures"
+    }
+  ],
+  "transcript": "We did not make it to worlds. That that that that that is really unfortunate. And at the end",
+  "metadata": {
+    "duration": 12.266016,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/9dc75436-3302-48d7-86e4-25675beda341"
+}

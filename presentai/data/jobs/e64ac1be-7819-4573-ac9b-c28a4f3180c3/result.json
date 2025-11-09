@@ -1,0 +1,71 @@
+{
+  "scores": {
+    "gestures": 18,
+    "inflection": 22,
+    "clarity": 25,
+    "content": 22,
+    "total": 87
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 8.5,
+      "label": "Clenched Fists / Tense Stance",
+      "severity": 4,
+      "feedback": "Your hands are clenched into fists, which can signal tension or aggression to the audience. Try to consciously relax your hands, keeping them open at your sides to project a more calm and approachable demeanor.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/e64ac1be-7819-4573-ac9b-c28a4f3180c3/0"
+    },
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Weak introduction",
+      "severity": 2,
+      "feedback": "The video starts abruptly without providing any context. Try beginning with a clear opening statement to help your audience understand the topic and what to expect.",
+      "category": "content"
+    },
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Incomplete thought",
+      "severity": 3,
+      "feedback": "The video ends mid-sentence, leaving the main point unfinished. Ensure your message has a clear beginning, middle, and end to be effective. Planning your key points beforehand can help.",
+      "category": "content"
+    },
+    {
+      "start": 4.0,
+      "end": 9.5,
+      "label": "Slow Pacing & Low Energy",
+      "severity": 4,
+      "feedback": "You're stretching out words to convey disappointment, but this can drain the energy from your delivery. Try using a sharper emphasis on a key word like 'really' and a downward inflection on 'unfortunate' to make your point more impactful while maintaining vocal dynamism.",
+      "category": "inflection"
+    },
+    {
+      "start": 8.6,
+      "end": 10.1,
+      "label": "Self-Grooming Gesture",
+      "severity": 2,
+      "feedback": "Touching your hair can be a distracting sign of nervousness. Aim to keep your hands below your shoulders unless you are making a specific, purposeful gesture to add emphasis to your words.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/e64ac1be-7819-4573-ac9b-c28a4f3180c3/1"
+    },
+    {
+      "start": 10.2,
+      "end": 12.3,
+      "label": "Clenched Fists / Tense Stance",
+      "severity": 4,
+      "feedback": "You've returned to the tense, fists-clenched stance. Make a conscious effort to keep your posture open and your hands relaxed to maintain a confident presence throughout your delivery.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/e64ac1be-7819-4573-ac9b-c28a4f3180c3/2"
+    }
+  ],
+  "transcript": "",
+  "metadata": {
+    "duration": 12.266016,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/e64ac1be-7819-4573-ac9b-c28a4f3180c3"
+}

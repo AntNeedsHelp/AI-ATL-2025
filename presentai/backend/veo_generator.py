@@ -1,5 +1,6 @@
 import os
 import time
+import json
 import subprocess
 from pathlib import Path
 from typing import Dict, Optional
@@ -16,8 +17,34 @@ class VeoGenerator:
         
         self.client = genai.Client(api_key=api_key)
     
-    def extract_frame(self, video_path: str, timestamp: float, output_path: str):
+    def get_video_duration(self, video_path: str) -> float:
+        """Get video duration in seconds using ffprobe"""
+        cmd = [
+            'ffprobe',
+            '-v', 'quiet',
+            '-print_format', 'json',
+            '-show_format',
+            video_path
+        ]
+        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+        probe_data = json.loads(result.stdout)
+        duration = float(probe_data['format'].get('duration', 0))
+        return duration
+    
+    def extract_frame(self, video_path: str, timestamp: float, output_path: str, video_duration: float = None):
         """Extract a single frame from video at specific timestamp as PNG"""
+        # Get video duration if not provided
+        if video_duration is None:
+            video_duration = self.get_video_duration(video_path)
+        
+        # Clamp timestamp to be within video bounds
+        # Use a small offset (0.1s) before the end to avoid edge cases
+        max_timestamp = max(0.0, video_duration - 0.1)
+        clamped_timestamp = max(0.0, min(timestamp, max_timestamp))
+        
+        if timestamp != clamped_timestamp:
+            print(f"[Veo] Clamped timestamp from {timestamp}s to {clamped_timestamp}s (video duration: {video_duration}s)")
+        
         # Ensure output is PNG format
         output_path_str = str(output_path)
         if not output_path_str.lower().endswith('.png'):
@@ -26,7 +53,7 @@ class VeoGenerator:
         cmd = [
             'ffmpeg',
             '-i', video_path,
-            '-ss', str(timestamp),
+            '-ss', str(clamped_timestamp),
             '-vframes', '1',
             '-f', 'image2',  # Force image format
             '-pix_fmt', 'rgb24',  # Ensure RGB format
@@ -53,22 +80,40 @@ class VeoGenerator:
     ) -> bool:
         """Generate improvement video using Veo 3.1"""
         try:
-            # Calculate end time (max 5 seconds from start)
+            # Get video duration first to ensure we don't exceed it
+            video_duration = self.get_video_duration(video_path)
+            print(f"[Veo] Video duration: {video_duration}s")
+            
+            # Clamp start_time to be within video bounds
+            start_time = max(0.0, min(start_time, video_duration - 0.1))
+            
+            # Calculate end time (max 5 seconds from start, but not exceeding video duration)
             duration = end_time - start_time
             if duration > 5.0:
                 end_time = start_time + 5.0
+            
+            # Clamp end_time to be within video bounds (with small buffer to avoid edge cases)
+            max_end_time = max(start_time + 0.5, video_duration - 0.1)  # At least 0.5s duration, or video end - 0.1s
+            end_time = min(end_time, max_end_time)
+            
+            # Ensure we have a valid duration (at least 0.5 seconds)
+            if end_time - start_time < 0.5:
+                print(f"[Veo] Warning: Marker {marker_index} duration too short ({end_time - start_time}s). Adjusting end_time.")
+                end_time = min(start_time + 0.5, video_duration - 0.1)
+            
+            print(f"[Veo] Using time range for marker {marker_index}: {start_time}s to {end_time}s (duration: {end_time - start_time}s)")
             
             # Create output directory
             output_dir = Path(output_path).parent
             output_dir.mkdir(parents=True, exist_ok=True)
             
-            # Extract frames as PNG
+            # Extract frames as PNG (pass video_duration to avoid re-probing)
             first_frame_path = output_dir / f"frame_start_{marker_index}.png"
             last_frame_path = output_dir / f"frame_end_{marker_index}.png"
             
             print(f"[Veo] Extracting frames for marker {marker_index}: {start_time}s to {end_time}s")
-            first_frame_path = Path(self.extract_frame(video_path, start_time, str(first_frame_path)))
-            last_frame_path = Path(self.extract_frame(video_path, end_time, str(last_frame_path)))
+            first_frame_path = Path(self.extract_frame(video_path, start_time, str(first_frame_path), video_duration))
+            last_frame_path = Path(self.extract_frame(video_path, end_time, str(last_frame_path), video_duration))
             
             # Create prompt based on feedback
             prompt = (

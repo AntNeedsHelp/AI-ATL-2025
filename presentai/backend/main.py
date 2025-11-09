@@ -264,23 +264,46 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
         result["video_url"] = f"/api/video/{job_id}"
         
         result_path = Path(video_path).parent / "result.json"
-        with open(result_path, "w") as f:
-            json.dump(result, f, indent=2)
         
-        print(f"[Veo] Results saved to {result_path}")
-        # Log a sample marker to verify video_url is saved
-        sample_gesture = next((m for m in result.get("markers", []) if m.get("category") == "gestures"), None)
-        if sample_gesture:
-            print(f"[Veo] Sample gesture marker: start={sample_gesture.get('start')}, has_video_url={bool(sample_gesture.get('video_url'))}")
+        # Save result.json FIRST before updating job status
+        # This ensures results are persisted even if something fails after saving
+        try:
+            with open(result_path, "w") as f:
+                json.dump(result, f, indent=2)
+            
+            print(f"[Veo] Results saved to {result_path}")
+            # Log a sample marker to verify video_url is saved
+            sample_gesture = next((m for m in result.get("markers", []) if m.get("category") == "gestures"), None)
+            if sample_gesture:
+                print(f"[Veo] Sample gesture marker: start={sample_gesture.get('start')}, has_video_url={bool(sample_gesture.get('video_url'))}")
+        except Exception as save_err:
+            # If saving fails, log but don't fail the entire job
+            print(f"[ERROR] Failed to save result.json: {save_err}")
+            import traceback
+            traceback.print_exc()
+            # Re-raise to mark job as failed since we can't save results
+            raise
         
+        # Only update job status to completed AFTER result.json is successfully saved
+        # This ensures result.json exists before status is "completed"
         jobs[job_id]["status"] = "completed"
         jobs[job_id]["progress"] = 100
         jobs[job_id]["message"] = "Analysis complete!"
+        print(f"[Veo] Job {job_id} marked as completed")
         
     except Exception as e:
-        jobs[job_id]["status"] = "failed"
-        jobs[job_id]["message"] = f"Error: {str(e)}"
-        print(f"Error processing job {job_id}: {e}")
+        # Check if result.json was saved before the error
+        result_path = Path(video_path).parent / "result.json"
+        if result_path.exists():
+            print(f"[WARNING] Job {job_id} encountered error but result.json exists: {str(e)}")
+            print(f"[WARNING] Result.json will be available even though job status is 'failed'")
+            # Don't overwrite the existing result.json - it may have valid data
+        else:
+            # Only mark as failed if result.json doesn't exist
+            jobs[job_id]["status"] = "failed"
+            jobs[job_id]["message"] = f"Error: {str(e)}"
+            print(f"Error processing job {job_id}: {e}")
+        
         import traceback
         traceback.print_exc()
 
