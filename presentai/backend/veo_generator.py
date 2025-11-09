@@ -115,13 +115,15 @@ class VeoGenerator:
             first_frame_path = Path(self.extract_frame(video_path, start_time, str(first_frame_path), video_duration))
             last_frame_path = Path(self.extract_frame(video_path, end_time, str(last_frame_path), video_duration))
             
-            # Create prompt based on feedback
+            # Create prompt based on feedback - focus on demonstrating correct behavior
             prompt = (
-                "This person is presenting. There are issues with his body language where "
-                "he does not show himself as confident or knowledgeable on the topic. "
-                f"{feedback} "
-                "Make this person's movements feel more engaging and confident so that "
-                "listeners are more likely to enjoy the presentation."
+                "Demonstrate the CORRECT way to present with improved body language. "
+                "Show a presenter who is confident, engaging, and knowledgeable. "
+                f"Specifically address this issue: {feedback} "
+                "The video should visually demonstrate the proper technique - show open, relaxed gestures, "
+                "confident posture, and engaging movements. This is a demonstration video that viewers "
+                "can watch and emulate. Show the corrected behavior clearly and professionally, not "
+                "conversational but instructional - what to do instead of the problem."
             )
             
             # Read PNG files as binary data (exact pattern from user's working code)

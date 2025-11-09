@@ -34,16 +34,24 @@ export const Results = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
+        console.log('[Results] Fetching results for job:', jobId);
         const result = await getResult(jobId);
+        console.log('[Results] Results loaded successfully, markers:', result?.markers?.length || 0);
         setData(result);
         setLoading(false);
       } catch (err) {
+        console.error('[Results] Error fetching results:', err);
         setError(err.message || 'Failed to load results');
         setLoading(false);
       }
     };
 
-    fetchResults();
+    if (jobId) {
+      fetchResults();
+    } else {
+      setError('No job ID provided');
+      setLoading(false);
+    }
   }, [jobId]);
 
   const handleTimeUpdate = (time) => {
@@ -261,7 +269,7 @@ export const Results = () => {
     );
   }
 
-  if (error || !data) {
+  if (error) {
     return (
       <div className="min-h-screen bg-brand-background flex items-center justify-center p-6 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -270,7 +278,28 @@ export const Results = () => {
         <div className="glass rounded-3xl p-8 shadow-2xl max-w-md text-center border border-brand-accent/30 relative z-10">
           <div className="text-5xl mb-4">⚠️</div>
           <h2 className="text-2xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent mb-2">Error</h2>
-          <p className="text-brand-muted mb-6">{error || 'Failed to load results'}</p>
+          <p className="text-brand-muted mb-6">{error}</p>
+          <button
+            onClick={() => navigate('/')}
+            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong text-brand-text shadow-lg shadow-brand-accent/20 hover:scale-105 transition-all duration-300"
+          >
+            Back to Upload
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-brand-background flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-14 left-8 w-80 h-80 bg-brand-accent-soft/25 rounded-full blur-3xl" />
+        </div>
+        <div className="glass rounded-3xl p-8 shadow-2xl max-w-md text-center border border-brand-accent/30 relative z-10">
+          <div className="text-5xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent mb-2">No Data</h2>
+          <p className="text-brand-muted mb-6">Results data not available. Please check the job ID and try again.</p>
           <button
             onClick={() => navigate('/')}
             className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong text-brand-text shadow-lg shadow-brand-accent/20 hover:scale-105 transition-all duration-300"

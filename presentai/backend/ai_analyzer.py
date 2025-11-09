@@ -84,9 +84,16 @@ class AIAnalyzer:
         print("Starting speech analysis...")
         try:
             speech_analysis = await self._speech_agent(video_file, metadata)
-            print("Speech analysis complete")
+            transcript = speech_analysis.get("transcript", "")
+            print(f"Speech analysis complete. Transcript length: {len(transcript) if transcript else 0} characters")
+            if not transcript:
+                print(f"[WARNING] Speech analysis returned empty transcript! This will prevent follow-up question generation.")
+                print(f"[WARNING] Speech analysis keys: {list(speech_analysis.keys())}")
         except Exception as e:
             print(f"Speech analysis failed: {str(e)} - continuing with other analyses")
+            print(f"[ERROR] This will prevent follow-up question generation since transcript is required.")
+            import traceback
+            traceback.print_exc()
             speech_analysis = {"markers": [], "transcript": "", "wpm": 0, "filler_words": [], "pauses": []}
         
         try:
@@ -177,9 +184,18 @@ Output as JSON:
             )
             
             # Parse JSON from response
-            return self._parse_json_response(response.text)
+            parsed = self._parse_json_response(response.text)
+            # Log transcript extraction for debugging
+            transcript = parsed.get("transcript", "")
+            print(f"[Speech Agent] Extracted transcript length: {len(transcript) if transcript else 0} characters")
+            if not transcript:
+                print(f"[Speech Agent] WARNING: No transcript found in response. Response keys: {list(parsed.keys())}")
+                print(f"[Speech Agent] Response preview: {str(parsed)[:200]}")
+            return parsed
         except Exception as e:
             print(f"Error in _speech_agent: {str(e)}")
+            import traceback
+            traceback.print_exc()
             raise ValueError(f"Speech analysis failed: {str(e)}")
     
     async def _gesture_agent(self, video_file, metadata: Dict) -> Dict:
@@ -499,10 +515,23 @@ Output as JSON:
             text = text[:-3]
         
         try:
-            return json.loads(text.strip())
-        except json.JSONDecodeError:
+            parsed = json.loads(text.strip())
+            # Ensure transcript is preserved if present
+            if "transcript" in parsed:
+                return parsed
+            # If parsing succeeded but no transcript field, check if it's just markers
+            if "markers" in parsed:
+                return parsed
+            # If it's just a transcript string, wrap it
+            if isinstance(parsed, str):
+                return {"transcript": parsed, "markers": []}
+            return parsed
+        except json.JSONDecodeError as e:
+            # Fallback: return empty markers but log the error
+            print(f"[AIAnalyzer] JSON decode error: {str(e)}")
+            print(f"[AIAnalyzer] Failed to parse text (first 500 chars): {text[:500]}")
             # Fallback: return empty markers
-            return {"markers": []}
+            return {"markers": [], "transcript": ""}
     
     
     def _extract_document_text(self, file_path: str) -> str:
