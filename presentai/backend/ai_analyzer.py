@@ -6,6 +6,8 @@ import json
 
 from google import genai
 from google.genai import types
+from PyPDF2 import PdfReader
+from docx import Document
 
 class AIAnalyzer:
     def __init__(self):
@@ -263,11 +265,43 @@ Output as JSON:
         supporting_text: Optional[str],
         metadata: Dict
     ) -> Dict:
-        """Analyze content structure, topic alignment, and clarity"""
+        """Analyze content structure, topic alignment, and verify content against document"""
         
-        supporting_context = ""
         if supporting_text:
-            supporting_context = f"\n\nSupporting document provided:\n{supporting_text[:2000]}"
+            # Use full document text for verification
+            supporting_context = f"""
+
+VERIFICATION DOCUMENT (Use this to verify the video content):
+{supporting_text}
+
+Your task is to VERIFY that the video presentation accurately reflects the content in the document above. Compare what is said/shown in the video against the document content."""
+            
+            verification_instructions = """3. CONTENT VERIFICATION AGAINST DOCUMENT (CRITICAL):
+   - Verify that key points from the document are covered in the video
+   - Check if facts, statistics, or data mentioned in the document match what's presented
+   - Identify any missing important information from the document that should be in the video
+   - Flag any contradictions between the document and what's presented
+   - Verify that the video structure aligns with the document's structure
+   - Check if all main topics from the document are addressed
+   
+   FACT ACCURACY VERIFICATION (REQUIRED):
+   - If the user says something that does NOT loosely match the facts in the document, you MUST create a marker for it
+   - Fact mismatches will result in points being deducted from the content score
+   - Use higher severity (3-5) for significant fact errors or contradictions
+   - Use moderate severity (2-3) for minor fact inaccuracies or loose mismatches
+   - Examples of fact mismatches: incorrect numbers/statistics, wrong dates, misstated names or concepts, contradictory statements
+   - Be thorough: compare ALL factual claims in the video against the document
+   
+4. Key points are well explained
+5. Transitions between topics
+6. Visual aids usage (if any)
+
+IMPORTANT: Since a verification document was provided, pay special attention to content accuracy and completeness. Flag any discrepancies or missing information. FACT MISMATCHES WITH THE DOCUMENT MUST BE FLAGGED WITH MARKERS - these will reduce the content score."""
+        else:
+            supporting_context = ""
+            verification_instructions = """3. Key points are well explained
+4. Transitions between topics
+5. Visual aids usage (if any)"""
         
         prompt = f"""You are a content structure coach analyzing a presentation video.
 
@@ -277,16 +311,18 @@ Video duration: {metadata['duration']:.1f} seconds
 Watch and listen to the entire video to analyze content quality:
 1. Clear introduction and conclusion
 2. Logical flow and structure
-3. Topic alignment (if supporting document provided)
-4. Key points are well explained
-5. Transitions between topics
-6. Visual aids usage (if any)
+{verification_instructions}
 
 For each issue found, provide:
 - Timestamp range (start and end in seconds)
-- Specific issue label
-- Severity (1-5)
+- Specific issue label (be specific about verification issues if document was provided)
+- Severity (1-5, where higher severity = more points deducted):
+  * Severity 1-2: Minor issues (e.g., small fact inaccuracies, minor omissions)
+  * Severity 3: Moderate issues (e.g., significant fact mismatches, missing key points)
+  * Severity 4-5: Major issues (e.g., major contradictions, critical fact errors)
 - Brief, encouraging coaching tip
+
+{"IMPORTANT: For fact mismatches with the document, use severity 3-5. Each fact mismatch marker will deduct points from the content score." if supporting_text else ""}
 
 Output as JSON:
 {{
@@ -297,7 +333,14 @@ Output as JSON:
       "label": "Weak introduction",
       "severity": 2,
       "feedback": "Start with a clear hook or thesis statement to engage your audience."
-    }}
+    }}{f""",
+    {{
+      "start": 45.0,
+      "end": 50.0,
+      "label": "Fact mismatch: Document states 2024, but video says 2023",
+      "severity": 4,
+      "feedback": "Verify all facts against your source document to ensure accuracy."
+    }}""" if supporting_text else ""}
   ]
 }}
 """
@@ -418,12 +461,10 @@ Output as JSON:
             return path.read_text(encoding='utf-8')
         
         elif path.suffix == '.pdf':
-            from PyPDF2 import PdfReader
             reader = PdfReader(file_path)
             return "\n".join(page.extract_text() for page in reader.pages)
         
         elif path.suffix == '.docx':
-            from docx import Document
             doc = Document(file_path)
             return "\n".join(para.text for para in doc.paragraphs)
         

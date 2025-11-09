@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
@@ -21,6 +21,9 @@ export const Results = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [manuallySelectedMarker, setManuallySelectedMarker] = useState(null);
+  const manualSelectionTimeoutRef = useRef(null);
+  // Use a ref to track manual selection immediately (synchronous) to avoid race conditions
+  const manualSelectionRef = useRef(null);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -40,24 +43,116 @@ export const Results = () => {
   const handleTimeUpdate = (time) => {
     setCurrentTime(time);
     
-    // Auto-update feedback based on current time (only if no marker was manually selected)
-    if (data?.markers && !manuallySelectedMarker) {
-      const marker = getCurrentMarker(data.markers, time);
-      if (marker && marker !== selectedMarker) {
-        setSelectedMarker(marker);
+    // Check ref first (synchronous) before checking state (async)
+    const currentManualSelection = manualSelectionRef.current || manuallySelectedMarker;
+    
+    // If a marker was manually selected, ALWAYS prioritize it
+    // Only clear it if we've moved significantly outside its range
+    if (currentManualSelection) {
+      // Use a larger buffer (2 seconds) to handle jumps to marker.start - 1
+      // This ensures the clicked marker stays selected even when jumping slightly before it
+      const buffer = 2.0;
+      const bufferStart = currentManualSelection.start - buffer;
+      const bufferEnd = currentManualSelection.end + buffer;
+      
+      // Check if we're within the buffer zone (includes the jump-to position)
+      if (time >= bufferStart && time <= bufferEnd) {
+        // Always keep the manually selected marker when in buffer zone
+        // Compare by unique key to avoid unnecessary re-renders
+        const manualKey = `${currentManualSelection.category}-${currentManualSelection.start}-${currentManualSelection.end}`;
+        const selectedKey = selectedMarker ? `${selectedMarker.category}-${selectedMarker.start}-${selectedMarker.end}` : null;
+        
+        if (manualKey !== selectedKey) {
+          // Force update to the manually selected marker
+          console.log('Forcing update to manually selected marker:', currentManualSelection.category);
+          setSelectedMarker(currentManualSelection);
+          // Also update state to keep in sync
+          if (!manuallySelectedMarker || manualKey !== `${manuallySelectedMarker.category}-${manuallySelectedMarker.start}-${manuallySelectedMarker.end}`) {
+            setManuallySelectedMarker(currentManualSelection);
+          }
+        }
+        // CRITICAL: Return early to prevent auto-selection from overriding
+        // This ensures the clicked marker is never overridden by getCurrentMarker
+        return;
+      } else {
+        // We've moved well outside the marker's buffer zone, clear manual selection
+        console.log('Clearing manual selection - moved outside buffer zone');
+        manualSelectionRef.current = null;
+        setManuallySelectedMarker(null);
+        // Then proceed to auto-select based on current time
       }
     }
     
-    // Clear manual selection if we've moved past the selected marker
-    if (manuallySelectedMarker && (time < manuallySelectedMarker.start || time > manuallySelectedMarker.end)) {
-      setManuallySelectedMarker(null);
+    // Auto-update feedback based on current time (only if no marker was manually selected)
+    if (data?.markers) {
+      const marker = getCurrentMarker(data.markers, time);
+      if (marker) {
+        // Use a unique key to ensure we're comparing the same marker object
+        const markerKey = `${marker.category}-${marker.start}-${marker.end}`;
+        const selectedKey = selectedMarker ? `${selectedMarker.category}-${selectedMarker.start}-${selectedMarker.end}` : null;
+        
+        if (markerKey !== selectedKey) {
+          setSelectedMarker(marker);
+        }
+      } else if (selectedMarker && !manuallySelectedMarker) {
+        // Clear selected marker if we're not in any marker's time range
+        // But only if no marker was manually selected
+        setSelectedMarker(null);
+      }
     }
   };
 
   const handleMarkerClick = (marker) => {
-    setManuallySelectedMarker(marker);
-    setSelectedMarker(marker);
+    // Clear any existing timeout
+    if (manualSelectionTimeoutRef.current) {
+      clearTimeout(manualSelectionTimeoutRef.current);
+    }
+    
+    // Find the exact marker from the original data.markers array to ensure we have the correct object
+    // This prevents issues with filtered markers or reference problems
+    let exactMarker = marker;
+    if (data?.markers) {
+      const foundMarker = data.markers.find(m => 
+        m.category === marker.category && 
+        m.start === marker.start && 
+        m.end === marker.end
+      );
+      if (foundMarker) {
+        exactMarker = foundMarker;
+      }
+    }
+    
+    // Create a copy to ensure we have all properties and avoid reference issues
+    const markerCopy = {
+      ...exactMarker,
+      category: exactMarker.category || 'gestures', // Ensure category is set with fallback
+    };
+    
+    console.log('Marker clicked - Category:', markerCopy.category, 'Marker:', markerCopy); // Debug log
+    console.log('All marker properties:', Object.keys(markerCopy));
+    
+    // CRITICAL: Set ref immediately (synchronous) before state update (async)
+    // This ensures handleTimeUpdate can see the manual selection even if state hasn't updated yet
+    manualSelectionRef.current = markerCopy;
+    
+    // Set manual selection in state (async, but ref is already set)
+    setManuallySelectedMarker(markerCopy);
+    setSelectedMarker(markerCopy);
+    
+    // Set a timeout to prevent time updates from overriding for a short period
+    manualSelectionTimeoutRef.current = setTimeout(() => {
+      manualSelectionTimeoutRef.current = null;
+    }, 300);
   };
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (manualSelectionTimeoutRef.current) {
+        clearTimeout(manualSelectionTimeoutRef.current);
+      }
+    };
+  }, []);
 
   if (loading) {
     return (

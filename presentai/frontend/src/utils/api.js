@@ -4,7 +4,7 @@ export const uploadPresentation = async (video, document = null, title = '') => 
   const formData = new FormData();
   formData.append('video', video);
   if (document) {
-    formData.append('document', document);
+    formData.append('supporting_file', document);
   }
   if (title) {
     formData.append('title', title);

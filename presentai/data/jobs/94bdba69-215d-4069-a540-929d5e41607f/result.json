@@ -1,0 +1,140 @@
+{
+  "scores": {
+    "gestures": 19,
+    "inflection": 16,
+    "clarity": 12,
+    "content": 14,
+    "total": 61
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 32.6,
+      "label": "Clenched Fists (Tense Posture)",
+      "severity": 4,
+      "feedback": "Your fists remain clenched for almost the entire presentation, which can signal tension, frustration, or nervousness. Try to consciously relax your hands and let them rest naturally at your sides to appear more open and at ease.",
+      "category": "gestures"
+    },
+    {
+      "start": 0.0,
+      "end": 32.6,
+      "label": "Static/Rigid Stance",
+      "severity": 3,
+      "feedback": "You're standing very still with locked knees, which can look a bit stiff. Allowing for some natural movement, like a slight weight shift or using gestures, can add energy to your delivery and make you appear more comfortable.",
+      "category": "gestures"
+    },
+    {
+      "start": 0.8,
+      "end": 24.2,
+      "label": "Monotone Delivery",
+      "severity": 5,
+      "feedback": "Your delivery in this section is very slow and flat, which can make it hard for the audience to stay engaged. Try adding more energy and varying your pitch to reflect the importance of what you're saying. This will help your words carry the weight of your experience.",
+      "category": "inflection"
+    },
+    {
+      "start": 1.4,
+      "end": 4.4,
+      "label": "Weak introduction",
+      "severity": 3,
+      "feedback": "While it's direct, this opening doesn't create intrigue. Try starting with a more compelling hook from your script, like describing the team's initial success, to draw the audience into the story.",
+      "category": "content"
+    },
+    {
+      "start": 1.5,
+      "end": 18.0,
+      "label": "Speaking pace too slow",
+      "severity": 3,
+      "feedback": "The first half of your speech is delivered at a very slow pace (approx. 109 WPM). While speaking clearly is important, try to inject a bit more energy to capture attention from the start.",
+      "category": "clarity"
+    },
+    {
+      "start": 4.5,
+      "end": 32.6,
+      "label": "Content-document mismatch",
+      "severity": 5,
+      "feedback": "The message delivered in the video is entirely negative, which completely contradicts the powerful story of resilience, learning, and future determination outlined in your supporting document. Ensure your spoken points reflect the core message of your script.",
+      "category": "content"
+    },
+    {
+      "start": 7.3,
+      "end": 10.2,
+      "label": "Awkward pause",
+      "severity": 4,
+      "feedback": "This pause is quite long and breaks the flow of your speech. Try to keep natural pauses under 2 seconds to maintain momentum and keep your audience engaged.",
+      "category": "clarity"
+    },
+    {
+      "start": 10.5,
+      "end": 21.0,
+      "label": "Lack of Emphasis",
+      "severity": 4,
+      "feedback": "When you say you 'did not make it to worlds,' it's a key point of your story. However, the flat delivery doesn't emphasize this disappointment. Try pausing briefly before this line and saying it with more conviction and emotion to help the audience feel the impact.",
+      "category": "inflection"
+    },
+    {
+      "start": 10.9,
+      "end": 29.4,
+      "label": "Unexplained key points",
+      "severity": 4,
+      "feedback": "The video focuses only on the negative outcome without explaining the context. Your script provides great details about the strong robot, unlucky matches, and minor malfunctions. Including these points would add depth and show that the outcome wasn't due to a lack of skill.",
+      "category": "content"
+    },
+    {
+      "start": 13.8,
+      "end": 16.0,
+      "label": "Repetition",
+      "severity": 3,
+      "feedback": "Repeating 'that' multiple times can signal nervousness. If you lose your train of thought, it's better to take a short, silent pause to collect yourself before continuing.",
+      "category": "clarity"
+    },
+    {
+      "start": 18.5,
+      "end": 20.2,
+      "label": "Distracting Self-Grooming Gesture",
+      "severity": 2,
+      "feedback": "Briefly touching your hair can be a self-soothing gesture that indicates nervousness. Be mindful of these habits, as they can distract the audience. Try channeling that energy into purposeful hand gestures instead.",
+      "category": "gestures"
+    },
+    {
+      "start": 24.5,
+      "end": 32.6,
+      "label": "Speaking pace too fast",
+      "severity": 5,
+      "feedback": "Your speaking pace accelerates dramatically here (over 270 WPM), making it difficult to understand. Remember to breathe and focus on enunciating each word, especially when you're passionate about the topic.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.5,
+      "end": 31.8,
+      "label": "Rushed Pace",
+      "severity": 4,
+      "feedback": "You speed up significantly here, which causes the words to blend together and lose their impact. While the increase in energy is good, try to control the pace. Enunciate your words clearly, especially when listing your frustrations, so the audience can follow along.",
+      "category": "inflection"
+    },
+    {
+      "start": 29.5,
+      "end": 32.6,
+      "label": "Repetitive Filler",
+      "severity": 4,
+      "feedback": "Repeating 'and then' at the end feels like a filler while searching for what to say next. It's more impactful to complete your thought and end with a confident stop.",
+      "category": "clarity"
+    },
+    {
+      "start": 29.5,
+      "end": 32.6,
+      "label": "Abrupt conclusion",
+      "severity": 4,
+      "feedback": "The presentation ends suddenly without a clear takeaway. A great conclusion summarizes the main point. Try ending with the inspiring message from your script about how the experience made the team more motivated for the future.",
+      "category": "content"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That that that that that is really unfortunate. And at the end of the day, we didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it was horrible. And then and then and then and then and then and then...",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": "supporting.docx",
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/94bdba69-215d-4069-a540-929d5e41607f"
+}

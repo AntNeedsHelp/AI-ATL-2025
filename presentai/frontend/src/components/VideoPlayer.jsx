@@ -243,11 +243,17 @@ export const VideoPlayer = ({ videoUrl, markers, activeFilter, onTimeUpdate, onM
     const video = videoRef.current;
     if (!video) return;
 
-    // Jump to 1 second before the marker for context
-    const jumpTime = Math.max(0, marker.start - 1);
-    video.currentTime = jumpTime;
-    setCurrentTime(jumpTime);
+    // IMPORTANT: Call onMarkerClick FIRST to set manual selection before time update
+    // This prevents the timeupdate event from overriding the clicked marker
     onMarkerClick(marker);
+    
+    // Then jump to 1 second before the marker for context
+    // Use requestAnimationFrame to ensure state update happens first
+    requestAnimationFrame(() => {
+      const jumpTime = Math.max(0, marker.start - 1);
+      video.currentTime = jumpTime;
+      setCurrentTime(jumpTime);
+    });
   };
 
   const formatTime = (seconds) => {

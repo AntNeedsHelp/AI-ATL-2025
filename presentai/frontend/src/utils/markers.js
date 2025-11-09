@@ -4,24 +4,28 @@ export const CATEGORIES = {
     color: '#FF9A5A',
     bgColor: 'bg-gestures',
     textColor: 'text-gestures',
+    description: 'This category evaluates your body language, hand gestures, posture, eye contact, and overall physical presence during your presentation. Good gestures help engage your audience and emphasize key points.',
   },
   inflection: {
     name: 'Speech/Inflection',
     color: '#FF8AD6',
     bgColor: 'bg-inflection',
     textColor: 'text-inflection',
+    description: 'This category assesses your vocal delivery including pitch variation, volume, tone, energy, and emphasis. Dynamic vocal inflection helps maintain audience interest and highlight important information.',
   },
   clarity: {
     name: 'Clarity',
     color: '#74D7FF',
     bgColor: 'bg-clarity',
     textColor: 'text-clarity',
+    description: 'This category measures speech clarity including words per minute (WPM), filler words, awkward pauses, and speaking pace. Clear communication ensures your message is easily understood.',
   },
   content: {
     name: 'Content',
     color: '#56C979',
     bgColor: 'bg-content',
     textColor: 'text-content',
+    description: 'This category evaluates the structure, organization, accuracy, and completeness of your presentation content. It includes logical flow, key point coverage, and accuracy verification against supporting documents.',
   },
 };
 
