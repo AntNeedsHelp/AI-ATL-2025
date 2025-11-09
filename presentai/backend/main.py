@@ -4,9 +4,10 @@ import json
 import shutil
 from typing import Optional
 from pathlib import Path
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
+from contextlib import asynccontextmanager
 import asyncio
 from dotenv import load_dotenv
 
@@ -15,7 +16,14 @@ load_dotenv()
 
 from ai_analyzer import AIAnalyzer
 
-app = FastAPI(title="PresentAI Backend")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup - routes are registered at this point
+    yield
+    # Shutdown (if needed)
+    pass
+
+app = FastAPI(title="PresentAI Backend", lifespan=lifespan)
 
 # CORS for local development
 app.add_middleware(
@@ -32,10 +40,24 @@ DATA_DIR.mkdir(exist_ok=True)
 
 # Job storage
 jobs = {}
+# Question generation status storage
+question_generation_status = {}  # job_id -> {"status": "generating"|"completed"|"failed", "questions": [], "error": ""}
 
 @app.get("/")
 async def root():
-    return {"status": "PresentAI Backend Running", "version": "1.0.0"}
+    return {
+        "status": "PresentAI Backend Running", 
+        "version": "1.0.0",
+        "endpoints": [
+            "/api/upload",
+            "/api/status/{job_id}",
+            "/api/result/{job_id}",
+            "/api/video/{job_id}",
+            "/api/generate-questions/{job_id}",
+            "/api/questions-status/{job_id}",
+            "/api/jobs/{job_id}",
+        ]
+    }
 
 @app.post("/api/upload")
 async def upload_video(
@@ -215,6 +237,131 @@ async def delete_job(job_id: str):
         return {"message": "Job deleted"}
     raise HTTPException(status_code=404, detail="Job not found")
 
+async def generate_questions_background(job_id: str, transcript: str):
+    """Background task to generate follow-up questions"""
+    print(f"[Question Generation] Starting background task for job {job_id}")
+    try:
+        question_generation_status[job_id] = {
+            "status": "generating",
+            "questions": [],
+            "error": None
+        }
+        print(f"[Question Generation] Status set to 'generating' for job {job_id}")
+        
+        print(f"[Question Generation] Creating AIAnalyzer for job {job_id}")
+        analyzer = AIAnalyzer()
+        print(f"[Question Generation] Calling generate_follow_up_questions for job {job_id}")
+        questions = await analyzer.generate_follow_up_questions(transcript)
+        print(f"[Question Generation] Received {len(questions) if questions else 0} questions for job {job_id}")
+        
+        if questions and len(questions) > 0:
+            question_generation_status[job_id] = {
+                "status": "completed",
+                "questions": questions,
+                "error": None
+            }
+            print(f"[Question Generation] Successfully completed for job {job_id}")
+        else:
+            question_generation_status[job_id] = {
+                "status": "failed",
+                "questions": [],
+                "error": "No questions were generated"
+            }
+            print(f"[Question Generation] Failed: No questions generated for job {job_id}")
+    except Exception as e:
+        print(f"[Question Generation] Error generating follow-up questions in background for job {job_id}: {e}")
+        import traceback
+        traceback.print_exc()
+        question_generation_status[job_id] = {
+            "status": "failed",
+            "questions": [],
+            "error": str(e)
+        }
+        print(f"[Question Generation] Status set to 'failed' for job {job_id}")
+
+@app.post("/api/generate-questions/{job_id}")
+async def generate_follow_up_questions(job_id: str, background_tasks: BackgroundTasks):
+    """Start generating follow-up questions in the background"""
+    print(f"[Question Generation] Request received for job {job_id}")
+    
+    # Check if job exists in file system
+    result_path = DATA_DIR / "jobs" / job_id / "result.json"
+    if not result_path.exists():
+        raise HTTPException(status_code=404, detail="Job results not found")
+    
+    with open(result_path, "r") as f:
+        result = json.load(f)
+    
+    # Check if transcript exists
+    transcript = result.get("transcript", "")
+    if not transcript or len(transcript.strip()) == 0:
+        raise HTTPException(
+            status_code=400, 
+            detail="No transcript available. The presentation may not have had any speech detected."
+        )
+    
+    print(f"[Question Generation] Transcript length: {len(transcript)} characters for job {job_id}")
+    
+    # Check if questions are already being generated or completed
+    if job_id in question_generation_status:
+        status = question_generation_status[job_id]["status"]
+        if status == "generating":
+            print(f"[Question Generation] Already generating for job {job_id}")
+            return {"status": "generating", "message": "Questions are being generated. Please check status."}
+        elif status == "completed":
+            print(f"[Question Generation] Already completed for job {job_id}")
+            return {"status": "completed", "questions": question_generation_status[job_id]["questions"]}
+        # If failed, allow retry by continuing
+        print(f"[Question Generation] Previous attempt failed, retrying for job {job_id}")
+    
+    # Start background task using FastAPI's BackgroundTasks
+    # This properly handles async functions and ensures they run after response is sent
+    background_tasks.add_task(generate_questions_background, job_id, transcript)
+    print(f"[Question Generation] Background task added for job {job_id}")
+    
+    # Return immediately - the background task will run after the response is sent
+    return {
+        "status": "generating",
+        "message": "Question generation started. Use GET /api/questions-status/{job_id} to check status."
+    }
+
+@app.get("/api/questions-status/{job_id}")
+async def get_questions_status(job_id: str):
+    """Get the status of question generation"""
+    if job_id not in question_generation_status:
+        raise HTTPException(status_code=404, detail="Question generation not started for this job")
+    
+    status_info = question_generation_status[job_id]
+    
+    # Log status check for debugging
+    print(f"[Question Generation] Status check for job {job_id}: {status_info['status']}")
+    
+    if status_info["status"] == "completed":
+        return {
+            "status": "completed",
+            "questions": status_info["questions"]
+        }
+    elif status_info["status"] == "failed":
+        return {
+            "status": "failed",
+            "error": status_info["error"] or "Unknown error occurred"
+        }
+    else:  # generating
+        return {
+            "status": "generating",
+            "message": "Questions are being generated. Please check again in a moment."
+        }
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # Print registered routes on startup
+    print("\n" + "=" * 60)
+    print("PresentAI Backend Starting...")
+    print("Registered API Routes:")
+    print("=" * 60)
+    for route in app.routes:
+        if hasattr(route, 'path') and hasattr(route, 'methods'):
+            methods = ', '.join(sorted(route.methods))
+            print(f"  {methods:20} {route.path}")
+    print("=" * 60 + "\n")
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)

@@ -469,3 +469,83 @@ Output as JSON:
             return "\n".join(para.text for para in doc.paragraphs)
         
         return ""
+    
+    async def generate_follow_up_questions(self, transcript: str) -> list:
+        """Generate follow-up questions based on the presentation transcript"""
+        
+        print(f"[AIAnalyzer] generate_follow_up_questions called with transcript length: {len(transcript) if transcript else 0}")
+        
+        if not transcript or len(transcript.strip()) == 0:
+            print("[AIAnalyzer] Empty transcript, returning empty list")
+            return []
+        
+        # Truncate transcript if too long (Gemini has token limits)
+        max_transcript_length = 50000  # Safe limit for Gemini
+        if len(transcript) > max_transcript_length:
+            print(f"[AIAnalyzer] Transcript too long ({len(transcript)} chars), truncating to {max_transcript_length}")
+            transcript = transcript[:max_transcript_length] + "..."
+        
+        prompt = f"""Based on the following presentation transcript, generate 5-8 thoughtful follow-up questions that an audience member might ask. These questions should:
+1. Show engagement with the content
+2. Seek clarification on key points
+3. Explore deeper aspects of the topic
+4. Be relevant and meaningful
+5. Vary in complexity (some simple, some more in-depth)
+
+Presentation Transcript:
+{transcript}
+
+Generate the questions as a JSON array of strings. Return ONLY the JSON array, no additional text.
+
+Example format:
+[
+  "What was the main factor that led to this outcome?",
+  "How would you apply this approach in a different context?",
+  "Can you elaborate on the methodology you mentioned?"
+]"""
+
+        try:
+            print(f"[AIAnalyzer] Calling Gemini API for question generation...")
+            import time
+            start_time = time.time()
+            
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=[prompt]
+            )
+            
+            elapsed_time = time.time() - start_time
+            print(f"[AIAnalyzer] Gemini API call completed in {elapsed_time:.2f} seconds")
+            
+            # Parse JSON from response
+            text = response.text.strip()
+            print(f"[AIAnalyzer] Raw response length: {len(text)} characters")
+            
+            # Remove markdown code blocks if present
+            if text.startswith("```json"):
+                text = text[7:]
+            elif text.startswith("```"):
+                text = text[3:]
+            if text.endswith("```"):
+                text = text[:-3]
+            
+            questions = json.loads(text.strip())
+            print(f"[AIAnalyzer] Parsed {len(questions) if isinstance(questions, list) else 0} questions")
+            
+            # Ensure it's a list
+            if isinstance(questions, list):
+                return questions
+            else:
+                print("[AIAnalyzer] Response is not a list, returning empty list")
+                return []
+                
+        except Exception as e:
+            print(f"[AIAnalyzer] Error generating follow-up questions: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            # Return some generic questions as fallback
+            return [
+                "Can you provide more details on this topic?",
+                "What are the key takeaways from this presentation?",
+                "How would you apply this in practice?",
+            ]

@@ -2,12 +2,13 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import { getResult } from '../utils/api';
+import { getResult, generateFollowUpQuestions, checkQuestionsStatus } from '../utils/api';
 import { getCurrentMarker } from '../utils/markers';
 import { ScoreCards } from '../components/ScoreCards';
 import { VideoPlayer } from '../components/VideoPlayer';
 import { CategoryFilters } from '../components/CategoryFilters';
 import { FeedbackPanel } from '../components/FeedbackPanel';
+import { FollowUpQuestions } from '../components/FollowUpQuestions';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -24,6 +25,11 @@ export const Results = () => {
   const manualSelectionTimeoutRef = useRef(null);
   // Use a ref to track manual selection immediately (synchronous) to avoid race conditions
   const manualSelectionRef = useRef(null);
+  const [followUpQuestions, setFollowUpQuestions] = useState(null);
+  const [loadingQuestions, setLoadingQuestions] = useState(false);
+  const [questionsError, setQuestionsError] = useState('');
+  const pollingIntervalRef = useRef(null);
+  const pollingTimeoutRef = useRef(null);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -145,14 +151,101 @@ export const Results = () => {
     }, 300);
   };
   
-  // Cleanup timeout on unmount
+  // Cleanup timeouts and intervals on unmount
   useEffect(() => {
     return () => {
       if (manualSelectionTimeoutRef.current) {
         clearTimeout(manualSelectionTimeoutRef.current);
       }
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+      }
+      if (pollingTimeoutRef.current) {
+        clearTimeout(pollingTimeoutRef.current);
+      }
     };
   }, []);
+
+  const handleGenerateQuestions = async () => {
+    if (!jobId) return;
+    
+    // Clear any existing polling
+    if (pollingIntervalRef.current) {
+      clearInterval(pollingIntervalRef.current);
+      pollingIntervalRef.current = null;
+    }
+    if (pollingTimeoutRef.current) {
+      clearTimeout(pollingTimeoutRef.current);
+      pollingTimeoutRef.current = null;
+    }
+    
+    setLoadingQuestions(true);
+    setQuestionsError('');
+    setFollowUpQuestions(null);
+    
+    try {
+      // Start the background generation
+      const result = await generateFollowUpQuestions(jobId);
+      
+      // If questions are already available (completed), use them
+      if (result.status === 'completed' && result.questions) {
+        setFollowUpQuestions(result.questions);
+        setLoadingQuestions(false);
+        return;
+      }
+      
+      // Otherwise, poll for status
+      pollingIntervalRef.current = setInterval(async () => {
+        try {
+          const statusResult = await checkQuestionsStatus(jobId);
+          
+          if (statusResult.status === 'completed') {
+            if (pollingIntervalRef.current) {
+              clearInterval(pollingIntervalRef.current);
+              pollingIntervalRef.current = null;
+            }
+            if (pollingTimeoutRef.current) {
+              clearTimeout(pollingTimeoutRef.current);
+              pollingTimeoutRef.current = null;
+            }
+            setFollowUpQuestions(statusResult.questions || []);
+            setLoadingQuestions(false);
+          } else if (statusResult.status === 'failed') {
+            if (pollingIntervalRef.current) {
+              clearInterval(pollingIntervalRef.current);
+              pollingIntervalRef.current = null;
+            }
+            if (pollingTimeoutRef.current) {
+              clearTimeout(pollingTimeoutRef.current);
+              pollingTimeoutRef.current = null;
+            }
+            setQuestionsError(statusResult.error || 'Failed to generate questions. Please try again.');
+            setLoadingQuestions(false);
+          }
+          // If still generating, continue polling
+        } catch (err) {
+          console.error('Error checking question status:', err);
+          // Don't stop polling on transient errors
+        }
+      }, 2000); // Poll every 2 seconds
+      
+      // Stop polling after 120 seconds max (2 minutes)
+      pollingTimeoutRef.current = setTimeout(() => {
+        if (pollingIntervalRef.current) {
+          clearInterval(pollingIntervalRef.current);
+          pollingIntervalRef.current = null;
+        }
+        setLoadingQuestions(false);
+        setQuestionsError('Question generation is taking longer than expected. Please check the server logs or try again.');
+        pollingTimeoutRef.current = null;
+      }, 120000); // Increased to 2 minutes
+      
+    } catch (err) {
+      console.error('Error starting question generation:', err);
+      setQuestionsError(err.message || 'Failed to start question generation. Please try again.');
+      setLoadingQuestions(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -261,6 +354,47 @@ export const Results = () => {
           transition={{ delay: 0.5 }}
         >
           <FeedbackPanel currentMarker={selectedMarker} />
+        </motion.div>
+
+        {/* Follow-Up Questions Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-6"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent">
+              Audience Engagement
+            </h2>
+            <button
+              onClick={handleGenerateQuestions}
+              disabled={loadingQuestions || !data?.transcript || !data?.transcript.trim()}
+              className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong text-brand-text font-semibold shadow-lg shadow-brand-accent/20 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center space-x-2"
+              title={!data?.transcript || !data?.transcript.trim() ? "No transcript available for this presentation" : "Generate AI-powered follow-up questions"}
+            >
+              {loadingQuestions ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-brand-text border-t-transparent rounded-full animate-spin" />
+                  <span>Generating...</span>
+                </>
+              ) : (
+                <>
+                  <span>Generate Follow-Up Questions</span>
+                </>
+              )}
+            </button>
+          </div>
+          
+          <FollowUpQuestions
+            questions={followUpQuestions}
+            loading={loadingQuestions}
+            error={questionsError}
+            onClose={() => {
+              setFollowUpQuestions(null);
+              setQuestionsError('');
+            }}
+          />
         </motion.div>
       </div>
     </div>

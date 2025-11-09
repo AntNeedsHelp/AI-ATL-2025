@@ -15,6 +15,5 @@ Registered API Routes:
   GET                  /api/video/{job_id}
   DELETE               /api/jobs/{job_id}
   POST                 /api/generate-questions/{job_id}
-  GET                  /api/questions-status/{job_id}
 ============================================================
 

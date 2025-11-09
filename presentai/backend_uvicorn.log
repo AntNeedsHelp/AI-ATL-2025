@@ -1,0 +1,48 @@
+INFO:     Started server process [24868]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:50685 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50748 - "GET /api/result/9db79a65-3793-436e-847d-81f288fca46d HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50749 - "GET /api/result/9db79a65-3793-436e-847d-81f288fca46d HTTP/1.1" 404 Not Found
+File processing... state: ACTIVE, waited: 2s
+File ready! State: ACTIVE, URI: https://generativelanguage.googleapis.com/v1beta/files/25x2gn80lu26
+Starting speech analysis...
+Speech analysis complete
+INFO:     127.0.0.1:50752 - "POST /api/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50752 - "GET /api/status/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50752 - "GET /api/status/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50752 - "GET /api/result/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50774 - "GET /api/result/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50801 - "GET /api/video/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50801 - "OPTIONS /api/generate-questions/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+[Question Generation] Request received for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Transcript length: 326 characters for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Background task added for job 0f37906f-f664-46fa-992e-2815c07c1a67
+INFO:     127.0.0.1:50801 - "POST /api/generate-questions/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+[Question Generation] Starting background task for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Status set to 'generating' for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Creating AIAnalyzer for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Calling generate_follow_up_questions for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[AIAnalyzer] generate_follow_up_questions called with transcript length: 326
+[AIAnalyzer] Calling Gemini API for question generation...
+[AIAnalyzer] Gemini API call completed in 26.90 seconds
+[AIAnalyzer] Raw response length: 1441 characters
+[AIAnalyzer] Parsed 7 questions
+[Question Generation] Received 7 questions for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Successfully completed for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Status check for job 0f37906f-f664-46fa-992e-2815c07c1a67: completed
+INFO:     127.0.0.1:50819 - "GET /api/questions-status/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51528 - "OPTIONS /api/generate-questions/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+[Question Generation] Request received for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Transcript length: 326 characters for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Already completed for job 0f37906f-f664-46fa-992e-2815c07c1a67
+INFO:     127.0.0.1:51528 - "POST /api/generate-questions/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+[Question Generation] Status check for job 0f37906f-f664-46fa-992e-2815c07c1a67: completed
+INFO:     127.0.0.1:51528 - "GET /api/questions-status/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+[Question Generation] Request received for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Transcript length: 326 characters for job 0f37906f-f664-46fa-992e-2815c07c1a67
+[Question Generation] Already completed for job 0f37906f-f664-46fa-992e-2815c07c1a67
+INFO:     127.0.0.1:51531 - "POST /api/generate-questions/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK
+[Question Generation] Status check for job 0f37906f-f664-46fa-992e-2815c07c1a67: completed
+INFO:     127.0.0.1:51531 - "GET /api/questions-status/0f37906f-f664-46fa-992e-2815c07c1a67 HTTP/1.1" 200 OK

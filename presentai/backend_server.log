@@ -1,4 +1,3 @@
-WARNING:  You must pass the application as an import string to enable 'reload' or 'workers'.
 
 ============================================================
 PresentAI Backend Starting...
@@ -18,3 +17,4 @@ Registered API Routes:
   GET                  /api/questions-status/{job_id}
 ============================================================
 
+WARNING:  You must pass the application as an import string to enable 'reload' or 'workers'.
