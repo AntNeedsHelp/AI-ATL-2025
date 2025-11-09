@@ -412,13 +412,33 @@ export const FeedbackPanel = ({ currentMarker }) => {
                 </div>
               )}
 
-              {/* Gesture Video Generating Message (only if no video_url yet) */}
+              {/* Gesture Video Button States */}
               {currentMarker.category === "gestures" && !currentMarker.video_url && (
-                <div className="flex-shrink-0">
-                  <div className="w-14 h-14 rounded-full flex items-center justify-center bg-brand-surface-alt border border-brand-border/60">
-                    <span className="text-xs text-brand-muted">⏳</span>
-                  </div>
-                </div>
+                <>
+                  {/* Video Generation Failed - Show disabled video icon */}
+                  {currentMarker.video_generation_failed ? (
+                    <div
+                      className="relative"
+                      title="Video generation failed. The improved gesture video could not be generated."
+                    >
+                      <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center bg-brand-surface-alt border border-brand-border/60 opacity-60 cursor-not-allowed">
+                        <Video className="w-7 h-7 text-brand-muted" />
+                      </div>
+                      {/* Tooltip showing failure message */}
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-brand-background text-brand-text text-xs rounded-lg opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-20 shadow-xl border border-brand-border/60">
+                        Video could not be generated
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-brand-background" />
+                      </div>
+                    </div>
+                  ) : (
+                    /* Video Still Generating (no failed flag, no video_url) */
+                    <div className="flex-shrink-0">
+                      <div className="w-14 h-14 rounded-full flex items-center justify-center bg-brand-surface-alt border border-brand-border/60">
+                        <span className="text-xs text-brand-muted" title="Video is still being generated">⏳</span>
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 

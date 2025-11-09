@@ -396,23 +396,34 @@ export const Results = () => {
             <h2 className="text-2xl font-bold bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong bg-clip-text text-transparent">
               Audience Engagement
             </h2>
-            <button
-              onClick={handleGenerateQuestions}
-              disabled={loadingQuestions || !data?.transcript || !data?.transcript.trim()}
-              className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong text-brand-text font-semibold shadow-lg shadow-brand-accent/20 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center space-x-2"
-              title={!data?.transcript || !data?.transcript.trim() ? "No transcript available for this presentation" : "Generate AI-powered follow-up questions"}
-            >
-              {loadingQuestions ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-brand-text border-t-transparent rounded-full animate-spin" />
-                  <span>Generating...</span>
-                </>
-              ) : (
-                <>
-                  <span>Generate Follow-Up Questions</span>
-                </>
-              )}
-            </button>
+            {!data?.transcript || !data?.transcript.trim() ? (
+              <div className="text-right">
+                <p className="text-sm text-brand-muted mb-1">
+                  ⚠️ No transcript available
+                </p>
+                <p className="text-xs text-brand-muted-dark">
+                  The video may not have had speech detected. Please re-upload.
+                </p>
+              </div>
+            ) : (
+              <button
+                onClick={handleGenerateQuestions}
+                disabled={loadingQuestions}
+                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-accent-soft via-brand-accent to-brand-accent-strong text-brand-text font-semibold shadow-lg shadow-brand-accent/20 hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center space-x-2"
+                title="Generate AI-powered follow-up questions"
+              >
+                {loadingQuestions ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-brand-text border-t-transparent rounded-full animate-spin" />
+                    <span>Generating...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Generate Follow-Up Questions</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
           
           <FollowUpQuestions

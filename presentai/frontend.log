@@ -65,3 +65,147 @@
 2:15:48 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
 2:15:58 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
 2:16:08 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+2:19:03 AM [vite] (client) hmr update /src/pages/Results.jsx, /src/index.css
+2:19:03 AM [vite] Internal server error: /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/src/pages/Results.jsx: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (426:10)
+
+  424 |               )}
+  425 |             </button>
+> 426 |           </div>
+      |           ^
+  427 |           
+  428 |           <FollowUpQuestions
+  429 |             questions={followUpQuestions}
+  Plugin: vite:react-babel
+  File: /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/src/pages/Results.jsx:426:10
+  424 |                )}
+  425 |              </button>
+  426 |            </div>
+      |            ^
+  427 |            
+  428 |            <FollowUpQuestions
+      at constructor (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+      at JSXParserMixin.raise (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4771:18)
+      at JSXParserMixin.jsxParseElement (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4778:17)
+      at JSXParserMixin.parseExprAtom (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4788:19)
+      at JSXParserMixin.parseExprSubscripts (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+      at JSXParserMixin.parseUpdate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+      at JSXParserMixin.parseExprOps (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10864:39
+      at JSXParserMixin.allowInAnd (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+      at JSXParserMixin.parseMaybeAssignAllowIn (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10864:17)
+      at JSXParserMixin.parseMaybeAssignAllowInOrVoidPattern (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:12567:17)
+      at JSXParserMixin.parseParenAndDistinguishExpression (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11747:28)
+      at JSXParserMixin.parseExprAtom (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11395:23)
+      at JSXParserMixin.parseExprAtom (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4793:20)
+      at JSXParserMixin.parseExprSubscripts (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+      at JSXParserMixin.parseUpdate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+      at JSXParserMixin.parseExprOps (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at JSXParserMixin.parseConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10957:29)
+      at JSXParserMixin.parseMaybeConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10949:17)
+      at JSXParserMixin.parseMaybeAssign (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at JSXParserMixin.parseExpressionBase (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10848:23)
+      at /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10844:39
+      at JSXParserMixin.allowInAnd (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+      at JSXParserMixin.parseExpression (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10844:17)
+      at JSXParserMixin.jsxParseExpressionContainer (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4661:31)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4740:36)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+      at JSXParserMixin.jsxParseElement (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4778:17)
+      at JSXParserMixin.parseExprAtom (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4788:19)
+      at JSXParserMixin.parseExprSubscripts (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+      at JSXParserMixin.parseUpdate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+      at JSXParserMixin.parseExprOps (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10864:39
+      at JSXParserMixin.allowInAnd (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+      at JSXParserMixin.parseMaybeAssignAllowIn (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10864:17)
+2:19:03 AM [vite] Internal server error: /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/src/pages/Results.jsx: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (426:10)
+
+  424 |               )}
+  425 |             </button>
+> 426 |           </div>
+      |           ^
+  427 |           
+  428 |           <FollowUpQuestions
+  429 |             questions={followUpQuestions}
+  Plugin: vite:react-babel
+  File: /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/src/pages/Results.jsx:426:10
+  424 |                )}
+  425 |              </button>
+  426 |            </div>
+      |            ^
+  427 |            
+  428 |            <FollowUpQuestions
+      at constructor (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:367:19)
+      at JSXParserMixin.raise (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:6624:19)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4771:18)
+      at JSXParserMixin.jsxParseElement (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4778:17)
+      at JSXParserMixin.parseExprAtom (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4788:19)
+      at JSXParserMixin.parseExprSubscripts (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+      at JSXParserMixin.parseUpdate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+      at JSXParserMixin.parseExprOps (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10864:39
+      at JSXParserMixin.allowInAnd (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+      at JSXParserMixin.parseMaybeAssignAllowIn (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10864:17)
+      at JSXParserMixin.parseMaybeAssignAllowInOrVoidPattern (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:12567:17)
+      at JSXParserMixin.parseParenAndDistinguishExpression (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11747:28)
+      at JSXParserMixin.parseExprAtom (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11395:23)
+      at JSXParserMixin.parseExprAtom (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4793:20)
+      at JSXParserMixin.parseExprSubscripts (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+      at JSXParserMixin.parseUpdate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+      at JSXParserMixin.parseExprOps (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at JSXParserMixin.parseConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10957:29)
+      at JSXParserMixin.parseMaybeConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10949:17)
+      at JSXParserMixin.parseMaybeAssign (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at JSXParserMixin.parseExpressionBase (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10848:23)
+      at /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10844:39
+      at JSXParserMixin.allowInAnd (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+      at JSXParserMixin.parseExpression (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10844:17)
+      at JSXParserMixin.jsxParseExpressionContainer (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4661:31)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4740:36)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+      at JSXParserMixin.jsxParseElementAt (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4727:32)
+      at JSXParserMixin.jsxParseElement (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4778:17)
+      at JSXParserMixin.parseExprAtom (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:4788:19)
+      at JSXParserMixin.parseExprSubscripts (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11145:23)
+      at JSXParserMixin.parseUpdate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11130:21)
+      at JSXParserMixin.parseMaybeUnary (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:11110:23)
+      at JSXParserMixin.parseMaybeUnaryOrPrivate (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10963:61)
+      at JSXParserMixin.parseExprOps (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10968:23)
+      at JSXParserMixin.parseMaybeConditional (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10945:23)
+      at JSXParserMixin.parseMaybeAssign (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10895:21)
+      at /Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10864:39
+      at JSXParserMixin.allowInAnd (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:12500:12)
+      at JSXParserMixin.parseMaybeAssignAllowIn (/Users/rishidesai/Documents/AI-ATL-2025/presentai/frontend/node_modules/@babel/parser/lib/index.js:10864:17)
+2:19:07 AM [vite] (client) hmr update /src/pages/Results.jsx, /src/index.css
+2:19:18 AM [vite] (client) hmr update /src/pages/Results.jsx, /src/index.css
+2:19:29 AM [vite] (client) hmr update /src/pages/Results.jsx, /src/index.css
+2:20:06 AM [vite] (client) hmr update /src/pages/Results.jsx, /src/index.css
+2:22:57 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+2:23:38 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+2:24:07 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+2:24:35 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+2:25:51 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx

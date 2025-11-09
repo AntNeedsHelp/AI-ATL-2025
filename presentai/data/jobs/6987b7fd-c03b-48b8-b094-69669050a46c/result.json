@@ -1,0 +1,200 @@
+{
+  "scores": {
+    "gestures": 10,
+    "inflection": 8,
+    "clarity": 0,
+    "content": 7,
+    "total": 25
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 2.2,
+      "label": "Awkward pause",
+      "severity": 4,
+      "feedback": "There's a noticeable pause before you begin speaking. Jump directly into your opening statement to capture attention and project confidence from the start.",
+      "category": "clarity"
+    },
+    {
+      "start": 0.0,
+      "end": 5.0,
+      "label": "Lack of a clear introduction and thesis",
+      "severity": 4,
+      "feedback": "The presentation begins abruptly without establishing the topic or main point. Start with a clear introductory sentence to orient the audience, such as, 'I'm going to discuss a frustrating player strategy in the game Clash Royale.'",
+      "category": "content"
+    },
+    {
+      "start": 0.0,
+      "end": 30.6,
+      "label": "Disorganized structure and poor logical flow",
+      "severity": 5,
+      "feedback": "The presentation lacks a clear structure (introduction, body, conclusion) and feels more like a stream-of-consciousness rant. Organize your thoughts into distinct points and present them in a logical sequence to build a coherent argument.",
+      "category": "content"
+    },
+    {
+      "start": 0.5,
+      "end": 3.78,
+      "label": "Downcast gaze and hesitant start",
+      "severity": 4,
+      "feedback": "Your presentation begins the moment you are visible. Start by looking directly at the camera with a neutral or pleasant expression. Looking down signals a lack of confidence and preparedness before you've even said a word.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/6987b7fd-c03b-48b8-b094-69669050a46c/0"
+    },
+    {
+      "start": 0.5,
+      "end": 9.5,
+      "label": "Low vocal energy and flat tone",
+      "severity": 4,
+      "feedback": "Your vocal energy is very low from the start, making you sound disengaged. Try to inject more enthusiasm into your voice to match the passion you have for your \"favorite game.\" A more energetic tone will draw the listener in.",
+      "category": "inflection"
+    },
+    {
+      "start": 2.2,
+      "end": 2.5,
+      "label": "Filler word: 'So'",
+      "severity": 3,
+      "feedback": "Starting a presentation with 'So' is a common habit that can sound informal and hesitant. Try beginning directly with your main point.",
+      "category": "clarity"
+    },
+    {
+      "start": 3.4,
+      "end": 3.8,
+      "label": "Filler word: 'like'",
+      "severity": 3,
+      "feedback": "Using 'like' as a filler weakens the statement. Instead of 'it's like my favorite game,' try a more direct statement such as 'it is my favorite game.'",
+      "category": "clarity"
+    },
+    {
+      "start": 3.78,
+      "end": 8.01,
+      "label": "Self-protective hand clasping ('Fig Leaf' posture)",
+      "severity": 3,
+      "feedback": "Clasping your hands low in front of your body is a self-protective gesture that makes you appear nervous and closed off. Strive to keep your hands relaxed at your sides, ready to make open, purposeful gestures.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/6987b7fd-c03b-48b8-b094-69669050a46c/1"
+    },
+    {
+      "start": 5.0,
+      "end": 5.4,
+      "label": "Filler word: 'um'",
+      "severity": 3,
+      "feedback": "The filler 'um' breaks the flow of your sentence. A brief, silent pause is more effective for gathering your thoughts.",
+      "category": "clarity"
+    },
+    {
+      "start": 5.0,
+      "end": 26.5,
+      "label": "Underdeveloped key point with vague terminology",
+      "severity": 5,
+      "feedback": "The central argument relies on vague terms like 'really bad decks' and 'all the worst cards' without providing specific examples or explaining why these decks are problematic. To make your point clear, define what you mean by a 'bad deck' and give concrete examples of the cards or strategies you're referring to.",
+      "category": "content"
+    },
+    {
+      "start": 5.9,
+      "end": 6.3,
+      "label": "Word repetition",
+      "severity": 3,
+      "feedback": "The repetition of 'I'm I'm' indicates slight hesitation. Speaking at a slightly more deliberate pace can help eliminate these stumbles.",
+      "category": "clarity"
+    },
+    {
+      "start": 9.9,
+      "end": 10.3,
+      "label": "Filler word: 'like'",
+      "severity": 3,
+      "feedback": "Another instance of 'like' used as a filler. Be mindful of this word and practice phrasing sentences without it to sound more articulate.",
+      "category": "clarity"
+    },
+    {
+      "start": 11.2,
+      "end": 17.1,
+      "label": "Monotone delivery on key points",
+      "severity": 5,
+      "feedback": "You deliver important phrases like \"people that I don't think are good\" and \"really bad decks\" in a flat monotone. This severely weakens your point and makes it difficult for the audience to grasp what's important. Vary your pitch and add stress to these key ideas to make them stand out.",
+      "category": "inflection"
+    },
+    {
+      "start": 11.23,
+      "end": 24.11,
+      "label": "Restless and repetitive hand movements",
+      "severity": 3,
+      "feedback": "Your hand movements appear fidgety and lack clear intent. Every gesture should have a purpose, such as emphasizing a point or illustrating an idea. Avoid simply wringing your hands or making small, repetitive motions, as it's distracting.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/6987b7fd-c03b-48b8-b094-69669050a46c/2"
+    },
+    {
+      "start": 15.5,
+      "end": 20.6,
+      "label": "Extended hesitation with multiple fillers",
+      "severity": 5,
+      "feedback": "This 5-second sequence containing 'Like, um, like... like' and a long pause significantly disrupts the presentation's flow and clarity. It's crucial to pause silently to structure your next sentence rather than filling the space with multiple verbal tics.",
+      "category": "clarity"
+    },
+    {
+      "start": 20.7,
+      "end": 26.5,
+      "label": "Rushed speech and lack of emotional expression",
+      "severity": 4,
+      "feedback": "When describing the core of your frustration, your pace becomes rushed and your tone remains flat. This disconnects the emotion from your words. Slow down and allow your frustration to come through in your voice by emphasizing words like \"worst\" and \"terrible.\"",
+      "category": "inflection"
+    },
+    {
+      "start": 23.4,
+      "end": 23.8,
+      "label": "Filler phrase: 'I feel like'",
+      "severity": 3,
+      "feedback": "The phrase 'I feel like' can diminish the confidence of your statement. Consider stronger phrasing like 'I think' or 'In my opinion' for greater impact.",
+      "category": "clarity"
+    },
+    {
+      "start": 23.5,
+      "end": 26.0,
+      "label": "Weak emphasis",
+      "severity": 4,
+      "feedback": "The phrase \"that's just a terrible thing to do\" is a key point of your argument, but it's delivered with almost no vocal emphasis. This is a missed opportunity to convey strong feelings. Stress the word \"terrible\" to add weight and emotional impact to your statement.",
+      "category": "inflection"
+    },
+    {
+      "start": 24.51,
+      "end": 29.35,
+      "label": "Crossed arms (highly defensive posture)",
+      "severity": 5,
+      "feedback": "Crossing your arms is a major non-verbal barrier. It signals defensiveness, disagreement, and completely closes you off from your audience. This posture can severely undermine your credibility and the audience's willingness to connect with your message. Always maintain an open stance.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/6987b7fd-c03b-48b8-b094-69669050a46c/3"
+    },
+    {
+      "start": 26.3,
+      "end": 27.2,
+      "label": "Word repetition",
+      "severity": 4,
+      "feedback": "Repeating 'because because' suggests you are searching for your next thought. Take a moment to formulate the complete reason before you start speaking to ensure a smooth delivery.",
+      "category": "clarity"
+    },
+    {
+      "start": 28.5,
+      "end": 30.6,
+      "label": "Incomplete sentence / Trailing off",
+      "severity": 5,
+      "feedback": "The video ends on an unfinished thought, which can leave the audience confused and makes the statement ineffective. Always complete your sentences to ensure your point is fully communicated.",
+      "category": "clarity"
+    },
+    {
+      "start": 30.0,
+      "end": 30.6,
+      "label": "Missing conclusion and abrupt ending",
+      "severity": 4,
+      "feedback": "The video ends suddenly without any summary or concluding remarks. A presentation should end with a conclusion that recaps the main points and provides a sense of closure for the audience.",
+      "category": "content"
+    }
+  ],
+  "transcript": "So, with Clash Royale, it's like my favorite game and um I'm I'm really good at it, and I'm in Arena 15, and like sometimes when I play people that I don't think are good, they use really bad decks. Like, um, like... like they'll put all the worst cards in the game and I feel like that's just a terrible thing to do because because... well they're not playing with...",
+  "metadata": {
+    "duration": 30.633333,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/6987b7fd-c03b-48b8-b094-69669050a46c"
+}

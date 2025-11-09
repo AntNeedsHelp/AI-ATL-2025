@@ -249,7 +249,12 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
             print(f"[Veo] Error generating gesture videos: {str(e)}")
             import traceback
             traceback.print_exc()
-            # Continue even if video generation fails
+            # Mark all gesture markers that don't have video_url as failed
+            for marker in result.get("markers", []):
+                if marker.get("category") == "gestures" and not marker.get("video_url"):
+                    marker["video_generation_failed"] = True
+                    print(f"[Veo] Marked marker at {marker.get('start')}s as video_generation_failed=True (exception during generation)")
+            # Continue even if video generation fails - app should still work
         
         jobs[job_id]["progress"] = 95
         jobs[job_id]["message"] = "Finalizing results..."
@@ -292,12 +297,30 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
         print(f"[Veo] Job {job_id} marked as completed")
         
     except Exception as e:
-        # Check if result.json was saved before the error
+        # Always try to save result.json if we have results, even if there was an error
         result_path = Path(video_path).parent / "result.json"
+        
+        # If we have results but result.json doesn't exist, save it
+        if "result" in locals() and result and not result_path.exists():
+            try:
+                result["video_url"] = f"/api/video/{job_id}"
+                # Mark any gesture markers without videos as failed
+                for marker in result.get("markers", []):
+                    if marker.get("category") == "gestures" and not marker.get("video_url"):
+                        marker["video_generation_failed"] = True
+                
+                with open(result_path, "w") as f:
+                    json.dump(result, f, indent=2)
+                print(f"[WARNING] Saved result.json despite error: {str(e)}")
+            except Exception as save_err:
+                print(f"[ERROR] Failed to save result.json: {save_err}")
+        
+        # Check if result.json exists (either was saved before or just saved)
         if result_path.exists():
             print(f"[WARNING] Job {job_id} encountered error but result.json exists: {str(e)}")
-            print(f"[WARNING] Result.json will be available even though job status is 'failed'")
+            print(f"[WARNING] Result.json will be available even though job status may be 'failed'")
             # Don't overwrite the existing result.json - it may have valid data
+            # Don't mark as failed - allow frontend to load results
         else:
             # Only mark as failed if result.json doesn't exist
             jobs[job_id]["status"] = "failed"

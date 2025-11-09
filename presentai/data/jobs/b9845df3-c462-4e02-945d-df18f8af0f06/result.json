@@ -1,0 +1,143 @@
+{
+  "scores": {
+    "gestures": 19,
+    "inflection": 20,
+    "clarity": 11,
+    "content": 21,
+    "total": 71
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 5.2,
+      "label": "Hesitant start",
+      "severity": 2,
+      "feedback": "Your start feels a little uncertain. Take a confident breath and start your first sentence with clear intention and volume to immediately capture your audience's attention.",
+      "category": "inflection"
+    },
+    {
+      "start": 0.0,
+      "end": 30.6,
+      "label": "Lacks clear structure",
+      "severity": 3,
+      "feedback": "Your points seem to be presented as they come to mind. Try outlining your main ideas beforehand to create a more logical and easy-to-follow flow for your audience.",
+      "category": "content"
+    },
+    {
+      "start": 0.6,
+      "end": 3.0,
+      "label": "Avoiding Eye Contact",
+      "severity": 3,
+      "feedback": "You start by looking down, which can project a lack of confidence. Try to begin by looking directly at the camera to immediately engage your audience.",
+      "category": "gestures",
+      "video_generation_failed": true
+    },
+    {
+      "start": 3.4,
+      "end": 3.9,
+      "label": "Filler word: 'like'",
+      "severity": 3,
+      "feedback": "Try to pause and gather your thoughts instead of using 'like'. This helps your message sound more confident and clear.",
+      "category": "clarity"
+    },
+    {
+      "start": 6.0,
+      "end": 6.5,
+      "label": "Filler word: 'um'",
+      "severity": 2,
+      "feedback": "When you feel an 'um' coming, try taking a silent pause instead. It gives you a moment to think and makes your speech sound more deliberate.",
+      "category": "clarity"
+    },
+    {
+      "start": 6.7,
+      "end": 7.1,
+      "label": "Repetition",
+      "severity": 2,
+      "feedback": "You repeated 'I'm'. Slowing down slightly can help prevent these small stumbles and improve fluency.",
+      "category": "clarity"
+    },
+    {
+      "start": 11.2,
+      "end": 11.7,
+      "label": "Filler word: 'like'",
+      "severity": 3,
+      "feedback": "Great energy! To make your points even stronger, try replacing 'like' with a short, silent pause. This adds impact to your words.",
+      "category": "clarity"
+    },
+    {
+      "start": 17.5,
+      "end": 20.2,
+      "label": "Fidgeting Hands",
+      "severity": 2,
+      "feedback": "Your hands appear to be fidgeting slightly here. When not gesturing, allowing them to rest calmly at your sides can make you appear more relaxed and in control.",
+      "category": "gestures",
+      "video_generation_failed": true
+    },
+    {
+      "start": 17.9,
+      "end": 21.0,
+      "label": "Multiple filler words",
+      "severity": 4,
+      "feedback": "You used several filler words in a row here ('Like, um like like'). Practice stating your point directly. For example, 'They put all the worst cards in the game.' This sounds more assertive.",
+      "category": "clarity"
+    },
+    {
+      "start": 23.4,
+      "end": 23.9,
+      "label": "Filler word: 'like'",
+      "severity": 3,
+      "feedback": "You're doing a good job explaining your thoughts. To enhance clarity, try to be more direct. Instead of 'I feel like that's...', you can say 'That is...'. It's a small change that adds conviction.",
+      "category": "clarity"
+    },
+    {
+      "start": 23.9,
+      "end": 29.2,
+      "label": "Crossed Arms (Closed Posture)",
+      "severity": 4,
+      "feedback": "Crossing your arms can signal defensiveness or discomfort to an audience. Try to maintain an open posture with your arms uncrossed to appear more approachable and confident.",
+      "category": "gestures",
+      "video_generation_failed": true
+    },
+    {
+      "start": 24.1,
+      "end": 28.1,
+      "label": "Body language",
+      "severity": 3,
+      "feedback": "Crossing your arms can signal defensiveness or closed-off feelings to an audience. Try to keep your posture open and use gestures to emphasize your points, as you did earlier in the clip.",
+      "category": "inflection"
+    },
+    {
+      "start": 26.8,
+      "end": 28.3,
+      "label": "Repetition",
+      "severity": 4,
+      "feedback": "Repeating 'because' happened as you were searching for the next thought. Taking a moment to breathe and formulate your complete sentence before speaking can help eliminate this.",
+      "category": "clarity"
+    },
+    {
+      "start": 27.2,
+      "end": 30.6,
+      "label": "Monotone delivery",
+      "severity": 3,
+      "feedback": "You lost a bit of vocal energy here, and your pitch flattened out. Try to maintain your energy through the end of your thought and use pitch variation to convey your frustration or conviction.",
+      "category": "inflection"
+    },
+    {
+      "start": 28.5,
+      "end": 30.6,
+      "label": "Abrupt ending",
+      "severity": 3,
+      "feedback": "The video ends suddenly without a proper conclusion. Plan a concluding statement to summarize your main point and provide a sense of closure.",
+      "category": "content"
+    }
+  ],
+  "transcript": "So, Clash Royale. It's like my favorite game and um I'm I'm really good at it. And I'm in Arena 15. And like sometimes when I play people that I don't think are good, they use really bad decks. Like, um like like they'll put all the worst cards in the game and I feel like that's a just a terrible thing to do because because because well they're not.",
+  "metadata": {
+    "duration": 30.633333,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/b9845df3-c462-4e02-945d-df18f8af0f06"
+}

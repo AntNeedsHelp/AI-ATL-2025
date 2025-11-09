@@ -301,20 +301,27 @@ class VeoGenerator:
                     # Don't set video_url if file doesn't exist
                     if "video_url" in marker:
                         del marker["video_url"]
+                    # Mark as failed since file doesn't exist
+                    marker["video_generation_failed"] = True
                     results[gesture_count] = {
                         "success": False,
                         "error": "Video file not found after generation",
                         "marker_index": marker_idx
                     }
+                    print(f"[Veo] Marked marker at {start_time}s as video_generation_failed=True (file not found)")
             else:
+                # Mark that video generation was attempted but failed
                 # Ensure no video_url is set if generation failed
                 if "video_url" in marker:
                     del marker["video_url"]
+                # Add flag to indicate generation was attempted but failed
+                marker["video_generation_failed"] = True
                 results[gesture_count] = {
                     "success": False,
                     "error": "Failed to generate video",
                     "marker_index": marker_idx
                 }
+                print(f"[Veo] Marked marker at {start_time}s as video_generation_failed=True")
             
             gesture_count += 1
         
