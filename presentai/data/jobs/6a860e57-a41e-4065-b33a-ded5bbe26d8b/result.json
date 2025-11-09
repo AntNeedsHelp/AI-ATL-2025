@@ -1,0 +1,95 @@
+{
+  "scores": {
+    "gestures": 18,
+    "inflection": 23,
+    "clarity": 21,
+    "content": 18,
+    "total": 80
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Speaking pace issue: too slow",
+      "severity": 3,
+      "feedback": "Your overall pace is quite deliberate, which can be effective for emphasis but may lose listener engagement over time. Try practicing the script to improve fluency and aim for a slightly more energetic pace to convey your message dynamically.",
+      "category": "clarity"
+    },
+    {
+      "start": 0.0,
+      "end": 2.1,
+      "label": "Tense Stance (Clenched Fists)",
+      "severity": 3,
+      "feedback": "You begin with your fists clenched, which can signal tension or aggression to an audience. Try starting with your hands relaxed and open at your sides to project a more confident and approachable presence.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/6a860e57-a41e-4065-b33a-ded5bbe26d8b/0"
+    },
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Weak introduction",
+      "severity": 3,
+      "feedback": "The video starts abruptly without providing context. Try beginning with a clear opening statement or hook to let your audience know what the video is about.",
+      "category": "content"
+    },
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Lack of structure",
+      "severity": 4,
+      "feedback": "The content lacks a clear beginning, middle, and end. Planning out your key points beforehand can help create a more logical and easy-to-follow flow for your viewers.",
+      "category": "content"
+    },
+    {
+      "start": 3.42,
+      "end": 9.1,
+      "label": "Monotone delivery",
+      "severity": 3,
+      "feedback": "Your tone is fitting for the message, but the delivery becomes a bit flat. Try varying your pitch on key emotional words like 'unfortunate' to make the statement more impactful and engaging.",
+      "category": "inflection"
+    },
+    {
+      "start": 4.1,
+      "end": 6.0,
+      "label": "Repetition",
+      "severity": 3,
+      "feedback": "When you find yourself repeating a word, it's often a sign of searching for the next thought. Try pausing intentionally to gather your thoughts instead of repeating the word. A silent pause is more powerful than a filled one.",
+      "category": "clarity"
+    },
+    {
+      "start": 8.5,
+      "end": 10.1,
+      "label": "Fidgeting (Touching Hair)",
+      "severity": 4,
+      "feedback": "Touching your hair mid-sentence can be a distracting habit that breaks the connection with your audience. To appear more polished and in control, practice keeping your hands away from your face and hair while speaking.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/6a860e57-a41e-4065-b33a-ded5bbe26d8b/1"
+    },
+    {
+      "start": 10.2,
+      "end": 11.9,
+      "label": "Repetitive Tense Gesture",
+      "severity": 3,
+      "feedback": "You return to clenching your fists at the end. While this might be for emphasis, relying on one tense gesture can feel repetitive. Experiment with a wider range of open-hand gestures to add more nuance to your delivery.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/6a860e57-a41e-4065-b33a-ded5bbe26d8b/2"
+    },
+    {
+      "start": 11.2,
+      "end": 12.3,
+      "label": "Abrupt ending",
+      "severity": 3,
+      "feedback": "The video cuts off mid-sentence, leaving the viewer without a conclusion. Make sure to end with a clear concluding thought or a call to action.",
+      "category": "content"
+    }
+  ],
+  "transcript": "We did not make it to worlds. That that that that that is really unfortunate. And at the end",
+  "metadata": {
+    "duration": 12.266016,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/6a860e57-a41e-4065-b33a-ded5bbe26d8b"
+}

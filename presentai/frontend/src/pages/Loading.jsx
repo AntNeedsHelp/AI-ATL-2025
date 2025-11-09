@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
-import { checkStatus } from '../utils/api';
+import { checkStatus, getResult } from '../utils/api';
 
 export const Loading = () => {
   const { jobId } = useParams();
@@ -21,14 +21,32 @@ export const Loading = () => {
           clearInterval(interval);
           navigate(`/results/${jobId}`);
         } else if (result.status === 'failed') {
-          clearInterval(interval);
-          setError('Analysis failed. Please try again.');
+          // Even if status is "failed", check if results actually exist
+          // This handles cases where job failed but partial results were saved
+          try {
+            const results = await getResult(jobId);
+            // If we can load results, navigate to results page
+            clearInterval(interval);
+            navigate(`/results/${jobId}`);
+          } catch (resultsErr) {
+            // Results don't exist, show error
+            clearInterval(interval);
+            setError('Analysis failed. Please try again.');
+          }
         } else {
           setStatus(result.status || 'processing');
         }
       } catch (err) {
         console.error('Error polling status:', err);
-        setError('Failed to check status. Please refresh the page.');
+        // Try to check if results exist even if status check fails
+        try {
+          const results = await getResult(jobId);
+          // If we can load results, navigate to results page
+          clearInterval(interval);
+          navigate(`/results/${jobId}`);
+        } catch (resultsErr) {
+          setError('Failed to check status. Please refresh the page.');
+        }
       }
     };
 

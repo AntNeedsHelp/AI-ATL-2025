@@ -115,6 +115,18 @@ async def upload_video(
 @app.get("/api/status/{job_id}")
 async def get_status(job_id: str):
     """Poll job status"""
+    # Check if result.json exists first (more reliable than jobs dict)
+    result_path = DATA_DIR / "jobs" / job_id / "result.json"
+    if result_path.exists():
+        # Results exist, so job is completed regardless of jobs dict state
+        return {
+            "status": "completed",
+            "title": "Untitled Presentation",
+            "progress": 100,
+            "message": "Analysis complete!"
+        }
+    
+    # If result.json doesn't exist, check jobs dict
     if job_id not in jobs:
         raise HTTPException(status_code=404, detail="Job not found")
     
