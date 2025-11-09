@@ -1,0 +1,126 @@
+{
+  "scores": {
+    "gestures": 18,
+    "inflection": 16,
+    "clarity": 13,
+    "content": 20,
+    "total": 67
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 20.0,
+      "label": "Speaking pace too slow",
+      "severity": 4,
+      "feedback": "Your initial pace is very slow and drawn out. Try to start with a bit more energy to capture the listener's attention immediately. A natural, conversational pace is more engaging.",
+      "category": "clarity"
+    },
+    {
+      "start": 0.0,
+      "end": 18.2,
+      "label": "Clenched Fists / Tense Posture",
+      "severity": 4,
+      "feedback": "You have a strong, grounded stance, but clenching your fists can make you appear tense or aggressive. Try relaxing your hands by your sides. This will help your body language match your words and make you seem more open and composed.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/1a008731-d982-4668-83f0-f43f605c3063/0"
+    },
+    {
+      "start": 0.0,
+      "end": 24.63,
+      "label": "Monotone delivery",
+      "severity": 5,
+      "feedback": "Your delivery in this first section is very flat, which can make it difficult for the audience to stay engaged. Try varying your pitch to reflect the emotion of your story. Emphasizing key words like 'worlds' and 'unfortunate' will make your message more impactful.",
+      "category": "inflection"
+    },
+    {
+      "start": 0.0,
+      "end": 32.6,
+      "label": "Inconsistent Pacing",
+      "severity": 5,
+      "feedback": "There's a very abrupt shift from an extremely slow pace to a very rapid one. Aim for a more consistent, conversational tempo throughout your presentation. You can use strategic pauses for dramatic effect rather than changing your overall speed so drastically.",
+      "category": "inflection"
+    },
+    {
+      "start": 0.0,
+      "end": 32.6,
+      "label": "Lack of Coherent Structure and Logical Flow",
+      "severity": 4,
+      "feedback": "The presentation's message is undermined by a drastic shift in pacing and a lack of clear structure. To improve, try outlining your thoughts with a distinct beginning, middle, and end. This will help you maintain a consistent flow and deliver your message more effectively.",
+      "category": "content"
+    },
+    {
+      "start": 7.2,
+      "end": 10.5,
+      "label": "Awkward pause",
+      "severity": 3,
+      "feedback": "This pause is over 3 seconds long, which can disrupt the flow of your presentation. While pauses are great for emphasis, try to keep them to 1-2 seconds to maintain momentum.",
+      "category": "clarity"
+    },
+    {
+      "start": 13.8,
+      "end": 15.1,
+      "label": "Repetition: 'That... that that'",
+      "severity": 2,
+      "feedback": "A slight stumble here with the repetition. If this happens, it's okay to take a short breath and restart the phrase clearly. Practice helps build fluency.",
+      "category": "clarity"
+    },
+    {
+      "start": 18.2,
+      "end": 20.2,
+      "label": "Appropriate Emphasis Gesture",
+      "severity": 1,
+      "feedback": "Excellent! This gesture of touching your head perfectly matches the feeling of frustration you're expressing. Using gestures that align with your emotions is a great way to connect with your audience.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/1a008731-d982-4668-83f0-f43f605c3063/1"
+    },
+    {
+      "start": 20.2,
+      "end": 32.6,
+      "label": "Clenched Fists / Tense Posture",
+      "severity": 4,
+      "feedback": "You've returned to the clenched-fist posture. Remember to keep your hands relaxed. When you feel tension building, consciously uncurl your fingers and let your arms hang naturally.",
+      "category": "gestures"
+    },
+    {
+      "start": 24.5,
+      "end": 32.6,
+      "label": "Speaking pace too fast",
+      "severity": 5,
+      "feedback": "The pace suddenly becomes extremely fast, making your words blur together and difficult to understand. Remember to breathe and consciously slow down, especially when you feel rushed.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.5,
+      "end": 32.6,
+      "label": "Rushed and Repetitive Content",
+      "severity": 3,
+      "feedback": "The second half of the video feels rushed and repeats the same point without adding new information. Instead of repeating that the experience was negative, try supporting your main point with a specific example or a concluding thought on what you learned.",
+      "category": "content"
+    },
+    {
+      "start": 25.2,
+      "end": 31.7,
+      "label": "Rushed Speech",
+      "severity": 4,
+      "feedback": "The pace of your speech increases dramatically here, causing some words to become unclear. While the energy is good, remember to take breaths and enunciate clearly so your audience can follow along with your points.",
+      "category": "inflection"
+    },
+    {
+      "start": 29.8,
+      "end": 32.2,
+      "label": "Excessive repetition: 'And and and...'",
+      "severity": 4,
+      "feedback": "Using repetitive words at the end can weaken your conclusion. Try to finish your thought with a clear, impactful final statement instead of trailing off.",
+      "category": "clarity"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That... that that is really unfortunate. And at the end of the day, we didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it was horrible. And and and and and and and and and and and and and and and and and and and.",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/1a008731-d982-4668-83f0-f43f605c3063"
+}

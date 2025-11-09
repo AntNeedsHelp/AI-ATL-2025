@@ -1,0 +1,28 @@
+{
+  "scores": {
+    "gestures": 25,
+    "inflection": 25,
+    "clarity": 25,
+    "content": 22,
+    "total": 97
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Lacks clear structure",
+      "severity": 4,
+      "feedback": "The message feels incomplete as it starts abruptly and ends mid-sentence. For a stronger impact, structure your points with a clear beginning, middle, and end.",
+      "category": "content"
+    }
+  ],
+  "transcript": "",
+  "metadata": {
+    "duration": 12.266016,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/94ddfbb1-2b84-4210-b8ff-217f3a8acef5"
+}

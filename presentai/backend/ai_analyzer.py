@@ -33,8 +33,9 @@ class AIAnalyzer:
             supporting_text = self._extract_document_text(supporting_doc_path)
         
         # Upload video file directly to Google Gemini
+        # Note: In google-genai 1.49.0+, use 'file=' instead of 'path='
         try:
-            video_file = self.client.files.upload(path=video_path)
+            video_file = self.client.files.upload(file=video_path)
         except Exception as e:
             raise ValueError(f"Failed to upload video file: {str(e)}")
         
@@ -74,23 +75,51 @@ class AIAnalyzer:
         print(f"File ready! State: {file_state}, URI: {video_file.uri}")
         
         # Run specialized agents - all work with the video file
-        print("Starting speech analysis...")
-        speech_analysis = await self._speech_agent(video_file, metadata)
-        print("Speech analysis complete")
-        gesture_analysis = await self._gesture_agent(video_file, metadata)
-        inflection_analysis = await self._inflection_agent(video_file, metadata)
-        content_analysis = await self._content_agent(
-            video_file, 
-            supporting_text, 
-            metadata
-        )
+        # Use try/except for each to allow partial results
+        speech_analysis = None
+        gesture_analysis = None
+        inflection_analysis = None
+        content_analysis = None
         
-        # Aggregate results
+        print("Starting speech analysis...")
+        try:
+            speech_analysis = await self._speech_agent(video_file, metadata)
+            print("Speech analysis complete")
+        except Exception as e:
+            print(f"Speech analysis failed: {str(e)} - continuing with other analyses")
+            speech_analysis = {"markers": [], "transcript": "", "wpm": 0, "filler_words": [], "pauses": []}
+        
+        try:
+            gesture_analysis = await self._gesture_agent(video_file, metadata)
+            print("Gesture analysis complete")
+        except Exception as e:
+            print(f"Gesture analysis failed: {str(e)} - continuing with other analyses")
+            gesture_analysis = {"markers": []}
+        
+        try:
+            inflection_analysis = await self._inflection_agent(video_file, metadata)
+            print("Inflection analysis complete")
+        except Exception as e:
+            print(f"Inflection analysis failed: {str(e)} - continuing with other analyses")
+            inflection_analysis = {"markers": []}
+        
+        try:
+            content_analysis = await self._content_agent(
+                video_file, 
+                supporting_text, 
+                metadata
+            )
+            print("Content analysis complete")
+        except Exception as e:
+            print(f"Content analysis failed: {str(e)} - continuing with other analyses")
+            content_analysis = {"markers": []}
+        
+        # Aggregate results (use empty dicts if analysis failed)
         result = self._aggregate_results(
-            speech_analysis,
-            gesture_analysis,
-            inflection_analysis,
-            content_analysis,
+            speech_analysis or {"markers": [], "transcript": "", "wpm": 0, "filler_words": [], "pauses": []},
+            gesture_analysis or {"markers": []},
+            inflection_analysis or {"markers": []},
+            content_analysis or {"markers": []},
             metadata,
             supporting_doc_path
         )
@@ -141,7 +170,7 @@ Output as JSON:
                         role="user",
                         parts=[
                             types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
-                            types.Part.from_text(prompt)
+                            types.Part.from_text(text=prompt)
                         ]
                     )
                 ]
@@ -195,7 +224,7 @@ Output as JSON:
                         role="user",
                         parts=[
                             types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
-                            types.Part.from_text(prompt)
+                            types.Part.from_text(text=prompt)
                         ]
                     )
                 ]
@@ -248,7 +277,7 @@ Output as JSON:
                         role="user",
                         parts=[
                             types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
-                            types.Part.from_text(prompt)
+                            types.Part.from_text(text=prompt)
                         ]
                     )
                 ]
@@ -345,24 +374,47 @@ Output as JSON:
 }}
 """
         
-        try:
-            response = self.client.models.generate_content(
-                model=self.model,
-                contents=[
-                    types.Content(
-                        role="user",
-                        parts=[
-                            types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
-                            types.Part.from_text(prompt)
-                        ]
-                    )
-                ]
-            )
-            
-            return self._parse_json_response(response.text)
-        except Exception as e:
-            print(f"Error in _content_agent: {str(e)}")
-            raise ValueError(f"Content analysis failed: {str(e)}")
+        # Retry logic for 503 errors (service overloaded)
+        max_retries = 3
+        retry_delay = 5  # seconds
+        
+        for attempt in range(max_retries):
+            try:
+                response = self.client.models.generate_content(
+                    model=self.model,
+                    contents=[
+                        types.Content(
+                            role="user",
+                            parts=[
+                                types.Part.from_uri(file_uri=video_file.uri, mime_type=video_file.mime_type),
+                                types.Part.from_text(text=prompt)
+                            ]
+                        )
+                    ]
+                )
+                
+                return self._parse_json_response(response.text)
+            except Exception as e:
+                error_str = str(e)
+                # Check if it's a 503 error (service overloaded) and we have retries left
+                if "503" in error_str or "UNAVAILABLE" in error_str:
+                    if attempt < max_retries - 1:
+                        wait_time = retry_delay * (attempt + 1)  # Exponential backoff
+                        print(f"Error in _content_agent (attempt {attempt + 1}/{max_retries}): {error_str}")
+                        print(f"Retrying in {wait_time} seconds...")
+                        import time
+                        time.sleep(wait_time)
+                        continue
+                    else:
+                        print(f"Error in _content_agent after {max_retries} attempts: {error_str}")
+                        raise ValueError(f"Content analysis failed after {max_retries} retries: The API service is temporarily overloaded. Please try again in a few moments.")
+                else:
+                    # For other errors, raise immediately
+                    print(f"Error in _content_agent: {error_str}")
+                    raise ValueError(f"Content analysis failed: {error_str}")
+        
+        # Should not reach here, but just in case
+        raise ValueError("Content analysis failed: Unknown error")
     
     def _aggregate_results(
         self,

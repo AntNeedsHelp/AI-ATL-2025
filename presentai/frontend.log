@@ -3,8 +3,14 @@
 > vite
 
 
-  VITE v7.2.2  ready in 167 ms
+  VITE v7.2.2  ready in 137 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
-  ➜  press h + enter to show help
+12:29:53 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+12:30:54 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+12:31:47 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+12:33:49 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+12:35:12 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+12:35:17 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx
+12:36:05 AM [vite] (client) hmr update /src/index.css, /src/components/FeedbackPanel.jsx

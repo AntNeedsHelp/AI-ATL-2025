@@ -1,0 +1,86 @@
+{
+  "scores": {
+    "gestures": 18,
+    "inflection": 23,
+    "clarity": 22,
+    "content": 20,
+    "total": 83
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Speaking pace issue: Too slow (<120 WPM)",
+      "severity": 3,
+      "feedback": "Your overall pace is quite slow, which can be effective for emphasis. However, to maintain listener engagement, consider varying your tempo, perhaps speeding up slightly on connecting phrases.",
+      "category": "clarity"
+    },
+    {
+      "start": 0.0,
+      "end": 8.12,
+      "label": "Tense Posture / Clenched Fists",
+      "severity": 4,
+      "feedback": "You're holding tension in your body by clenching your fists. Try to relax your hands and let your arms hang naturally at your sides. This will make you appear more open and at ease.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/992a58a5-55db-45c1-b0f7-22e9d5d6de66/0"
+    },
+    {
+      "start": 0.0,
+      "end": 12.3,
+      "label": "Weak introduction",
+      "severity": 3,
+      "feedback": "The presentation begins without any context. Try starting with a brief introduction to set the stage for your topic and grab the audience's attention from the very beginning.",
+      "category": "content"
+    },
+    {
+      "start": 4.1,
+      "end": 6.2,
+      "label": "Repetition",
+      "severity": 2,
+      "feedback": "You repeat the word 'that' multiple times. While this might be for emphasis, a deliberate pause can often achieve the same effect more powerfully. Try pausing for a moment before delivering an important point.",
+      "category": "clarity"
+    },
+    {
+      "start": 4.15,
+      "end": 8.52,
+      "label": "Monotone delivery",
+      "severity": 3,
+      "feedback": "You're expressing disappointment, which is good, but the delivery is very flat. Try using pitch to add more color. For example, you could let your voice fall at the end of \"unfortunate\" to give the word more finality and weight.",
+      "category": "inflection"
+    },
+    {
+      "start": 8.12,
+      "end": 10.08,
+      "label": "Fidgeting with Hair",
+      "severity": 2,
+      "feedback": "Touching your hair can be perceived as a nervous or distracting habit. Try to keep your hands relaxed at your sides or use them for intentional gestures to add emphasis to your words.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/992a58a5-55db-45c1-b0f7-22e9d5d6de66/1"
+    },
+    {
+      "start": 10.08,
+      "end": 12.3,
+      "label": "Tense Posture / Clenched Fists",
+      "severity": 4,
+      "feedback": "You've returned to the clenched-fist posture. Remember to keep your hands and arms relaxed to project a more confident and approachable demeanor.",
+      "category": "gestures"
+    },
+    {
+      "start": 11.5,
+      "end": 12.3,
+      "label": "Incomplete content",
+      "severity": 5,
+      "feedback": "The video cuts off mid-sentence, leaving the presentation unfinished. Ensure you have a complete narrative with a clear beginning, middle, and end, including a concluding summary.",
+      "category": "content"
+    }
+  ],
+  "transcript": "We did not make it to worlds. That that that that that is really unfortunate. And at the end...",
+  "metadata": {
+    "duration": 12.266016,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/992a58a5-55db-45c1-b0f7-22e9d5d6de66"
+}

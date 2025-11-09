@@ -1,0 +1,128 @@
+{
+  "scores": {
+    "gestures": 17,
+    "inflection": 19,
+    "clarity": 15,
+    "content": 19,
+    "total": 70
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 18.2,
+      "label": "Tense Posture and Clenched Fists",
+      "severity": 4,
+      "feedback": "You're standing very rigidly with your fists clenched, which can signal stress or aggression. Try to relax your shoulders and let your hands rest naturally at your sides to appear more comfortable and open.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/5b98fb7e-b821-49a2-bea1-22b193184550/0"
+    },
+    {
+      "start": 0.0,
+      "end": 15.0,
+      "label": "Weak introduction",
+      "severity": 2,
+      "feedback": "Start with a clear hook or thesis statement to engage your audience. Instead of just stating the topic, you could begin with a question or a surprising fact to draw listeners in.",
+      "category": "content"
+    },
+    {
+      "start": 1.0,
+      "end": 17.5,
+      "label": "Monotone delivery",
+      "severity": 4,
+      "feedback": "Your voice remains at a very low and consistent pitch here, which can make the delivery sound flat. Try varying your pitch to emphasize key words like 'worlds' and 'unfortunate' to add more emotion and keep your audience engaged.",
+      "category": "inflection"
+    },
+    {
+      "start": 1.5,
+      "end": 18.2,
+      "label": "Monotone Facial Expression",
+      "severity": 3,
+      "feedback": "Your facial expression remains neutral while you're telling a story about disappointment. Letting your expressions match the emotion of your words helps the audience connect with your message on a deeper level.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/5b98fb7e-b821-49a2-bea1-22b193184550/1"
+    },
+    {
+      "start": 7.5,
+      "end": 11.0,
+      "label": "Awkward Pause",
+      "severity": 4,
+      "feedback": "This long pause feels unintentional. Try to connect your thoughts more smoothly. If you need a moment, a shorter, deliberate pause of 1-2 seconds can be very effective for emphasis.",
+      "category": "clarity"
+    },
+    {
+      "start": 14.2,
+      "end": 16.0,
+      "label": "Repetition",
+      "severity": 3,
+      "feedback": "The repetition of 'that' here suggests you were searching for your next words. It's perfectly fine to take a brief, silent pause to gather your thoughts instead of repeating a word.",
+      "category": "clarity"
+    },
+    {
+      "start": 15.0,
+      "end": 24.5,
+      "label": "Lack of supporting details",
+      "severity": 3,
+      "feedback": "You make a key statement but don't explain the 'why' behind it. When you mention the outcome was unfortunate, briefly explaining what happened would make your story more compelling and understandable.",
+      "category": "content"
+    },
+    {
+      "start": 16.0,
+      "end": 20.0,
+      "label": "Speaking Pace Too Slow",
+      "severity": 3,
+      "feedback": "Your pace slowed down significantly while drawing out the words 'really unfortunate'. While slowing down for emphasis is a great technique, this felt a bit too drawn out. Aim for a confident, steady pace.",
+      "category": "clarity"
+    },
+    {
+      "start": 18.6,
+      "end": 20.0,
+      "label": "Fidgeting with Hair",
+      "severity": 2,
+      "feedback": "This quick gesture of touching your hair is a common nervous habit that can be distracting. To channel that energy, try using purposeful hand gestures that align with what you're saying.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/5b98fb7e-b821-49a2-bea1-22b193184550/2"
+    },
+    {
+      "start": 20.5,
+      "end": 32.6,
+      "label": "Stiff Posture",
+      "severity": 3,
+      "feedback": "Even after you relax your hands briefly, your overall posture remains quite stiff and static. Introducing some slight, purposeful movement, like a step forward, can add energy and dynamism to your presentation.",
+      "category": "gestures",
+      "video_url": "/api/gesture-video/5b98fb7e-b821-49a2-bea1-22b193184550/3"
+    },
+    {
+      "start": 24.5,
+      "end": 31.5,
+      "label": "Speaking Pace Too Fast",
+      "severity": 5,
+      "feedback": "Your speaking pace accelerated dramatically here, making the words blend together and difficult to understand. Take a deep breath before a dense section of information and focus on enunciating each word clearly.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.5,
+      "end": 32.6,
+      "label": "Rushed delivery and no conclusion",
+      "severity": 4,
+      "feedback": "Your pace accelerates significantly here, making it difficult to follow your points. Try to maintain a steady pace. Additionally, the presentation ends abruptly. A strong conclusion that summarizes your main points would leave a more lasting impact on your audience.",
+      "category": "content"
+    },
+    {
+      "start": 25.0,
+      "end": 32.0,
+      "label": "Rushed pacing",
+      "severity": 4,
+      "feedback": "Your speaking pace accelerates significantly here, causing the words to become jumbled and difficult to understand. Remember to take breaths and focus on clear articulation, even when conveying excitement or frustration.",
+      "category": "inflection"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That that that that that is really unfortunate. And at the end of the day, we didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it was horrible. And then...",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/5b98fb7e-b821-49a2-bea1-22b193184550"
+}

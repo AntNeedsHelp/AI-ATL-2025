@@ -3,14 +3,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Lightbulb } from 'lucide-react';
 import { CATEGORIES } from '../utils/markers';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export const FeedbackPanel = ({ currentMarker }) => {
   const [showDescription, setShowDescription] = useState(false);
+  const [videoError, setVideoError] = useState(null);
   const containerRef = useRef(null);
 
-  // Reset description popup when marker changes
+  // Reset description popup and video error when marker changes
   useEffect(() => {
     setShowDescription(false);
-  }, [currentMarker?.start, currentMarker?.category]);
+    setVideoError(null);
+  }, [currentMarker?.start, currentMarker?.category, currentMarker?.video_url]);
 
   if (!currentMarker) {
     return (
@@ -91,7 +95,113 @@ export const FeedbackPanel = ({ currentMarker }) => {
           onMouseEnter={() => setShowDescription(true)}
           onMouseLeave={() => setShowDescription(false)}
         >
-          <div className="flex items-start space-x-5">
+          <div className="flex items-start space-x-5 flex-wrap lg:flex-nowrap">
+            {/* Gesture Video Player - Show to left if available */}
+            {currentMarker.category === "gestures" && currentMarker.video_url ? (
+              <div className="flex-shrink-0 w-full lg:w-64 mb-4 lg:mb-0">
+                {videoError ? (
+                  <div className="w-full rounded-xl border border-brand-border/60 bg-brand-surface-alt p-4 text-center">
+                    <p className="text-sm text-brand-muted mb-2">⚠️ Video Load Failed</p>
+                    <p className="text-xs text-brand-muted-dark mb-3">
+                      {videoError === '404' 
+                        ? 'Video may still be generating. Please refresh in a moment.'
+                        : 'Unable to load video. Please try again later.'}
+                    </p>
+                    <button
+                      onClick={() => {
+                        setVideoError(null);
+                        // Force video reload by changing key
+                        const video = document.querySelector(`video[data-marker-id="${currentMarker.start}"]`);
+                        if (video) {
+                          video.load();
+                        }
+                      }}
+                      className="text-xs px-3 py-1 rounded bg-brand-surface text-brand-text hover:bg-brand-surface-glow transition-colors"
+                    >
+                      Retry
+                    </button>
+                  </div>
+                ) : (
+                  <video
+                    key={`video-${currentMarker.start}-${currentMarker.end}`}
+                    data-marker-id={currentMarker.start}
+                    src={(() => {
+                      const url = currentMarker.video_url.startsWith('http') 
+                        ? currentMarker.video_url 
+                        : `${API_BASE_URL}${currentMarker.video_url}`;
+                      console.log('[FeedbackPanel] Video URL:', url);
+                      return url;
+                    })()}
+                    className="w-full rounded-xl border border-brand-border/60 bg-black"
+                    controls
+                    preload="metadata"
+                    playsInline
+                    crossOrigin="anonymous"
+                    onError={(e) => {
+                      const video = e.target;
+                      const error = video.error;
+                      console.error('Error loading gesture video:', {
+                        error: error,
+                        code: error?.code,
+                        message: error?.message,
+                        src: video.src,
+                        networkState: video.networkState,
+                        readyState: video.readyState
+                      });
+                      
+                      // Check if it's a 404 or network error
+                      if (error) {
+                        // MEDIA_ERR_SRC_NOT_SUPPORTED = 4, MEDIA_ERR_NETWORK = 2
+                        // NETWORK_NO_SOURCE = 3
+                        const isNetworkError = error.code === 2 || error.code === 4 || video.networkState === 3;
+                        
+                        if (isNetworkError) {
+                          // Check if it's a 404
+                          fetch(video.src, { method: 'HEAD' })
+                            .then(response => {
+                              if (response.status === 404) {
+                                setVideoError('404');
+                              } else {
+                                setVideoError('network');
+                              }
+                            })
+                            .catch(() => {
+                              setVideoError('network');
+                            });
+                        } else {
+                          setVideoError('other');
+                        }
+                      } else {
+                        setVideoError('other');
+                      }
+                    }}
+                    onLoadStart={() => {
+                      console.log('Gesture video load started:', currentMarker.video_url);
+                      setVideoError(null);
+                    }}
+                    onLoadedData={() => {
+                      console.log('Gesture video loaded successfully');
+                      setVideoError(null);
+                    }}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                )}
+                <p className="text-xs text-brand-muted mt-2 text-center">
+                  Improved Gesture Example
+                </p>
+              </div>
+                    ) : currentMarker.category === "gestures" ? (
+                      <div className="flex-shrink-0 w-full lg:w-64 mb-4 lg:mb-0">
+                        <div className="w-full rounded-xl border border-brand-border/60 bg-brand-surface-alt p-4 text-center">
+                          <p className="text-sm text-brand-muted">⚠️ Video Not Available</p>
+                          <p className="text-xs text-brand-muted-dark mt-1">
+                            Video generation was skipped due to API quota limits. The gesture analysis and feedback are still available above.
+                          </p>
+                        </div>
+                      </div>
+                    ) : null}
+
             <div
               ref={containerRef}
               className="relative flex-shrink-0"

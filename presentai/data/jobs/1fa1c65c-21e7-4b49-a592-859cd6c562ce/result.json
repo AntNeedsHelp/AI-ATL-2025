@@ -1,0 +1,116 @@
+{
+  "scores": {
+    "gestures": 19,
+    "inflection": 17,
+    "clarity": 17,
+    "content": 19,
+    "total": 72
+  },
+  "markers": [
+    {
+      "start": 0.0,
+      "end": 32.5,
+      "label": "Tense Posture / Clenched Fists",
+      "severity": 4,
+      "feedback": "You're holding your hands in tight fists at your sides, which creates a very tense and rigid appearance. Try to relax your hands and let them rest naturally. This will make you seem more open and confident.",
+      "category": "gestures"
+    },
+    {
+      "start": 0.0,
+      "end": 24.5,
+      "label": "Limited Facial Expression",
+      "severity": 3,
+      "feedback": "Your facial expression remains quite serious and static for a large portion of the video. Letting your expressions match the tone of your words will help the audience feel more connected to you and your message.",
+      "category": "gestures"
+    },
+    {
+      "start": 0.0,
+      "end": 15.0,
+      "label": "Slow pacing and weak introduction",
+      "severity": 2,
+      "feedback": "Your opening sets the topic, which is a good start. To make it more engaging for your audience, consider picking up the pace slightly and using a stronger hook, like a compelling question or a surprising fact about your experience.",
+      "category": "content"
+    },
+    {
+      "start": 1.0,
+      "end": 24.0,
+      "label": "Monotone delivery",
+      "severity": 5,
+      "feedback": "Your voice remains on a very consistent, flat pitch throughout this section. To make your story more engaging, try varying your pitch. Allow your voice to rise when expressing excitement or surprise, and fall when conveying disappointment, like when you say 'we did not make it to worlds'.",
+      "category": "inflection"
+    },
+    {
+      "start": 1.0,
+      "end": 24.0,
+      "label": "Low energy",
+      "severity": 4,
+      "feedback": "The energy in your voice is quite low at the start, which can make it difficult to capture the listener's attention. Try standing up straight and taking a deep breath before you begin. Project your voice as if you're speaking to someone at the far end of the hallway to instantly boost your vocal energy.",
+      "category": "inflection"
+    },
+    {
+      "start": 7.5,
+      "end": 10.5,
+      "label": "Awkward pause",
+      "severity": 4,
+      "feedback": "This pause is a bit long and breaks the momentum. If you need to collect your thoughts, a shorter, more natural pause of 1-2 seconds is more effective.",
+      "category": "clarity"
+    },
+    {
+      "start": 13.5,
+      "end": 21.0,
+      "label": "Speaking pace too slow",
+      "severity": 3,
+      "feedback": "Your pace slowed down significantly here, which can reduce audience engagement. Try to maintain a more consistent and energetic tempo through this section.",
+      "category": "clarity"
+    },
+    {
+      "start": 15.0,
+      "end": 32.6,
+      "label": "Lack of logical flow and supporting details",
+      "severity": 5,
+      "feedback": "This section conveys strong emotion, but the abrupt shift in pace and repetitive statements without supporting details make the message unclear. Try to maintain a consistent structure and support your main points with specific examples to help the audience understand and connect with your story.",
+      "category": "content"
+    },
+    {
+      "start": 18.5,
+      "end": 20.3,
+      "label": "Fidgeting with Hair",
+      "severity": 2,
+      "feedback": "This quick gesture of adjusting your hair can be a sign of nervousness. To build more authority, try to keep hand movements intentional and purposeful, using them to emphasize your points instead.",
+      "category": "gestures"
+    },
+    {
+      "start": 21.0,
+      "end": 32.6,
+      "label": "Speaking pace too fast",
+      "severity": 5,
+      "feedback": "The pace here is very rushed, making the words blend together and difficult to understand. Remember to take breaths and focus on enunciating clearly, even when you feel rushed.",
+      "category": "clarity"
+    },
+    {
+      "start": 24.5,
+      "end": 31.5,
+      "label": "Rushed pace",
+      "severity": 3,
+      "feedback": "Your speaking pace accelerates significantly here, causing the words to blend together. It's great that you're building energy, but remember to use pauses. Taking a short breath between phrases will add impact and ensure your audience can follow every part of your experience.",
+      "category": "inflection"
+    },
+    {
+      "start": 31.5,
+      "end": 32.6,
+      "label": "Abrupt ending with no conclusion",
+      "severity": 3,
+      "feedback": "The presentation ends very suddenly. A strong conclusion is important for leaving a lasting impression. Try to wrap up with a final sentence that summarizes your key takeaway or final thought.",
+      "category": "content"
+    }
+  ],
+  "transcript": "I will now talk about my robotics team. We did not make it. We did not make it to worlds. That that that that that is really unfortunate. And at the end of the day, we didn't really have any good experiences and it was really bad and I really didn't have any fun. It was horrible, it was horrible, it was horrible. And then and then and then and then and then and then and then and then and then and then and then",
+  "metadata": {
+    "duration": 32.566667,
+    "video_file": "input.mp4",
+    "supporting_file": null,
+    "language": "English",
+    "analyzed_by": "Google Gemini 2.5 Pro"
+  },
+  "video_url": "/api/video/1fa1c65c-21e7-4b49-a592-859cd6c562ce"
+}

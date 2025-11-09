@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from ai_analyzer import AIAnalyzer
+from veo_generator import VeoGenerator
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -122,16 +123,22 @@ async def get_status(job_id: str):
 @app.get("/api/result/{job_id}")
 async def get_result(job_id: str):
     """Fetch final analysis results"""
-    if job_id not in jobs:
-        raise HTTPException(status_code=404, detail="Job not found")
-    
-    if jobs[job_id]["status"] != "completed":
-        raise HTTPException(status_code=400, detail="Job not completed")
-    
+
     result_path = DATA_DIR / "jobs" / job_id / "result.json"
+    
+    # Check if result.json exists first (more reliable than checking jobs dict)
     if not result_path.exists():
+        # If result.json doesn't exist, check jobs dict for status
+        if job_id not in jobs:
+            raise HTTPException(status_code=404, detail="Job not found")
+        
+        if jobs[job_id]["status"] != "completed":
+            raise HTTPException(status_code=400, detail="Job not completed")
+        
         raise HTTPException(status_code=404, detail="Results not found")
     
+    # If result.json exists, return it regardless of jobs dict status
+    # This handles cases where the job completed but the jobs dict was cleared/restarted
     with open(result_path, "r") as f:
         result = json.load(f)
     
@@ -185,8 +192,60 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
             metadata=metadata
         )
         
-        jobs[job_id]["progress"] = 90
+        jobs[job_id]["progress"] = 85
+        jobs[job_id]["message"] = "Generating gesture improvement videos..."
+        
+        # Generate gesture improvement videos
+        try:
+            all_markers = result.get("markers", [])
+            gesture_markers = [m for m in all_markers if m.get("category") == "gestures"]
+            if gesture_markers:
+                print(f"[Veo] Found {len(gesture_markers)} gesture markers, generating videos...")
+                veo_generator = VeoGenerator()
+                job_dir = Path(video_path).parent
+                veo_results = veo_generator.generate_gesture_videos(
+                    video_path=video_path,
+                    all_markers=all_markers,
+                    job_dir=job_dir
+                )
+                successful = sum(1 for r in veo_results.values() if r.get('success'))
+                print(f"[Veo] Generated {successful}/{len(gesture_markers)} videos successfully")
+                
+                # Log which markers have video URLs and verify files exist
+                for marker in all_markers:
+                    if marker.get("category") == "gestures":
+                        if marker.get("video_url"):
+                            # Extract marker index from URL
+                            url_parts = marker["video_url"].split("/")
+                            if len(url_parts) >= 4:
+                                try:
+                                    vid_idx = int(url_parts[-1])
+                                    video_file = job_dir / "gesture_videos" / f"gesture_{vid_idx}.mp4"
+                                    if video_file.exists():
+                                        print(f"[Veo] ✓ Marker at {marker.get('start')}s has video_url: {marker.get('video_url')} (file exists)")
+                                    else:
+                                        print(f"[Veo] ✗ Marker at {marker.get('start')}s has video_url but file missing: {video_file}")
+                                        # Remove invalid video_url
+                                        del marker["video_url"]
+                                except (ValueError, IndexError):
+                                    print(f"[Veo] ✗ Invalid video_url format: {marker.get('video_url')}")
+                        else:
+                            print(f"[Veo] Marker at {marker.get('start')}s has no video_url")
+            else:
+                print("[Veo] No gesture markers found, skipping video generation")
+        except Exception as e:
+            print(f"[Veo] Error generating gesture videos: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            # Continue even if video generation fails
+        
+        jobs[job_id]["progress"] = 95
         jobs[job_id]["message"] = "Finalizing results..."
+        
+        # Verify markers still have video URLs (in case any were removed)
+        gesture_markers_with_videos = [m for m in result.get("markers", []) 
+                                       if m.get("category") == "gestures" and m.get("video_url")]
+        print(f"[Veo] Final count: {len(gesture_markers_with_videos)} gesture markers with video URLs")
         
         # Save results
         # Update result to include video URL
@@ -195,6 +254,12 @@ async def process_video(job_id: str, video_path: str, supporting_path: Optional[
         result_path = Path(video_path).parent / "result.json"
         with open(result_path, "w") as f:
             json.dump(result, f, indent=2)
+        
+        print(f"[Veo] Results saved to {result_path}")
+        # Log a sample marker to verify video_url is saved
+        sample_gesture = next((m for m in result.get("markers", []) if m.get("category") == "gestures"), None)
+        if sample_gesture:
+            print(f"[Veo] Sample gesture marker: start={sample_gesture.get('start')}, has_video_url={bool(sample_gesture.get('video_url'))}")
         
         jobs[job_id]["status"] = "completed"
         jobs[job_id]["progress"] = 100
@@ -223,6 +288,102 @@ async def get_video(job_id: str):
         headers={
             "Accept-Ranges": "bytes",
             "Content-Disposition": f'inline; filename="video.mp4"'
+        }
+    )
+
+@app.get("/api/gesture-video/{job_id}/{marker_index}")
+async def get_gesture_video(job_id: str, marker_index: int):
+    """Serve generated gesture improvement video"""
+    print(f"[API] Request for gesture video: job_id={job_id}, marker_index={marker_index}")
+    
+    # Check if job exists (allow even if not in jobs dict - might be completed)
+    job_dir = DATA_DIR / "jobs" / job_id
+    if not job_dir.exists():
+        print(f"[API] Job directory not found: {job_dir}")
+        raise HTTPException(status_code=404, detail="Job not found")
+    
+    video_path = job_dir / "gesture_videos" / f"gesture_{marker_index}.mp4"
+    print(f"[API] Looking for video at: {video_path}")
+    
+    # Check if video directory exists
+    video_dir = video_path.parent
+    if not video_dir.exists():
+        print(f"[API] Video directory does not exist: {video_dir}")
+        raise HTTPException(
+            status_code=404, 
+            detail="Gesture video directory not found. Videos may still be generating."
+        )
+    
+    # Check if video file exists
+    if not video_path.exists():
+        print(f"[API] Video file does not exist: {video_path}")
+        # Check if result.json exists to see if generation is complete
+        result_path = job_dir / "result.json"
+        if result_path.exists():
+            try:
+                import json
+                with open(result_path, "r") as f:
+                    result = json.load(f)
+                # Check if this marker should have a video
+                gesture_markers = [m for m in result.get("markers", []) if m.get("category") == "gestures"]
+                gesture_count = 0
+                for marker in gesture_markers:
+                    if marker.get("video_url"):
+                        url_parts = marker["video_url"].split("/")
+                        if len(url_parts) >= 4:
+                            try:
+                                vid_idx = int(url_parts[-1])
+                                if vid_idx == marker_index:
+                                    # This marker should have a video but file doesn't exist
+                                    raise HTTPException(
+                                        status_code=404,
+                                        detail="Gesture video generation failed or is still in progress. Please check back later."
+                                    )
+                            except (ValueError, IndexError):
+                                pass
+                        gesture_count += 1
+                    else:
+                        gesture_count += 1
+                # If we get here, this marker doesn't have a video_url in result.json
+                # It either failed to generate or was never assigned a video
+                raise HTTPException(
+                    status_code=404,
+                    detail="This gesture marker does not have a video. Video generation may have failed due to quota limits or other errors."
+                )
+            except HTTPException:
+                raise
+            except Exception as e:
+                print(f"[API] Error checking result.json: {e}")
+        
+        # Check if any videos exist (to distinguish between "not generated" vs "still generating")
+        existing_videos = list(video_dir.glob("gesture_*.mp4"))
+        if existing_videos:
+            print(f"[API] Found existing videos: {[v.name for v in existing_videos]}")
+            raise HTTPException(
+                status_code=404, 
+                detail=f"Gesture video {marker_index} not found. This video may have failed to generate. Available videos: {[v.name for v in existing_videos]}"
+            )
+        else:
+            print(f"[API] No videos found in directory")
+            raise HTTPException(
+                status_code=404, 
+                detail="Gesture video not found. Videos may still be generating. Please check back in a few moments."
+            )
+    
+    print(f"[API] Serving video: {video_path}")
+    file_size = video_path.stat().st_size
+    print(f"[API] Video file size: {file_size} bytes")
+    
+    return FileResponse(
+        video_path,
+        media_type="video/mp4",
+        headers={
+            "Accept-Ranges": "bytes",
+            "Content-Disposition": f'inline; filename="gesture_{marker_index}.mp4"',
+            "Content-Length": str(file_size),
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, OPTIONS",
+            "Access-Control-Allow-Headers": "*",
         }
     )
 
