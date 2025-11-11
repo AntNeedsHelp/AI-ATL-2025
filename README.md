@@ -1,7 +1,7 @@
 # Plum: AI-Powered Public Speaking Coaching Platform
 
 ## Inspiration
-Public speaking anxiety affects many people who lack access to coaching. Plum uses AI to provide accessible, instant feedback for students, professionals, and anyone looking to improve presentation skills.
+Public speaking anxiety affects many different people who lack access to coaching. Plum uses AI to provide accessible, instant feedback for students, professionals, and anyone looking to improve presentation skills.
 
 ##What it does
 
